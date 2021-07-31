@@ -1,0 +1,65 @@
+body {
+  background-color: #282828;
+  font-family: "Courier New", monospace;
+  color: white; }
+
+#title {
+  color: #d6d3d3;
+  text-align: center;
+  font-size: 40px;
+  font-weight: lighter; }
+
+.button {
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #FFFFFF;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  transition: all 0.2s;
+  background-color: #282828;
+  border-radius: 3px; }
+  .button:hover {
+    color: #000000;
+    background-color: #FFFFFF; }
+
+#btn-clear {
+  float: right;
+  margin-top: 10pt; }
+
+.tooltip {
+  position: relative;
+  display: inline-block; }
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1; }
+
+.tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #414040;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 5px;
+  position: absolute;
+  z-index: 1;
+  top: 150%;
+  left: 50%;
+  margin-left: -60px;
+  font-size: 8pt;
+  font-weight: 100; }
+  .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #414040; }

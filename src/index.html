@@ -4,9 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title><%= htmlWebpackPlugin.options.title %></title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
+  <title>Retail Analytics</title>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="top">
+    <div id="title">
+      Analytics for Retail 
+      <button class="button tooltip" id="btn-clear" type="button">
+        Clear selections
+        <span class="tooltiptext">Click to reset the original visualization. </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div id="treemap">
+      <!--<svg>
+        <script src="treemap.js"></script>
+      </svg>-->
+    </div>
+  </div>
+
+
+
+
 </body>
 </html>
