@@ -23,6 +23,18 @@
   <div class="row">
 
     <div id="treemap">
+      <script src="https://d3js.org/d3.v2.min.js"></script>
+      <script>
+        d3.csv("../dataset/full_data.csv", function(csv_data){
+          var nested_data = d3.nest()
+            .key(function(d) { return d.prod_cat; })
+            .key(function(d) { return d.prod_subcat; })
+            .entries(csv_data);
+                        
+            console.debug(nested_data);
+            alert(JSON.stringify(nested_data));                 
+        });
+      </script>
       <!--<svg>
         <script src="treemap.js"></script>
       </svg>-->
