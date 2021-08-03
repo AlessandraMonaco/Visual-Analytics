@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="../src/treemap.js"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
 </head>
@@ -21,24 +25,12 @@
   </div>
 
   <div class="row">
-
-    <div id="treemap">
-      <script src="https://d3js.org/d3.v2.min.js"></script>
-      <script>
-        d3.csv("../dataset/full_data.csv", function(csv_data){
-          var nested_data = d3.nest()
-            .key(function(d) { return d.prod_cat; })
-            .key(function(d) { return d.prod_subcat; })
-            .entries(csv_data);
-                        
-            console.debug(nested_data);
-            alert(JSON.stringify(nested_data));                 
-        });
-      </script>
-      <!--<svg>
-        <script src="treemap.js"></script>
-      </svg>-->
-    </div>
+    <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      
+    <div id="treemap" >
+      
+  </div>
   </div>
 
 
