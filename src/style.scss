@@ -84,3 +84,42 @@ body {
   }
 }
 
+//For the treemap
+.node {
+  border: solid 1px white;
+  font: 9px $main_font;
+  line-height: 12px;
+  overflow: hidden;
+  position: absolute;
+  text-indent: 2px;
+  cursor: default;
+}
+
+
+a {
+  color: dimgray;
+}
+
+.toolTip {
+  position: absolute;
+  display: none;
+  width: auto;
+  height: auto;
+  background: none repeat scroll 0 0 white;
+  border: 0 none;
+  border-radius: 8px 8px 8px 8px;
+  box-shadow: -3px 3px 15px #888888;
+  color: black;
+  font: 10px $main_font;
+  padding: 5px;
+  text-align: center;
+}
+
+.category {
+  font-weight: bolder;
+  font-size: 12px;
+}
+
+.value {
+  color: black;
+}

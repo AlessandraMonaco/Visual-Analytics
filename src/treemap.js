@@ -22,125 +22,81 @@ function change_json_format(root,value_key) {
     return root;
 }
 
+/*A function to create the treemap visualization*/
+function treemap_from_csv(filepath) {
+    //Read data from csv and transform into nested json
+    d3.csv(filepath, function(csv_data){
+        
+        // Nest data by categories and subcategories
+        var nested_data = d3.nest()
+        .key(function(d) { return d.prod_cat; })
+        .key(function(d) { return d.prod_subcat; })
+        .rollup(function(d) { 
+            return d3.sum(d, function(d) {return d.Qty; });
+        }) //sum the quantities for each subcategory
+        .entries(csv_data);
+        
+        console.debug(nested_data);
+        alert(JSON.stringify(nested_data));                 
+        
+        // Creat the root node for the treemap
+        var root = {};
+        
+        // Add the data to the tree, creating a pseudoroot
+        root.key = "Products";
+        root.values = nested_data;
+        root = change_json_format(root,"Paid_fare"); //Change json format
+        console.log(root);
+        alert(JSON.stringify(root)); 
+        
+        var root2 = d3.hierarchy(root).sum(function(d){ return d.value}) // Here the size of each leave is given in the 'value' field in input data
+        
+        // Then d3.treemap computes the position of each element of the hierarchy
+        var width = 300,
+        height = 400;
+        
+        var color = d3.scale.ordinal()
+        .range(["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02"])
+        
+        var treemap = d3.layout.treemap()
+        .size([width, height])
+        .padding(.25) //I like the thin interal lines, the group seporations are set in the CSS
+        .value(function (d) { return d.value; });
+        
+        var div = d3.select("#treemap").append("div")
+        .attr("class","treemap")
+        .style("position", "relative")
+        .style("width", width + "px")
+        .style("height", height + "px");
+        
+        var tool = d3.select("body").append("div").attr("class", "toolTip");
+        
+        d3.select(self.frameElement).style("height", height + 300 + "px");
+        d3.select(self.frameElement).style("width", width+20 + "px");
+        
+        div.selectAll(".node")
+        .data(treemap.nodes(root2))
+        .enter().append("div")
+        .attr("class", "node")
+        .style("left", function (d) { return d.x + "px"; })
+        .style("top", function (d) { return d.y + "px"; })
+        .style("width", function (d) { return Math.max(0, d.dx - 1) + "px"; })
+        .style("height", function (d) { return Math.max(0, d.dy - 1) + "px"; })
+        .style("background", function (d) { return d.children ? color(d.data.name) : null; })
+        .text(function (d) { return d.children ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.value +')' : null })
+        .on("mousemove", function (d) {
+            tool.style("left", d3.event.pageX + 10 + "px")
+            tool.style("top", d3.event.pageY - 20 + "px")
+            tool.style("display", "inline-block");
+            tool.html(d.children ? null : "<span class='category'>"+d.parent.data.name+" : "+d.parent.value+"</span>" + "<br>"+ d.data.name + " : " + d.data.value);
+        }).on("mouseout", function (d) {
+            tool.style("display", "none");
+        });
+    });
+}
 
 $(document).ready(function(){
-//set the dimensions and margins of the graph
-var margin = {top: 10, right: 10, bottom: 10, left: 10},
-  width = 455 - margin.left - margin.right,
-  height = 400 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-var svg = d3.select("#treemap")
-.append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-.append("g")
-  .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
-
-//Read data from csv and transform into nested json
-d3.csv("../dataset/full_data.csv", function(csv_data){
-    
-    // Nest data by categories and subcategories
-    var nested_data = d3.nest()
-      .key(function(d) { return d.prod_cat; })
-      .key(function(d) { return d.prod_subcat; })
-      .rollup(function(d) { 
-        return d3.sum(d, function(d) {return d.Qty; });}) //sum the quantities for each subcategory
-      .entries(csv_data);
-                 
-      console.debug(nested_data);
-      alert(JSON.stringify(nested_data));                 
-
-    // Creat the root node for the treemap
-    var root = {};
-			
-    // Add the data to the tree, creating a pseudoroot
-    root.key = "Products";
-    root.values = nested_data;
-    root = change_json_format(root,"Paid_fare"); //Change json format
-    console.log(root);
-    alert(JSON.stringify(root)); 
-
-    var root2 = d3.hierarchy(root).sum(function(d){ return d.value}) // Here the size of each leave is given in the 'value' field in input data
-
-// Then d3.treemap computes the position of each element of the hierarchy
-  d3.treemap()
-  .size([width, height])
-  .paddingTop(28)
-  .paddingRight(7)
-  .paddingInner(3)      // Padding between each rectangle
-  //.paddingOuter(6)
-  //.padding(20)
-  (root2)
-
-// prepare a color scale
-var color = d3.scaleOrdinal()
-  .domain(["Clothing", "Footwear", "Books", "Electronics", "Home and kitchen", "Bags"])
-  .range(["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02"])
-
-
-// And a opacity scale
-var opacity = d3.scaleLinear()
-.domain([10, 30])
-.range([.5,1])
-
-// use this information to add rectangles:
-svg
-.selectAll("rect")
-.data(root2.leaves())
-.enter()
-.append("rect")
-  .attr('x', function (d) { return d.x0; })
-  .attr('y', function (d) { return d.y0; })
-  .attr('width', function (d) { return d.x1 - d.x0; })
-  .attr('height', function (d) { return d.y1 - d.y0; })
-  .style("stroke", "black")
-  .style("fill", function(d){ return color(d.parent.data.name)} )
-  .style("opacity", function(d){ return opacity(d.data.value)})
-
-// and to add the text labels
-svg
-.selectAll("text")
-.data(root2.leaves())
-.enter()
-.append("text")
-  .attr("x", function(d){ return d.x0+5})    // +10 to adjust position (more right)
-  .attr("y", function(d){ return d.y0+20})    // +20 to adjust position (lower)
-  .text(function(d) {return d.data.name.substring(0,12);})
-  .attr("font-size", "8px")
-  .attr("fill", "white")
-
-// and to add the text labels
-svg
-.selectAll("vals")
-.data(root2.leaves())
-.enter()
-.append("text")
-  .attr("x", function(d){ return d.x0+5})    // +10 to adjust position (more right)
-  .attr("y", function(d){ return d.y0+30})    // +20 to adjust position (lower)
-  .text(function(d){ return "("+d.data.value+")" })
-  .attr("font-size", "8px")
-  .attr("fill", "white")
-
-// Add title for the 3 groups
-svg
-.selectAll("titles")
-.data(root2.descendants().filter(function(d){return d.depth==1}))
-.enter()
-.append("text")
-  .attr("x", function(d){ return d.x0})
-  .attr("y", function(d){ return d.y0+21})
-  .text(function(d){ return d.data.name })
-  .attr("font-size", "12px")
-  .attr("fill",  function(d){ return color(d.data.name)} )
-
-
-
-})
-
-
-
+    treemap_from_csv("../dataset/full_data.csv");          
 });
 
 
