@@ -36,6 +36,7 @@ function treemap_from_csv(filepath) {
         }) //sum the quantities for each subcategory
         .entries(csv_data);
         
+        console.log("Nested data")
         console.debug(nested_data);
         alert(JSON.stringify(nested_data));                 
         
@@ -52,8 +53,8 @@ function treemap_from_csv(filepath) {
         var root2 = d3.hierarchy(root).sum(function(d){ return d.value}) // Here the size of each leave is given in the 'value' field in input data
         
         // Then d3.treemap computes the position of each element of the hierarchy
-        var width = 300,
-        height = 400;
+        var width = 225,
+        height = 280;
         
         var color = d3.scale.ordinal()
         .range(["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02"])

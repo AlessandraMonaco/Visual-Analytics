@@ -3,7 +3,7 @@ $main_font: 'Courier New', monospace;
 $main_font_color: white;
 $background_color: #282828;
 $tooltip_color:  #414040;
-
+$axis_color: gray;
 
 body {
   background-color: $background_color;
@@ -84,17 +84,31 @@ body {
   }
 }
 
+//Grid layout
+.grid-container {
+  display: grid;
+  grid-template: 150px / auto auto auto;
+  grid-gap: 10px;
+  padding: 10px;
+
+  .div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+  }
+}
+
 //For the treemap
 .node {
   border: solid 1px white;
-  font: 9px $main_font;
+  font: 8.5px $main_font;
   line-height: 12px;
   overflow: hidden;
   position: absolute;
   text-indent: 2px;
   cursor: default;
 }
-
 
 a {
   color: dimgray;
@@ -122,4 +136,38 @@ a {
 
 .value {
   color: black;
+}
+
+//For the line-chart
+#line-chart {
+  
+  color: $main_font_color;  
+  .axis  {
+    stroke: $axis_color;
+    color: $axis_color;
+    font-family: $main_font;
+    
+    path, line {
+      stroke: $axis_color;
+    }
+  }
+
+  #select-y {
+    float:right;
+    margin-right: 7pt;
+  }
+
+  //Tooltip
+  div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 60px;					
+    height: 28px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
 }

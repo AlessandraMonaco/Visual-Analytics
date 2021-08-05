@@ -24,6 +24,7 @@ right_on = ['prod_cat_code','prod_sub_cat_code'])
 #Merge with customer information
 tr_final = pd.merge(tr_merged, cst,  how='left', left_on=['cust_id'], 
 right_on = ['customer_Id'])
+tr_final['tran_date'] =pd.to_datetime(tr_final.tran_date)
 tr_final = tr_final.sort_values(by=["tran_date"])
 tr_final.head()
 
