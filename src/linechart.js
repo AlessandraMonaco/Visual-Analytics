@@ -91,7 +91,7 @@ function linechart_from_csv(svg,data,y_value) {
     var bisect = d3.bisector(function(d) { return d.date; }).left;
 
     // Create the circle that travels along the curve of chart
-    var focus = line
+    var focus = svg
       .append('g')
       .append('circle')
     .style("fill", "none")
@@ -100,7 +100,7 @@ function linechart_from_csv(svg,data,y_value) {
     .style("opacity", 0)
 
 // Create the text that travels along the curve of chart
-var focusText = line
+var focusText = svg
   .append('g')
   .append('text')
     //.attr("class", "tooltip")
@@ -109,7 +109,7 @@ var focusText = line
     .style("font-weight", "bold")
     .attr("stroke-width", 3.0)
     .attr("text-anchor", "left")
-    .attr("alignment-baseline", "top")
+    .attr("alignment-baseline", "bottom")
     
 
 
@@ -157,8 +157,8 @@ var focusText = line
     focusText
       .html(pretty_value(selectedData.value, y_value))
       //.html(pretty_date(selectedData.date)+" "+pretty_value(selectedData.value, y_value))
-      .attr("x", x(selectedData.date)+15)
-      .attr("y", y(selectedData.value))
+      .attr("x", x(selectedData.date)+5)
+      .attr("y", y(selectedData.value)+5)
       
     }
   function mouseout() {
