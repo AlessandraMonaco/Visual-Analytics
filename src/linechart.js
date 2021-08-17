@@ -5,6 +5,17 @@ height = 150 - margin.top - margin.bottom;
 // List of groups (here I have one group per column)
 var allGroup = ["Profit", "Sales"]
 
+//Pretty print for date in tooltips
+function pretty_date(mydate) {
+  return mydate.getDate()+"/"+mydate.getMonth()+"/"+mydate.getFullYear();
+}
+
+function pretty_value(myvalue, y_value) {
+  if(y_value=="Profit") return myvalue.toFixed(2)+"$";
+  else return myvalue;
+}
+
+
 function linechart_from_csv(svg,data,y_value) {
 
   // Aggregate by summing daily amounts
@@ -51,8 +62,10 @@ function linechart_from_csv(svg,data,y_value) {
         .attr("x", 2)
         .attr("dy", ".31em")
         .style("text-anchor", "end")
+        .style("color", "white")
         .text(y_value);
     
+
 
     // Add a clipPath: everything out of this area won't be drawn.
     var clip = svg.append("defs").append("svg:clipPath")
@@ -72,6 +85,35 @@ function linechart_from_csv(svg,data,y_value) {
     var line = svg.append('g')
       .attr("clip-path", "url(#clip)")
  
+    
+
+    // This allows to find the closest X index of the mouse:
+    var bisect = d3.bisector(function(d) { return d.date; }).left;
+
+    // Create the circle that travels along the curve of chart
+    var focus = line
+      .append('g')
+      .append('circle')
+    .style("fill", "none")
+    .attr("stroke", "white")
+    .attr('r', 1.3)
+    .style("opacity", 0)
+
+// Create the text that travels along the curve of chart
+var focusText = line
+  .append('g')
+  .append('text')
+    //.attr("class", "tooltip")
+    .style("opacity", 0)
+    .style("fill", "white")
+    .style("font-weight", "bold")
+    .attr("stroke-width", 3.0)
+    .attr("text-anchor", "left")
+    .attr("alignment-baseline", "top")
+    
+
+
+
     // Add the line
     line.append("path")
       .datum(data)
@@ -79,18 +121,51 @@ function linechart_from_csv(svg,data,y_value) {
       .attr("class", "line")  // I add the class line to be able to modify this line later on.
       .attr("fill", "none")
       .attr("stroke", "white")
-      .attr("stroke-width", 1.0)
+      .attr("stroke-width", 0.5)
       .attr("d", d3.line()
         .x(function(d) { return x(d.date) })
         .y(function(d) { return y(+d.value) })
       )
   
-    // Add the brushing
-    line
-      .append("g")
-      .attr("class", "brush")
-      .call(brush);
-    
+      //Add brush
+     // Add the brushing
+     line
+     .append("g")
+     .attr("class", "brush")
+     .call(brush)
+     .style("pointer-events", "all")
+     .on('mouseover', mouseover)
+      .on('mousemove', mousemove)
+      .on('mouseout', mouseout);
+
+     // What happens when the mouse move -> show the annotations at the right positions.
+  function mouseover() {
+    focus.style("opacity", 1)
+    focusText.style("opacity",1)
+  }
+
+  function mousemove() {
+    // recover coordinate we need
+    var x0 = x.invert(d3.mouse(this)[0]);
+    var i = bisect(data, x0, 1);
+    selectedData = data[i]
+    console.log(selectedData.value);
+    focus
+      .attr("cx", x(selectedData.date))
+      .attr("cy", y(selectedData.value))
+      
+    focusText
+      .html(pretty_value(selectedData.value, y_value))
+      //.html(pretty_date(selectedData.date)+" "+pretty_value(selectedData.value, y_value))
+      .attr("x", x(selectedData.date)+15)
+      .attr("y", y(selectedData.value))
+      
+    }
+  function mouseout() {
+    focus.style("opacity", 0)
+    focusText.style("opacity", 0)
+  }
+
 
     // A function that set idleTimeOut to null
     var idleTimeout
@@ -154,6 +229,7 @@ $(document).ready(function(){
     
     function(data) {
       // append the svg object to the body of the page
+  
   var svg = d3.select("#line-chart")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
@@ -161,6 +237,8 @@ $(document).ready(function(){
   .append("g")
   .attr("transform",
   "translate(" + margin.left + "," + margin.top + ")");
+
+
 
   // add the options to the button
   d3.select("#select-y")

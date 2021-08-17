@@ -13,9 +13,9 @@ body {
 
 #title {
   color: rgb(214, 211, 211);
-  text-align: center;
-  font-size: 40px;
-  font-weight:lighter;
+  text-align: left;
+  font-size: 25px;
+  font-weight:bold;
 }
 
 .button {
@@ -42,7 +42,7 @@ body {
 
 #btn-clear {
   float:right;
-  margin-top: 10pt;
+  margin-top: 0pt;
 }
 
 .tooltip {
@@ -86,16 +86,18 @@ body {
 
 //Grid layout
 .grid-container {
+  position: relative;
   display: grid;
-  grid-template: 150px / auto auto auto;
-  grid-gap: 10px;
-  padding: 10px;
+  margin: 2pt;
+  margin-left: -5pt;
+  grid-template: auto / auto auto auto;
+  grid-gap: 5pt;
+  padding: 3pt;
 
-  .div {
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    padding: 20px 0;
-    font-size: 30px;
+  .viz {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 6pt;
+    height: auto;
   }
 }
 
@@ -158,16 +160,18 @@ a {
   }
 
   //Tooltip
-  div.tooltip {	
-    position: absolute;			
+  .tooltip {	
+    position: absolute;		
+    opacity: 1;	
     text-align: center;			
     width: 60px;					
     height: 28px;					
-    padding: 2px;				
-    font: 12px sans-serif;		
-    background: lightsteelblue;	
-    border: 0px;		
-    border-radius: 8px;			
-    pointer-events: none;			
+    padding: 2px;						
+    background: none repeat scroll 0 0 white;	
+    box-shadow: -3px 3px 15px #888888;
+  color: black;
+  font: 10px $main_font;
+    border: 1px;		
+    border-radius: 8px;					
 }
 }

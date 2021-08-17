@@ -5,9 +5,9 @@ body {
 
 #title {
   color: #d6d3d3;
-  text-align: center;
-  font-size: 40px;
-  font-weight: lighter; }
+  text-align: left;
+  font-size: 25px;
+  font-weight: bold; }
 
 .button {
   display: inline-block;
@@ -30,7 +30,7 @@ body {
 
 #btn-clear {
   float: right;
-  margin-top: 10pt; }
+  margin-top: 0pt; }
 
 .tooltip {
   position: relative;
@@ -65,15 +65,17 @@ body {
     border-color: transparent transparent #414040; }
 
 .grid-container {
+  position: relative;
   display: grid;
-  grid-template: 150px / auto auto auto;
-  grid-gap: 10px;
-  padding: 10px; }
-  .grid-container .div {
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    padding: 20px 0;
-    font-size: 30px; }
+  margin: 2pt;
+  margin-left: -5pt;
+  grid-template: auto / auto auto auto;
+  grid-gap: 5pt;
+  padding: 3pt; }
+  .grid-container .viz {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 6pt;
+    height: auto; }
 
 .node {
   border: solid 1px white;
@@ -119,14 +121,16 @@ a {
   #line-chart #select-y {
     float: right;
     margin-right: 7pt; }
-  #line-chart div.tooltip {
+  #line-chart .tooltip {
     position: absolute;
+    opacity: 1;
     text-align: center;
     width: 60px;
     height: 28px;
     padding: 2px;
-    font: 12px sans-serif;
-    background: lightsteelblue;
-    border: 0px;
-    border-radius: 8px;
-    pointer-events: none; }
+    background: none repeat scroll 0 0 white;
+    box-shadow: -3px 3px 15px #888888;
+    color: black;
+    font: 10px "Courier New", monospace;
+    border: 1px;
+    border-radius: 8px; }
