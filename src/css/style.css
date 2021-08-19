@@ -9,6 +9,15 @@ body {
   font-size: 25px;
   font-weight: bold; }
 
+mark {
+  background-color: white;
+  color: black; }
+
+.description {
+  position: relative;
+  margin-top: 5px;
+  font-size: 10px; }
+
 .button {
   display: inline-block;
   padding: 0.35em 1.2em;
@@ -75,7 +84,7 @@ body {
   .grid-container .viz {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 6pt;
-    height: auto; }
+    width: auto; }
 
 .node {
   border: solid 1px white;
@@ -110,17 +119,23 @@ a {
 .value {
   color: black; }
 
+.viz#line-chart {
+  height: 50px; }
+
 #line-chart {
   color: white; }
   #line-chart .axis {
-    stroke: gray;
+    stroke: white;
+    stroke-width: 0.3;
     color: gray;
-    font-family: "Courier New", monospace; }
+    font-family: "Courier New", monospace;
+    font-size: 8px; }
     #line-chart .axis path, #line-chart .axis line {
       stroke: gray; }
   #line-chart #select-y {
+    position: relative;
     float: right;
-    margin-right: 7pt; }
+    margin-right: 3px; }
   #line-chart .tooltip {
     position: absolute;
     opacity: 1;
@@ -134,3 +149,31 @@ a {
     font: 10px "Courier New", monospace;
     border: 1px;
     border-radius: 8px; }
+
+#calendar-heatmap {
+  font-size: 9px; }
+  #calendar-heatmap .chart {
+    background: #fff;
+    margin: 5px; }
+  #calendar-heatmap .month {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2px; }
+  #calendar-heatmap .day {
+    fill: #fff;
+    stroke: #ccc; }
+  #calendar-heatmap text {
+    font-family: sans-serif;
+    font-size: 1.5em; }
+  #calendar-heatmap .dayLabel {
+    fill: #aaa;
+    font-size: 0.8em; }
+  #calendar-heatmap .monthLabel {
+    text-anchor: middle;
+    font-size: 0.8em;
+    fill: #aaa; }
+  #calendar-heatmap .yearLabel {
+    fill: #aaa;
+    font-size: 1.2em; }
+  #calendar-heatmap .key {
+    font-size: 0.5em; }

@@ -1,4 +1,4 @@
-var margin = {top: 15, right: 7, bottom: 30, left: 50},
+var margin = {top: 15, right: 7, bottom: 30, left: 40},
 width = 730 - margin.left - margin.right,
 height = 150 - margin.top - margin.bottom;
 
@@ -121,7 +121,7 @@ var focusText = svg
       .attr("class", "line")  // I add the class line to be able to modify this line later on.
       .attr("fill", "none")
       .attr("stroke", "white")
-      .attr("stroke-width", 0.5)
+      .attr("stroke-width", 0.3)
       .attr("d", d3.line()
         .x(function(d) { return x(d.date) })
         .y(function(d) { return y(+d.value) })
@@ -156,10 +156,9 @@ var focusText = svg
       
     focusText
       .html(pretty_value(selectedData.value, y_value))
-      //.html(pretty_date(selectedData.date)+" "+pretty_value(selectedData.value, y_value))
+      //.html(pretty_date(selectedData.date))
       .attr("x", x(selectedData.date)+5)
-      .attr("y", y(selectedData.value)+5)
-      
+      .attr("y", y(selectedData.value)+5)  
     }
   function mouseout() {
     focus.style("opacity", 0)

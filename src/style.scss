@@ -18,6 +18,17 @@ body {
   font-weight:bold;
 }
 
+mark {
+  background-color: white;
+  color: black;
+}
+
+.description {
+  position: relative;
+  margin-top: 5px;
+  font-size: 10px;
+}
+
 .button {
   display:inline-block;
   padding:0.35em 1.2em;
@@ -97,11 +108,13 @@ body {
   .viz {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 6pt;
-    height: auto;
+    width: auto;
+    //height: auto;
   }
 }
 
 //For the treemap
+
 .node {
   border: solid 1px white;
   font: 8.5px $main_font;
@@ -141,13 +154,19 @@ a {
 }
 
 //For the line-chart
+.viz#line-chart {
+  height: 50px;
+}
 #line-chart {
   
   color: $main_font_color;  
+
   .axis  {
-    stroke: $axis_color;
+    stroke: white;
+    stroke-width: 0.3;
     color: $axis_color;
     font-family: $main_font;
+    font-size: 8px ;
     
     path, line {
       stroke: $axis_color;
@@ -155,8 +174,9 @@ a {
   }
 
   #select-y {
+    position:relative;
     float:right;
-    margin-right: 7pt;
+    margin-right: 3px;
   }
 
   //Tooltip
@@ -174,4 +194,44 @@ a {
     border: 1px;		
     border-radius: 8px;					
 }
+}
+
+//For the calendar-heatmap
+#calendar-heatmap {
+  font-size: 9px;
+  .chart {
+    background: #fff;
+    margin: 5px;
+  }
+
+  .month {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2px;
+  }
+  .day {
+    fill: #fff;
+    stroke: #ccc;
+  }
+  text {
+    font-family:sans-serif;
+    font-size:1.5em;
+  }
+  .dayLabel   {
+    fill:#aaa;
+    font-size:0.8em;
+  }
+  .monthLabel {
+    text-anchor:middle;
+    font-size:0.8em;
+    fill:#aaa;
+  }
+  .yearLabel  {
+    fill:#aaa;
+    font-size:1.2em;
+  }
+
+  .key {
+    font-size:0.5em;
+  }
 }
