@@ -1,5 +1,5 @@
 var margin = {top: 15, right: 7, bottom: 30, left: 40},
-width = 730 - margin.left - margin.right,
+width = 650 - margin.left - margin.right,
 height = 150 - margin.top - margin.bottom;
 
 // List of groups (here I have one group per column)

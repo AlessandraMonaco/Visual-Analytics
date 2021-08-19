@@ -71,7 +71,7 @@ $(document).ready(function(){
 
             //Create chart
             var svg = d3.select("#calendar-heatmap").append("svg")
-                        .attr("width", "100%")
+                        .attr("width", "420px")
                         .attr("viewBox","0 0 "+(xOffset+year_width)+" 540")
 
             //create an SVG group for each year

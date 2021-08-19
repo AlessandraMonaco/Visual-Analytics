@@ -23,6 +23,11 @@ mark {
   color: black;
 }
 
+#button-row {
+  position: relative;
+  margin-top: 3px;
+}
+
 .description {
   position: relative;
   margin-top: 5px;
@@ -93,6 +98,11 @@ mark {
     border-color: transparent transparent $tooltip_color;
     
   }
+}
+
+#select-y {
+  position:relative;
+  
 }
 
 //Grid layout
@@ -173,11 +183,7 @@ a {
     }
   }
 
-  #select-y {
-    position:relative;
-    float:right;
-    margin-right: 3px;
-  }
+  
 
   //Tooltip
   .tooltip {	

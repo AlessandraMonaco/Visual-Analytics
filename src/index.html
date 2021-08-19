@@ -17,13 +17,15 @@
 </head>
 <body>
   <div id="top">
-    <div id="title">
-      <mark>Analytics for Retail</mark> 
-      <button class="button tooltip" id="btn-clear" type="button">
-        Clear selections
-        <span class="tooltiptext">Click to reset the original visualization. </span>
-      </button>
+    <div class="description">Data to display</div>
+    <div id="button-row">
+    <select id="select-y" class="button"></select>
+    <button class="button tooltip" id="btn-clear" type="button">
+      Clear selections
+      <span class="tooltiptext">Click to reset the original visualization. </span>
     </div>
+    </button>
+    
   </div>
 
   <div class="grid-container">
@@ -33,14 +35,14 @@
     <!-- Sales by category treemap-->
     <div class="viz">  
       <div id="treemap" ></div>
-      <div class="description">Sales for each category</div>
+      <div class="description">Number of sales for each category</div>
     </div>
     
 
     <!-- Profit and sales trend line chart-->
     <div class="viz">
       <div id="line-chart">
-        <select id="select-y"></select>
+        
       </div>
     </div>
     

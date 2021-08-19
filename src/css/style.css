@@ -13,6 +13,10 @@ mark {
   background-color: white;
   color: black; }
 
+#button-row {
+  position: relative;
+  margin-top: 3px; }
+
 .description {
   position: relative;
   margin-top: 5px;
@@ -73,6 +77,9 @@ mark {
     border-style: solid;
     border-color: transparent transparent #414040; }
 
+#select-y {
+  position: relative; }
+
 .grid-container {
   position: relative;
   display: grid;
@@ -132,10 +139,6 @@ a {
     font-size: 8px; }
     #line-chart .axis path, #line-chart .axis line {
       stroke: gray; }
-  #line-chart #select-y {
-    position: relative;
-    float: right;
-    margin-right: 3px; }
   #line-chart .tooltip {
     position: absolute;
     opacity: 1;
