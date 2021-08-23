@@ -126,6 +126,7 @@ var focusText = svg
         .x(function(d) { return x(d.date) })
         .y(function(d) { return y(+d.value) })
       )
+
   
       //Add brush
      // Add the brushing
@@ -249,7 +250,10 @@ $(document).ready(function(){
     .attr("value", function (d) { return d; }) // corresponding value returned by the button
 
       //Initialize with Profits
-      linechart_from_csv(svg,data,"Profit");
+      if(typeof y_value == 'undefined') {
+        linechart_from_csv(svg,data,"Profit");
+      }
+      else {linechart_from_csv(svg,data,y_value);}
       
       //Update function when the selectButton is clicked
       // A function that updates the chart

@@ -12,6 +12,7 @@
   <script type="text/javascript" src="../src/treemap.js"></script>
   <script type="text/javascript" src="../src/linechart.js"></script>
   <script type="text/javascript" src="../src/calendar_heatmap.js"></script>
+  <script type="text/javascript" src="../src/update_y.js"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
 </head>
@@ -20,6 +21,10 @@
     <div class="description">Data to display</div>
     <div id="button-row">
     <select id="select-y" class="button"></select>
+    <select id="select-y-cal" class="button">
+      <option>Profit</option>
+      <option>Sales</option>
+    </select>
     <button class="button tooltip" id="btn-clear" type="button">
       Clear selections
       <span class="tooltiptext">Click to reset the original visualization. </span>
