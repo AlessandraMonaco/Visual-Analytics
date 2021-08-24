@@ -12,7 +12,7 @@
   <script type="text/javascript" src="../src/treemap.js"></script>
   <script type="text/javascript" src="../src/linechart.js"></script>
   <script type="text/javascript" src="../src/calendar_heatmap.js"></script>
-  <script type="text/javascript" src="../src/update_y.js"></script>
+  <script type="text/javascript" src="../src/prova.js"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
 </head>
@@ -20,11 +20,11 @@
   <div id="top">
     <div class="description">Data to display</div>
     <div id="button-row">
-    <select id="select-y" class="button"></select>
-    <select id="select-y-cal" class="button">
-      <option>Profit</option>
-      <option>Sales</option>
-    </select>
+      <select id="select-y-cal" class="button">
+        <option>Profit</option>
+        <option>Sales</option>
+      </select>
+    
     <button class="button tooltip" id="btn-clear" type="button">
       Clear selections
       <span class="tooltiptext">Click to reset the original visualization. </span>
@@ -37,25 +37,31 @@
     <script src="https://d3js.org/d3.v3.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     
-    <!-- Sales by category treemap-->
+ 
     <div class="viz">  
-      <div id="treemap" ></div>
-      <div class="description">Number of sales for each category</div>
-    </div>
-    
-
-    <!-- Profit and sales trend line chart-->
-    <div class="viz">
-      <div id="line-chart">
-        
+      <select id="select-y" class="button"></select>
+      <div id="line-chart"></div> 
+      <div class="grid-container">
+        <div id="treemap" ></div>
+        <!--<span class="description">Number of sales for each category</span>-->
+        <div id="calendar-heatmap"></div>
       </div>
     </div>
     
-    <!-- Calendar heatmap timeseries-->
-    <div class="viz">
-      <div id="calendar-heatmap"></div>
-    </div>
 
+    <div class="viz">
+      <!--Setting parameters for PCA ad K-Means-->
+      <form action="">
+        <label for="n_components">N° Principal Components:</label>
+        <input type="number" id="n_components" name="n_components" class="input-param" min="2" max="18">
+        <label for="n_clusters">N° Clusters:</label>
+        <input type="number" id="n_clusters" name="n_clusters" class="input-param" min="2" max="6">
+        <input type="submit" class="button" value="Run K-Means">
+      </form>
+    </div>
+    <div class="viz"></div>
+    <div class="viz"></div>
+    
   </div>
     
     

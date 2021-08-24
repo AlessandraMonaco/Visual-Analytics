@@ -3,12 +3,6 @@ body {
   font-family: "Courier New", monospace;
   color: white; }
 
-#title {
-  color: #d6d3d3;
-  text-align: left;
-  font-size: 25px;
-  font-weight: bold; }
-
 mark {
   background-color: white;
   color: black; }
@@ -154,6 +148,8 @@ a {
     border-radius: 8px; }
 
 #calendar-heatmap {
+  position: relative;
+  display: inline;
   font-size: 9px; }
   #calendar-heatmap .chart {
     background: #fff;
@@ -180,3 +176,10 @@ a {
     font-size: 1.2em; }
   #calendar-heatmap .key {
     font-size: 0.5em; }
+
+form {
+  font-size: 12px; }
+  form .input-param {
+    width: 38px;
+    text-align: center;
+    margin-right: 15px; }

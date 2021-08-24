@@ -11,7 +11,7 @@ function pretty_date(mydate) {
 }
 
 function pretty_value(myvalue, y_value) {
-  if(y_value=="Profit") return myvalue.toFixed(2)+"$";
+  if(y_value=="Profit") return myvalue.toFixed(2)+" $";
   else return myvalue;
 }
 
@@ -122,12 +122,14 @@ var focusText = svg
       .attr("fill", "none")
       .attr("stroke", "white")
       .attr("stroke-width", 0.3)
+      .transition()
+      .duration(3000)
       .attr("d", d3.line()
         .x(function(d) { return x(d.date) })
         .y(function(d) { return y(+d.value) })
       )
 
-  
+     
       //Add brush
      // Add the brushing
      line

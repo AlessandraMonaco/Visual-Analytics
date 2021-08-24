@@ -11,13 +11,6 @@ body {
   color: $main_font_color;
 }
 
-#title {
-  color: rgb(214, 211, 211);
-  text-align: left;
-  font-size: 25px;
-  font-weight:bold;
-}
-
 mark {
   background-color: white;
   color: black;
@@ -204,6 +197,9 @@ a {
 
 //For the calendar-heatmap
 #calendar-heatmap {
+  position: relative;
+  display: inline;
+  //margin-left: -100px;
   font-size: 9px;
   .chart {
     background: #fff;
@@ -240,4 +236,16 @@ a {
   .key {
     font-size:0.5em;
   }
+}
+
+// Form to set parameters
+form {
+  font-size: 12px;
+  .input-param {
+    width: 38px;
+    text-align: center;
+    margin-right: 15px;
+  }
+
+  
 }

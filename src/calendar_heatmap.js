@@ -29,7 +29,7 @@ function calendar_from_csv(svg, data, y_value) {
 
     //Set units and breaks depeding on the selected y_value
     if(y_value=="Profit") { 
-        var units="$";
+        var units=" $";
         var breaks=[10000,20000,40000,60000]; //to do
     }
     else { 
