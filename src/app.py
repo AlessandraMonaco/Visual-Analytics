@@ -1,6 +1,6 @@
 import flask
 from flask import Flask, render_template, request 
-import run_pca_kmeans
+import run_pca_kmeans, create_shared_dataset
  
 # Initialise app: create a new Flask application
 app = Flask(__name__)
@@ -8,6 +8,11 @@ app = Flask(__name__)
 # Basic function to call the index.html template
 @app.route('/' ) #app.route() tells us what URL triggers our next function ('/' = no url)
 def index():
+    # Create a unique preprocessed dataset from multiple files
+    create_shared_dataset.create_csv()
+    # Run pca and K-Means on default values
+    run_pca_kmeans.clustering(2,4)
+    # Return home page
     return render_template('index.html') # the return type is HTML
 
 
