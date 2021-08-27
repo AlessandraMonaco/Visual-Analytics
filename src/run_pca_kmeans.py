@@ -67,6 +67,7 @@ def clustering(n_components, n_clusters):
     # Append labels on dataframe and write it to csv file
     labels = pd.Series(kmeans.labels_)
     clusteredDf = pd.concat([principalDf, labels], axis = 1)
+    clusteredDf = pd.concat([clusteredDf, gr_data.loc[:, features]], axis=1)
     clusteredDf = clusteredDf.rename(columns={"cust_id": "cust_id", "pc_1": "pc_1", "pc_2": "pc_2", 0: "cluster"})
     print("clusteredDf.head \n", clusteredDf.head())
     clusteredDf.to_csv(path+'pca_kmeans_data.csv', index=False) #write clustered data to csv

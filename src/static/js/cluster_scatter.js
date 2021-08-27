@@ -6,18 +6,31 @@ var scatter_margin = {top: 10, right: 30, bottom: 30, left: 10},
 
 $(document).ready(function(){
 
-    // append the svg object to the body of the page
-    var svg = d3.select("#scatter")
+    
+
+    //Read the data
+    d3.csv("static/dataset/pca_kmeans_data.csv", function(data) {
+        
+        // Reset visualization with colors if double click on svg
+        var resetVisualization = function(d) {
+            // Add dots with original colour
+            d3.selectAll(".dot")
+                .transition()
+                .duration(200)
+                .style("fill", function (d) { return color(d.cluster) })
+                .attr("r", 1 )
+        }
+
+        // append the svg object to the body of the page
+        var svg = d3.select("#scatter")
         .append("svg")
             .attr("width", scatter_width + scatter_margin.left + scatter_margin.right)
             .attr("height", scatter_height + scatter_margin.top + scatter_margin.bottom)
+            .on("dblclick", resetVisualization )
         .append("g")
             .attr("transform",
                 "translate(" + scatter_margin.left + "," + scatter_margin.top + ")");
 
-
-    //Read the data
-    d3.csv("static/dataset/pca_kmeans_data.csv", function(data) {
 
         // Add X axis
         var x = d3.scaleLinear()
@@ -40,6 +53,7 @@ $(document).ready(function(){
         .range([ "#440154ff", "#21908dff", "#fde725ff", "green"])
     
     
+        
         // Highlight the specie that is hovered
         var highlight = function(d){
     
@@ -80,6 +94,7 @@ $(document).ready(function(){
             .style("fill", function (d) { return color(d.cluster) } )
         .on("mouseover", highlight)
         .on("mouseleave", doNotHighlight )
+        
     
     })
   
