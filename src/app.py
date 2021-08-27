@@ -1,24 +1,34 @@
 import flask
-from flask import Flask, render_template, send_file, make_response, url_for, Response, redirect, request 
+from flask import Flask, render_template, request 
+import run_pca_kmeans
  
-#initialise app
+# Initialise app: create a new Flask application
 app = Flask(__name__)
 
-#decorator for homepage 
-@app.route('/' )
+# Basic function to call the index.html template
+@app.route('/' ) #app.route() tells us what URL triggers our next function ('/' = no url)
 def index():
+    return render_template('index.html') # the return type is HTML
+
+
+###
+# Services
+
+# Service to run the PCA+K-Meas clustering script on new parameters
+# It is triggered by the submit button of the form
+@app.route('/runcluster', methods = ['GET', 'POST'] )
+def run_clustering():
+    # Read inserted parameters
+    n_components = request.args.get('n_components') #getList if many values
+    n_clusters = request.args.get('n_clusters')
+    # Trigger the kmeans function in external .py file (this function creates a csv file)
+    run_pca_kmeans.clustering(int(n_components),int(n_clusters)) 
+    # Return again the same html template
     return render_template('index.html')
 
+
+
+####
+# Code to actually run the Flask app
 if(__name__ == '__main__'):
     app.run(debug = True)
-#n_components = request.args.get('n_components') #getList if many values
-#n_clusters = request.args.get('n_clusters')
-
-@app.route('/', methods = ["POST"] )
-def hello():
-#text_file = open("./sample.txt", "w")
-#n = text_file.write(n_components+" "+n_clusters)
-#text_file.close()
-    print("Hellooo")
-#print(n_components, n_clusters) 
-

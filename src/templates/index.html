@@ -10,11 +10,11 @@
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="https://d3js.org/d3.v5.js"></script>
   <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='treemap.js')}}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='linechart.js')}}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='calendar_heatmap.js')}}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='run_kmeans_button.js')}}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='clear_viz.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/treemap.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/linechart.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/calendar_heatmap.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/run_kmeans_button.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/clear_viz.js')}}"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
 </head>
@@ -53,12 +53,12 @@
 
     <div class="viz">
       <!--Setting parameters for PCA ad K-Means-->
-      <form method="POST" onsubmit="return false">
+      <form action="/runcluster" method="GET">
         <label for="n_components">N° Principal Components:</label>
         <input type="number" id="n_components" name="n_components" class="input-param" min="2" max="18" value="2">
         <label for="n_clusters">N° Clusters:</label>
         <input type="number" id="n_clusters" name="n_clusters" class="input-param" min="2" max="6" value="4" >
-        <input type="submit" class="button" value="Run K-Means" onclick="RunKmeans(); return false;">
+        <input type="submit" class="button" value="Run K-Means" onclick="RunKmeans();">
       </form>
     </div>
     <div class="viz"></div>
