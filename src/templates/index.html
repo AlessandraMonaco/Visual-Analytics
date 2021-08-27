@@ -4,15 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+  <link rel="shortcut icon" href="#">
   <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="https://d3js.org/d3.v5.js"></script>
   <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript" src="../src/treemap.js"></script>
-  <script type="text/javascript" src="../src/linechart.js"></script>
-  <script type="text/javascript" src="../src/calendar_heatmap.js"></script>
-  <script type="text/javascript" src="../src/prova.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='treemap.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='linechart.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='calendar_heatmap.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='run_kmeans_button.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='clear_viz.js')}}"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
 </head>
@@ -25,7 +27,7 @@
         <option>Sales</option>
       </select>
     
-    <button class="button tooltip" id="btn-clear" type="button">
+    <button class="button tooltip" id="btn-clear" type="button" onclick="ResetViz();">
       Clear selections
       <span class="tooltiptext">Click to reset the original visualization. </span>
     </div>
@@ -51,12 +53,12 @@
 
     <div class="viz">
       <!--Setting parameters for PCA ad K-Means-->
-      <form action="">
+      <form method="POST" onsubmit="return false">
         <label for="n_components">N° Principal Components:</label>
-        <input type="number" id="n_components" name="n_components" class="input-param" min="2" max="18">
+        <input type="number" id="n_components" name="n_components" class="input-param" min="2" max="18" value="2">
         <label for="n_clusters">N° Clusters:</label>
-        <input type="number" id="n_clusters" name="n_clusters" class="input-param" min="2" max="6">
-        <input type="submit" class="button" value="Run K-Means">
+        <input type="number" id="n_clusters" name="n_clusters" class="input-param" min="2" max="6" value="4" >
+        <input type="submit" class="button" value="Run K-Means" onclick="RunKmeans(); return false;">
       </form>
     </div>
     <div class="viz"></div>

@@ -27,12 +27,12 @@ function RunKmeans() {
         }, true)
     );*/
 
-    $.ajax({
+    /*$.ajax({
         url: "prova.py",
        context: document.body
       }).done(function() {
        alert('finished python script');;
-      });
+      });*/
 
     return false;
     

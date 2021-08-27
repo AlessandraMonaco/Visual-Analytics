@@ -220,7 +220,7 @@ var focusText = svg
 $(document).ready(function(){
 
   //Read the data
-  d3.csv("../dataset/full_data.csv",
+  d3.csv("static/dataset/full_data.csv", 
     
     // When reading the csv, I must format variables: (total_amt, Qty)
     function(d){

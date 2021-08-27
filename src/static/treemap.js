@@ -97,7 +97,7 @@ function treemap_from_csv(filepath) {
 }
 
 $(document).ready(function(){
-    treemap_from_csv("../dataset/full_data.csv");          
+    treemap_from_csv("static/dataset/full_data.csv");          
 });
 
 

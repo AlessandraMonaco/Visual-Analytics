@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 
 # Read data from csv
-path = "C:/Users/user/Documents/GitHub/Visual-Analytics/dataset/"
+path = "C:/Users/user/Documents/GitHub/Visual-Analytics/src/static/dataset/"
 ctg = pd.read_csv(path+"prod_cat_info.csv") #categories csv
 cst = pd.read_csv(path+"Customer.csv")
 tr = pd.read_csv(path+"Transactions.csv")

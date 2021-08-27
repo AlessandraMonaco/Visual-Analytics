@@ -233,7 +233,7 @@ function calendar_from_csv(svg, data, y_value) {
 $(document).ready(function(){
 
     //Read the data
-    d3.csv("../dataset/full_data.csv",
+    d3.csv("static/dataset/full_data.csv",
       
         // When reading the csv, I must format variables: (total_amt, Qty)
         function(d){
@@ -251,7 +251,8 @@ $(document).ready(function(){
                         .attr("viewBox","0 0 "+(xOffset+year_width)+" 540")
 
             //At the beginning, initialize the graph with profits
-            var y_value = "Profit";
+            document.getElementById("select-y-cal").value = "Profit"
+            var y_value = document.getElementById("select-y-cal").value;
             calendar_from_csv(svg,data,y_value);
    
             

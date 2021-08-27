@@ -45,6 +45,6 @@
   "scripts": {
     "start": "webpack serve --mode development --hot --inline",
     "build": "webpack --mode production",
-    "css": "node-sass --include-path scss C:/Users/user/Documents/GitHub/Visual-Analytics/src/style.scss C:/Users/user/Documents/GitHub/Visual-Analytics/src/css/style.css"
+    "css": "node-sass --include-path scss C:/Users/user/Documents/GitHub/Visual-Analytics/src/style.scss C:/Users/user/Documents/GitHub/Visual-Analytics/src/static/styles/style.css"
   }
 }
