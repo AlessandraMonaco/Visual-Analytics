@@ -57,7 +57,7 @@ function calendar_from_csv(svg, data, y_value) {
         .entries(nested_data)
 
     //Debug
-    console.log(yearlyData[0].values[0].value);
+    //console.log(yearlyData[0].values[0].value);
 
     //create an SVG group for each year
     var cals = svg.selectAll("g")
@@ -124,7 +124,7 @@ function calendar_from_csv(svg, data, y_value) {
         .enter()
         .append("rect")
         .attr("id",function(d) {
-            console.log(format(new Date(d.date))+":"+d.value);
+            //console.log(format(new Date(d.date))+":"+d.value);
             return format(new Date(d.date))+":"+d.value;
         })
         .attr("stroke","#ccc")
@@ -181,7 +181,7 @@ function calendar_from_csv(svg, data, y_value) {
     var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     var monthLabels=cals.append("g").attr("id","monthLabels")
     months.forEach(function(d,i)    {
-        console.log(d,i);
+        //console.log(d,i);
         monthLabels.append("text")
             .attr("class","monthLabel")
             .attr("x",monthX[i])
@@ -260,7 +260,7 @@ $(document).ready(function(){
         
             // When the button "Profit/Sales" is changed, refresh the graph with the new infos
             function update_calendar(selectedOption) {
-                console.log(selectedOption);
+                //console.log(selectedOption);
                 y_value = selectedOption;
 
                 //Drop previous visualization

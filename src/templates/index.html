@@ -14,6 +14,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/linechart.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/calendar_heatmap.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/run_kmeans_button.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/cluster_scatter.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/clear_viz.js')}}"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
@@ -60,9 +61,11 @@
         <input type="number" id="n_clusters" name="n_clusters" class="input-param" min="2" max="6" value="4" >
         <input type="submit" class="button" value="Run K-Means" onclick="RunKmeans();">
       </form>
+
+      <!--Scatterplot of PCA-->
+      <div id="scatter"></div>
     </div>
-    <div class="viz"></div>
-    <div class="viz"></div>
+    
     
   </div>
     

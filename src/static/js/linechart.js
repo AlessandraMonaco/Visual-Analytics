@@ -35,9 +35,9 @@ function linechart_from_csv(svg,data,y_value) {
     });
 
     //Debug
-    console.log(data);
-    console.log("Nested Data");
-    console.log(nested_data);
+    //console.log(data);
+    //console.log("Nested Data");
+    //console.log(nested_data);
     
     data = nested_data;
       
@@ -152,7 +152,7 @@ var focusText = svg
     var x0 = x.invert(d3.mouse(this)[0]);
     var i = bisect(data, x0, 1);
     selectedData = data[i]
-    console.log(selectedData.value);
+    //console.log(selectedData.value);
     focus
       .attr("cx", x(selectedData.date))
       .attr("cy", y(selectedData.value))

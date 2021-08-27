@@ -36,8 +36,8 @@ function treemap_from_csv(filepath) {
         }) //sum the quantities for each subcategory
         .entries(csv_data);
         
-        console.log("Nested data")
-        console.debug(nested_data);
+        //console.log("Nested data")
+        //console.debug(nested_data);
         //alert(JSON.stringify(nested_data));                 
         
         // Creat the root node for the treemap
@@ -47,7 +47,7 @@ function treemap_from_csv(filepath) {
         root.key = "Products";
         root.values = nested_data;
         root = change_json_format(root,"Paid_fare"); //Change json format
-        console.log(root);
+        //console.log(root);
         //alert(JSON.stringify(root)); 
         
         var root2 = d3.hierarchy(root).sum(function(d){ return d.value}) // Here the size of each leave is given in the 'value' field in input data
