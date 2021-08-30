@@ -20,14 +20,18 @@ def clustering(n_components, n_clusters):
     # Group quantity by customer_id and product subcategory name, such that, for each 
     # customer id, you will count the total number of bought products of each subcategory
     # Result: dataframe with cols: ["cust_id", "prod_subcat", "Qty"]
-    gr_data = data.groupby(['cust_id', 'prod_subcat'])["Qty"].apply(lambda x : x.astype(int).sum()).to_frame()
+    gr_data = data.groupby(['cust_id', 'prod_cat', 'prod_subcat'])["Qty"].apply(lambda x : x.astype(int).sum()).to_frame()
     gr_data = gr_data.reset_index()
+    gr_data["prod_subcat"] = "("+gr_data["prod_cat"]+") "+gr_data["prod_subcat"] #concatenate strings (cat,subcat)
     print(gr_data.head())
 
     # Pivot the table to denormalize subcategory rows
-    # Result: dataframe with cols: ['cust_id', 'Academic', 'Audio and video', 'Bath', 
-    # 'Cameras', 'Children', 'Comics', 'Computers', 'DIY', 'Fiction', 'Furnishing', 
-    # 'Kids', 'Kitchen', 'Mens', 'Mobiles', 'Non-Fiction', 'Personal Appliances', 'Tools', 'Women']
+    # Result: dataframe with cols: ['Bags, Women', 'Books, Academic', 'Books, Children', 'Books, Comics', 
+    # 'Books, DIY', 'Books, Fiction', 'Books, Non-Fiction', 'Clothing, Kids', 'Clothing, Mens', 
+    # 'Clothing, Women', 'Electronics, Audio and video', 'Electronics, Cameras', 'Electronics, Computers', 
+    # 'Electronics, Mobiles', 'Electronics, Personal Appliances', 'Footwear, Kids', 'Footwear, Mens', 
+    # 'Footwear, Women', 'Home and kitchen, Bath', 'Home and kitchen, Furnishing', 
+    # 'Home and kitchen, Kitchen', 'Home and kitchen, Tools']
     gr_data = gr_data.pivot(index="cust_id", columns="prod_subcat", values="Qty")
     gr_data = gr_data.fillna(0) #remove NaN and put '0'
     print(gr_data.head())

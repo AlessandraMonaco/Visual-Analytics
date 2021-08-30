@@ -2,7 +2,7 @@
 $main_font: 'Courier New', monospace;
 $main_font_color: white;
 $background_color: #282828;
-$tooltip_color:  #414040;
+$tooltip_color: white;
 $axis_color: gray;
 
 body {
@@ -16,10 +16,85 @@ mark {
   color: black;
 }
 
-#button-row {
-  position: relative;
-  margin-top: 3px;
+.grid-container {
+  button {
+    position: relative;
+    width: fit-content;
+    display: inline;
+    //float: right;
+
+    &:hover {
+      color: black;
+    }
+
+    a {
+      color:#FFFFFF;
+      text-decoration: none; 
+    }
+    
+  }
+
 }
+
+//Popup
+.overlay {
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  z-index: 2;
+  margin: 70px auto;
+  padding: 20px;
+  background: rgba(173, 173, 173, 0.8);
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #06D85F;
+}
+.popup .content {
+  max-height: 30%;
+  font-size: 12px;
+  overflow: auto;
+  color: black;
+}
+
+@media screen and (max-width: 700px){
+  .popup{
+    width: 70%;
+  }
+}
+//end Popup
 
 .description {
   position: relative;
@@ -29,7 +104,9 @@ mark {
 
 .button {
   display:inline-block;
-  padding:0.35em 1.2em;
+  height:25px;
+  cursor: pointer;
+  padding:0.25em 1.2em;
   border:0.1em solid #FFFFFF;
   margin:0 0.3em 0.3em 0;
   border-radius:0.12em;
@@ -49,7 +126,7 @@ mark {
   }
 }
 
-#btn-clear {
+.btn-right {
   float:right;
   margin-top: 0pt;
 }
@@ -67,8 +144,8 @@ mark {
 .tooltiptext {
   visibility: hidden;
   width: 120px;
-  background-color: $tooltip_color;
-  color: #fff;
+  background-color: lightgray;
+  color: black;
   text-align: center;
   border-radius: 6px;
   padding: 5px 5px;
@@ -98,6 +175,14 @@ mark {
   
 }
 
+.btn-select {
+  height: 20px;
+  font-size: 11px;
+  padding: 2px;
+  font-weight: normal;
+}
+
+
 //Grid layout
 .grid-container {
   position: relative;
@@ -109,6 +194,7 @@ mark {
   padding: 3pt;
 
   .viz {
+    z-index: 0;
     background-color: rgba(255, 255, 255, 0.1);
     padding: 6pt;
     width: auto;
@@ -248,4 +334,30 @@ form {
   }
 
   
+}
+
+
+
+// Display near each other
+.inline {
+  position: relative;
+  float: left;
+}
+
+// Parallel coordinates
+#smaller-div {
+  width: 400px;
+  overflow-x: auto;
+  float: left;
+}
+#unsupervised-parallel {
+  overflow-x: auto;
+  
+
+  .axis {
+    opacity: 0.4;
+  }
+  .axis:hover {
+    opacity: 1;
+  }
 }

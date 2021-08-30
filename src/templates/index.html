@@ -14,26 +14,38 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/linechart.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/calendar_heatmap.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/run_kmeans_button.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/parallel_unsupervised.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/cluster_scatter.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/clear_viz.js')}}"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
 </head>
 <body>
-  <div id="top">
-    <div class="description">Data to display</div>
-    <div id="button-row">
-      <select id="select-y-cal" class="button">
-        <option>Profit</option>
-        <option>Sales</option>
-      </select>
-    
-    <button class="button tooltip" id="btn-clear" type="button" onclick="ResetViz();">
-      Clear selections
-      <span class="tooltiptext">Click to reset the original visualization. </span>
+  <div class="grid-container" id="top">
+    <div></div>
+    <div></div>
+    <div>
+    <!--<div class="description">Data to display</div>-->
+    <a class="button btn-right" href="#info">?</a>
+
+      <div id="info" class="overlay">
+        <div class="popup">
+          <h2>Dashboard Infos</h2>
+          <a class="close" href="#">&times;</a>
+          <div class="content">
+            The following Dashboard allows to analyze customers' purchases from different perspectives.
+            <br>
+            Continue here.....
+          </div>
+        </div>
+      </div>
+
+      <button class="button tooltip btn-right" id="btn-clear" type="button" onclick="ResetViz();">
+        Reset
+        <span class="tooltiptext">Click to reset the original visualization. </span>
+      </button>
     </div>
-    </button>
-    
+      
   </div>
 
   <div class="grid-container">
@@ -42,8 +54,12 @@
     
  
     <div class="viz">  
-      <select id="select-y" class="button"></select>
+      <select id="select-y" class="button btn-select"></select>
       <div id="line-chart"></div> 
+      <select id="select-y-cal" class="button btn-select">
+        <option>Profit</option>
+        <option>Sales</option>
+      </select>
       <div class="grid-container">
         <div id="treemap" ></div>
         <!--<span class="description">Number of sales for each category</span>-->
@@ -62,8 +78,14 @@
         <input type="submit" class="button" value="Run K-Means" onclick="RunKmeans();">
       </form>
 
+      <!--Parallel coordinates for Unsupervised Clustering-->
+      <div id="smaller-div" class="inline">
+        <button class="button btn-select" type="button">Axes Reorder</button>
+        <div id="unsupervised_parallel" class="inline"></div>
+      </div>
+
       <!--Scatterplot of PCA-->
-      <div id="scatter"></div>
+      <div id="scatter" class="inline"></div>
     </div>
     
     

@@ -1,6 +1,6 @@
 // set the dimensions and margins of the graph
-var scatter_margin = {top: 10, right: 30, bottom: 30, left: 10},
-    scatter_width = 160 - scatter_margin.left - scatter_margin.right,
+var scatter_margin = {top: 20, right: 0, bottom: 10, left: 30},
+    scatter_width = 130 - scatter_margin.left - scatter_margin.right,
     scatter_height = 160 - scatter_margin.top - scatter_margin.bottom;
 
 
@@ -50,7 +50,7 @@ $(document).ready(function(){
         // Color scale: give me a specie name, I return a color
         var color = d3.scaleOrdinal()
         .domain(["0", "1", "2", "3" ])
-        .range([ "#440154ff", "#21908dff", "#fde725ff", "green"])
+        .range(cluster_color)
     
     
         
@@ -74,11 +74,11 @@ $(document).ready(function(){
     
         // Highlight the specie that is hovered
         var doNotHighlight = function(){
-        d3.selectAll(".dot")
-            .transition()
-            .duration(200)
-            .style("fill", "lightgrey")
-            .attr("r", 1 )
+            d3.selectAll(".dot")
+                .transition()
+                .duration(200)
+                .style("fill", function (d) { return color(d.cluster) } )
+                .attr("r", 1 )
         }
     
         // Add dots
