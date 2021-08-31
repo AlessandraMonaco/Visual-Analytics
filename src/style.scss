@@ -14,6 +14,7 @@ body {
 
 fieldset {
   margin-left: 5px;
+  padding-bottom: 1px;
   background-color: black;
   border: $axis_color 1px solid;
   padding: 10px;
@@ -36,7 +37,7 @@ legend {
 }
 
 #fieldset-trends {
-  width: 80%;
+  width: 90%;
 }
 
 
@@ -214,7 +215,7 @@ legend {
 //For the treemap
 #treemap {
   position:relative;
-  margin-left: 120px;
+  margin-left: 80px;
   margin-right: 0px;
 }
 
