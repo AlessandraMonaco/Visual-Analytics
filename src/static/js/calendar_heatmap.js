@@ -1,7 +1,7 @@
 var colours=["#ffffd4","#fed98e","#fe9929","#d95f0e","#993404"];
 
 //general layout information
-var cellSize = 7;
+var cellSize = 6;
 var xOffset=10; //margin-left
 var yOffset=10; //margin-top
 var calY=20; //offset of calendar in each group

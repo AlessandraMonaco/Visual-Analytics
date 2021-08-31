@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
   <link rel="shortcut icon" href="#">
   <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
@@ -21,75 +22,97 @@
   <title>Retail Analytics</title>
 </head>
 <body>
-  <div class="grid-container" id="top">
-    <div></div>
-    <div></div>
-    <div>
-    <!--<div class="description">Data to display</div>-->
-    <a class="button btn-right" href="#info">?</a>
+
+  <!--Top row-->
+  <div class="row" id="top">
+    <div class="col">
+
+      <a class="my-button btn-right" href="#info">?</a>
 
       <div id="info" class="overlay">
         <div class="popup">
           <h2>Dashboard Infos</h2>
           <a class="close" href="#">&times;</a>
           <div class="content">
-            The following Dashboard allows to analyze customers' purchases from different perspectives.
-            <br>
-            Continue here.....
+              The following Dashboard allows to analyze customers' purchases from different perspectives.
+              <br>
+              Continue here.....
           </div>
         </div>
       </div>
 
-      <button class="button tooltip btn-right" id="btn-clear" type="button" onclick="ResetViz();">
+      <button class="my-button btn-right" id="btn-clear" type="button" onclick="ResetViz();">
         Reset
-        <span class="tooltiptext">Click to reset the original visualization. </span>
       </button>
     </div>
-      
   </div>
 
-  <div class="grid-container">
-    <script src="https://d3js.org/d3.v3.js"></script>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    
- 
-    <div class="viz">  
-      <select id="select-y" class="button btn-select"></select>
-      <div id="line-chart"></div> 
-      <select id="select-y-cal" class="button btn-select">
-        <option>Profit</option>
-        <option>Sales</option>
-      </select>
-      <div class="grid-container">
+
+  <!--First visualization row-->
+  <fieldset id="fieldset-trends">
+    <legend>PURCHASE TRENDS</legend>
+    <div class="row">
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <div class="col-6">  
+        <select id="select-y" class="my-button btn-select"></select>
+        <div id="line-chart"></div> 
+      </div>
+
+      <div class="col-6">
         <div id="treemap" ></div>
-        <!--<span class="description">Number of sales for each category</span>-->
+        <span class="description">Add macro category texts</span>
+      </div>
+      
+    </div>  
+  </fieldset>  
+
+  <!--Second row-->
+  <div class="row">
+
+    <div class="col-4">
+      <fieldset id="fieldset-calendar">
+        <legend>PURCHASE SEASONALITIES</legend>
+        <select id="select-y-cal" class="my-button btn-select">
+          <option>Profit</option>
+          <option>Sales</option>
+        </select>
         <div id="calendar-heatmap"></div>
-      </div>
+      </fieldset>
     </div>
+      
+    <div class="col-8" id="container-row">
+      <fieldset>
+        <legend>UNSUPERVISED CUSTOMER SEGMENTATION</legend>
+        <!--Setting parameters for PCA ad K-Means-->
+        <div class="row" id="row-form">
+          <form action="/runcluster" method="GET">
+            <label for="n_components">N° Principal Components:</label>
+            <input type="number" id="n_components" name="n_components" class="input-param" min="2" max="18" value="2">
+            <label for="n_clusters">N° Clusters:</label>
+            <input type="number" id="n_clusters" name="n_clusters" class="input-param" min="2" max="6" value="4" >
+            <input type="submit" class="my-button" value="Run K-Means" onclick="RunKmeans();">
+          </form>
+        </div>
+      
+        <!--Parallel coordinates for Unsupervised Clustering-->
+        <div class="row">
     
+          <div class="col-6">
+            <button class="my-button btn-select" type="button">Axes Reorder</button>
+            <div id="unsupervised_parallel" class="inline"></div>
+          </div>
 
-    <div class="viz">
-      <!--Setting parameters for PCA ad K-Means-->
-      <form action="/runcluster" method="GET">
-        <label for="n_components">N° Principal Components:</label>
-        <input type="number" id="n_components" name="n_components" class="input-param" min="2" max="18" value="2">
-        <label for="n_clusters">N° Clusters:</label>
-        <input type="number" id="n_clusters" name="n_clusters" class="input-param" min="2" max="6" value="4" >
-        <input type="submit" class="button" value="Run K-Means" onclick="RunKmeans();">
-      </form>
-
-      <!--Parallel coordinates for Unsupervised Clustering-->
-      <div id="smaller-div" class="inline">
-        <button class="button btn-select" type="button">Axes Reorder</button>
-        <div id="unsupervised_parallel" class="inline"></div>
-      </div>
-
-      <!--Scatterplot of PCA-->
-      <div id="scatter" class="inline"></div>
+          <div class="col-2">
+            <!--Scatterplot of PCA-->
+            <div id="scatter"></div>
+          </div>
+        
+        </div>
+      </fieldset>
     </div>
-    
-    
   </div>
+
     
     
   

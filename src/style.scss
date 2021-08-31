@@ -9,14 +9,39 @@ body {
   background-color: $background_color;
   font-family: $main_font;
   color: $main_font_color;
+  overflow: hidden;
 }
 
-mark {
-  background-color: white;
-  color: black;
+fieldset {
+  margin-left: 5px;
+  background-color: black;
+  border: $axis_color 1px solid;
+  padding: 10px;
+  padding-top: 3px;
 }
 
-.grid-container {
+legend {
+  width: max-content;
+  color: $axis_color;
+  font-weight: bolder;
+  font-size: 18px;
+  height: 18px;
+  padding: 0px;
+  text-align: center;
+}
+
+#fieldset-calendar {
+  width: 90%;
+  height: 60%;
+}
+
+#fieldset-trends {
+  width: 80%;
+}
+
+
+ #top {
+   padding-top: 5px;
   button {
     position: relative;
     width: fit-content;
@@ -102,14 +127,13 @@ mark {
   font-size: 10px;
 }
 
-.button {
+.my-button {
   display:inline-block;
   height:25px;
   cursor: pointer;
-  padding:0.25em 1.2em;
+  padding:0 1.2em;
   border:0.1em solid #FFFFFF;
   margin:0 0.3em 0.3em 0;
-  border-radius:0.12em;
   box-sizing: border-box;
   text-decoration:none;
   font-family: $main_font;
@@ -118,7 +142,7 @@ mark {
   text-align:center;
   transition: all 0.2s;
   background-color: $background_color;
-  border-radius: 3px;
+  border-radius: 25px;
 
   &:hover {
     color:#000000;
@@ -180,34 +204,24 @@ mark {
   font-size: 11px;
   padding: 2px;
   font-weight: normal;
+  border-radius: 3px;
 }
 
 
-//Grid layout
-.grid-container {
-  position: relative;
-  display: grid;
-  margin: 2pt;
-  margin-left: -5pt;
-  grid-template: auto / auto auto auto;
-  grid-gap: 5pt;
-  padding: 3pt;
 
-  .viz {
-    z-index: 0;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 6pt;
-    width: auto;
-    //height: auto;
-  }
-}
+
 
 //For the treemap
+#treemap {
+  position:relative;
+  margin-left: 120px;
+  margin-right: 0px;
+}
 
 .node {
   border: solid 1px white;
   font: 8.5px $main_font;
-  line-height: 12px;
+  line-height: 90%;
   overflow: hidden;
   position: absolute;
   text-indent: 2px;
@@ -246,21 +260,22 @@ a {
 .viz#line-chart {
   height: 50px;
 }
-#line-chart {
-  
-  color: $main_font_color;  
 
-  .axis  {
-    stroke: white;
-    stroke-width: 0.3;
-    color: $axis_color;
-    font-family: $main_font;
-    font-size: 8px ;
+.axis {
+  stroke: white;
+  stroke-width: 0.3;
+  color: $axis_color;
+  font-family: $main_font;
+  font-size: 8px;
+}
+
+#line-chart {
+  color: $main_font_color;  
     
-    path, line {
-      stroke: $axis_color;
-    }
+  path, line {
+    stroke: $axis_color;
   }
+}
 
   
 
@@ -278,7 +293,6 @@ a {
   font: 10px $main_font;
     border: 1px;		
     border-radius: 8px;					
-}
 }
 
 //For the calendar-heatmap
@@ -337,22 +351,7 @@ form {
 }
 
 
-
-// Display near each other
-.inline {
-  position: relative;
-  float: left;
-}
-
-// Parallel coordinates
-#smaller-div {
-  width: 400px;
-  overflow-x: auto;
-  float: left;
-}
 #unsupervised-parallel {
-  overflow-x: auto;
-  
 
   .axis {
     opacity: 0.4;
@@ -360,4 +359,19 @@ form {
   .axis:hover {
     opacity: 1;
   }
+}
+
+#container-row { //container of segmentation
+  position: relative;
+  margin-left: -60px;
+}
+
+#row-form {
+  position: relative;
+  margin-left: 5px;
+}
+// Scatter plot
+#scatter {
+  position: relative;
+  margin-left: 180px;
 }

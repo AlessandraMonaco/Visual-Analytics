@@ -101,6 +101,7 @@ $(document).ready(function(){
             .data(dimensions).enter()
             .append("g")
             .attr("class", "axis")
+            .style("stroke", "white")
             // I translate this element to its right position on the x axis
             .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
             // And I build the axis with the call function
@@ -110,7 +111,7 @@ $(document).ready(function(){
                 .style("text-anchor", "middle")
                 .attr("y", -9)
                 .text(function(d) { return d; })
-                .style("fill", "black")
+                .style("fill", "white")
 
 
     }) //end of d3.csv

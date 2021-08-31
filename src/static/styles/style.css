@@ -1,21 +1,43 @@
 body {
   background-color: #282828;
   font-family: "Courier New", monospace;
-  color: white; }
+  color: white;
+  overflow: hidden; }
 
-mark {
-  background-color: white;
-  color: black; }
+fieldset {
+  margin-left: 5px;
+  background-color: black;
+  border: gray 1px solid;
+  padding: 10px;
+  padding-top: 3px; }
 
-.grid-container button {
-  position: relative;
-  width: fit-content;
-  display: inline; }
-  .grid-container button:hover {
-    color: black; }
-  .grid-container button a {
-    color: #FFFFFF;
-    text-decoration: none; }
+legend {
+  width: max-content;
+  color: gray;
+  font-weight: bolder;
+  font-size: 18px;
+  height: 18px;
+  padding: 0px;
+  text-align: center; }
+
+#fieldset-calendar {
+  width: 90%;
+  height: 60%; }
+
+#fieldset-trends {
+  width: 80%; }
+
+#top {
+  padding-top: 5px; }
+  #top button {
+    position: relative;
+    width: fit-content;
+    display: inline; }
+    #top button:hover {
+      color: black; }
+    #top button a {
+      color: #FFFFFF;
+      text-decoration: none; }
 
 .overlay {
   z-index: 2;
@@ -75,14 +97,13 @@ mark {
   margin-top: 5px;
   font-size: 10px; }
 
-.button {
+.my-button {
   display: inline-block;
   height: 25px;
   cursor: pointer;
-  padding: 0.25em 1.2em;
+  padding: 0 1.2em;
   border: 0.1em solid #FFFFFF;
   margin: 0 0.3em 0.3em 0;
-  border-radius: 0.12em;
   box-sizing: border-box;
   text-decoration: none;
   font-family: "Courier New", monospace;
@@ -91,8 +112,8 @@ mark {
   text-align: center;
   transition: all 0.2s;
   background-color: #282828;
-  border-radius: 3px; }
-  .button:hover {
+  border-radius: 25px; }
+  .my-button:hover {
     color: #000000;
     background-color: #FFFFFF; }
 
@@ -139,26 +160,18 @@ mark {
   height: 20px;
   font-size: 11px;
   padding: 2px;
-  font-weight: normal; }
+  font-weight: normal;
+  border-radius: 3px; }
 
-.grid-container {
+#treemap {
   position: relative;
-  display: grid;
-  margin: 2pt;
-  margin-left: -5pt;
-  grid-template: auto / auto auto auto;
-  grid-gap: 5pt;
-  padding: 3pt; }
-  .grid-container .viz {
-    z-index: 0;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 6pt;
-    width: auto; }
+  margin-left: 120px;
+  margin-right: 0px; }
 
 .node {
   border: solid 1px white;
   font: 8.5px "Courier New", monospace;
-  line-height: 12px;
+  line-height: 90%;
   overflow: hidden;
   position: absolute;
   text-indent: 2px;
@@ -191,29 +204,31 @@ a {
 .viz#line-chart {
   height: 50px; }
 
+.axis {
+  stroke: white;
+  stroke-width: 0.3;
+  color: gray;
+  font-family: "Courier New", monospace;
+  font-size: 8px; }
+
 #line-chart {
   color: white; }
-  #line-chart .axis {
-    stroke: white;
-    stroke-width: 0.3;
-    color: gray;
-    font-family: "Courier New", monospace;
-    font-size: 8px; }
-    #line-chart .axis path, #line-chart .axis line {
-      stroke: gray; }
-  #line-chart .tooltip {
-    position: absolute;
-    opacity: 1;
-    text-align: center;
-    width: 60px;
-    height: 28px;
-    padding: 2px;
-    background: none repeat scroll 0 0 white;
-    box-shadow: -3px 3px 15px #888888;
-    color: black;
-    font: 10px "Courier New", monospace;
-    border: 1px;
-    border-radius: 8px; }
+  #line-chart path, #line-chart line {
+    stroke: gray; }
+
+.tooltip {
+  position: absolute;
+  opacity: 1;
+  text-align: center;
+  width: 60px;
+  height: 28px;
+  padding: 2px;
+  background: none repeat scroll 0 0 white;
+  box-shadow: -3px 3px 15px #888888;
+  color: black;
+  font: 10px "Courier New", monospace;
+  border: 1px;
+  border-radius: 8px; }
 
 #calendar-heatmap {
   position: relative;
@@ -252,18 +267,20 @@ form {
     text-align: center;
     margin-right: 15px; }
 
-.inline {
+#unsupervised-parallel .axis {
+  opacity: 0.4; }
+
+#unsupervised-parallel .axis:hover {
+  opacity: 1; }
+
+#container-row {
   position: relative;
-  float: left; }
+  margin-left: -60px; }
 
-#smaller-div {
-  width: 400px;
-  overflow-x: auto;
-  float: left; }
+#row-form {
+  position: relative;
+  margin-left: 5px; }
 
-#unsupervised-parallel {
-  overflow-x: auto; }
-  #unsupervised-parallel .axis {
-    opacity: 0.4; }
-  #unsupervised-parallel .axis:hover {
-    opacity: 1; }
+#scatter {
+  position: relative;
+  margin-left: 180px; }

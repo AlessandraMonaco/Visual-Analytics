@@ -1,6 +1,6 @@
 // set the dimensions and margins of the graph
-var scatter_margin = {top: 20, right: 0, bottom: 10, left: 30},
-    scatter_width = 130 - scatter_margin.left - scatter_margin.right,
+var scatter_margin = {top: 20, right: 0, bottom: 10, left: 10},
+    scatter_width = 160 - scatter_margin.left - scatter_margin.right,
     scatter_height = 160 - scatter_margin.top - scatter_margin.bottom;
 
 
