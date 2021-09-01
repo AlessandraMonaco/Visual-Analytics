@@ -211,11 +211,10 @@ legend {
 
 
 
-
 //For the treemap
 #treemap {
   position:relative;
-  margin-left: 80px;
+  margin-left: 40px;
   margin-right: 0px;
 }
 
@@ -374,5 +373,18 @@ form {
 // Scatter plot
 #scatter {
   position: relative;
-  margin-left: 180px;
+
+  path {
+    stroke: $axis_color;
+    color: white;
+  }
+  
+}
+
+// Parallel unsupervised
+.axis {
+  line, path {
+    stroke: $axis_color;
+    color: $axis_color;
+  }
 }

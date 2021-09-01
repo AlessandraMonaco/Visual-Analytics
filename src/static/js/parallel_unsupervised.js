@@ -29,6 +29,9 @@ $(document).ready(function(){
             '(Footwear) Kids', '(Footwear) Mens', '(Footwear) Women', '(Home and kitchen) Bath', 
             '(Home and kitchen) Furnishing', '(Home and kitchen) Kitchen', '(Home and kitchen) Tools']
 
+        // Tooltip
+        var tool = d3.select("body").append("div").attr("class", "toolTip");
+        
         // Color scale: give me a cluster name, I return a color
         var color = d3.scaleOrdinal()
             .domain(["0", "1", "2", "3" ])
@@ -58,7 +61,7 @@ $(document).ready(function(){
             // first every group turns grey
             d3.selectAll(".pline")
             .transition().duration(200)
-            .style("stroke", "lightgrey")
+            .style("stroke", "grey")
             .style("opacity", "0.2")
             // Second the hovered specie takes its color
             d3.selectAll(".pline" + selected_cluster)
@@ -110,8 +113,16 @@ $(document).ready(function(){
             .append("text")
                 .style("text-anchor", "middle")
                 .attr("y", -9)
-                .text(function(d) { return d; })
+                .text(function(d) { return d.substring(0,3)+".."; })
                 .style("fill", "white")
+                .on("mousemove", function (d) {
+                    tool.style("left", d3.event.pageX + 10 + "px")
+                    tool.style("top", d3.event.pageY - 20 + "px")
+                    tool.style("display", "inline-block");
+                    tool.html(d);
+                }).on("mouseout", function (d) {
+                    tool.style("display", "none");
+                });
 
 
     }) //end of d3.csv

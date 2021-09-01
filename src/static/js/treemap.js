@@ -61,7 +61,7 @@ function treemap_from_csv(filepath) {
         
         var treemap = d3.layout.treemap()
         .size([width, height])
-        .padding(.25) //I like the thin interal lines, the group seporations are set in the CSS
+        .padding(0.25) //I like the thin interal lines, the group seporations are set in the CSS
         .value(function (d) { return d.value; });
         
         var div = d3.select("#treemap").append("div")
@@ -79,8 +79,8 @@ function treemap_from_csv(filepath) {
         .data(treemap.nodes(root2))
         .enter().append("div")
         .attr("class", "node")
-        .style("left", function (d) { return d.x + "px"; })
-        .style("top", function (d) { return d.y + "px"; })
+        .style("left", function (d) { return d.x +25+ "px"; })
+        .style("top", function (d) { return d.y +25+ "px"; })
         .style("width", function (d) { return Math.max(0, d.dx - 1) + "px"; })
         .style("height", function (d) { return Math.max(0, d.dy - 1) + "px"; })
         .style("background", function (d) { return d.children ? color(d.data.name) : null; })
@@ -93,6 +93,43 @@ function treemap_from_csv(filepath) {
         }).on("mouseout", function (d) {
             tool.style("display", "none");
         });
+
+        /*div
+        .selectAll("titles")
+        .data(root2.descendants().filter(function(d){ return d.depth==1}))
+        .enter()
+        .append("text")
+          .attr("x", function(d){ return d.x})
+          .attr("y", function(d){ return d.y+21})
+          .text(function(d){ return d.data.name })
+          .attr("font-size", "12px")
+          .attr("fill",  function(d){ return color(d.data.name)} )*/
+
+        // Add one dot in the legend for each name.
+        var svg = d3.select("#category-legend").append("svg")
+        
+        svg.selectAll("mydots")
+        .data(root2.descendants().filter(function(d){ return d.depth==1}))
+        .enter()
+        .append("circle")
+        .attr("r", 5)
+        .attr("cx", 20)
+        .attr("cy", function(d,i){ return 40 + i*13}) // 100 is where the first dot appears. 25 is the distance between dots
+        
+        .style("fill", function(d){ return color(d.data.name)})
+
+        // Add one dot in the legend for each name.
+        svg.selectAll("mylabels")
+        .data(root2.descendants().filter(function(d){ return d.depth==1}))
+        .enter()
+        .append("text")
+        .attr("x", 30)
+        .attr("y", function(d,i){ return 45 + i*13}) // 100 is where the first dot appears. 25 is the distance between dots
+        .style("fill", function(d){ return color(d.data.name)})
+        .text(function(d){ return " "+d.data.name})
+        .attr("text-anchor", "left")
+        .attr("font-size", "12px")
+        .style("alignment-baseline", "middle")
     });
 }
 

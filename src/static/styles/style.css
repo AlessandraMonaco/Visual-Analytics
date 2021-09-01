@@ -6,6 +6,7 @@ body {
 
 fieldset {
   margin-left: 5px;
+  padding-bottom: 1px;
   background-color: black;
   border: gray 1px solid;
   padding: 10px;
@@ -25,7 +26,7 @@ legend {
   height: 60%; }
 
 #fieldset-trends {
-  width: 80%; }
+  width: 90%; }
 
 #top {
   padding-top: 5px; }
@@ -165,7 +166,7 @@ legend {
 
 #treemap {
   position: relative;
-  margin-left: 120px;
+  margin-left: 40px;
   margin-right: 0px; }
 
 .node {
@@ -282,5 +283,11 @@ form {
   margin-left: 5px; }
 
 #scatter {
-  position: relative;
-  margin-left: 180px; }
+  position: relative; }
+  #scatter path {
+    stroke: gray;
+    color: white; }
+
+.axis line, .axis path {
+  stroke: gray;
+  color: gray; }

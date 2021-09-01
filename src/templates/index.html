@@ -59,9 +59,12 @@
         <div id="line-chart"></div> 
       </div>
 
-      <div class="col-6">
+      <div class="col-4">
         <div id="treemap" ></div>
-        <span class="description">Add macro category texts</span>
+      </div>
+
+      <div class="col-2">
+        <div id="category-legend"></div>
       </div>
       
     </div>  
@@ -98,16 +101,26 @@
         <!--Parallel coordinates for Unsupervised Clustering-->
         <div class="row">
     
-          <div class="col-6">
+          <div class="col-9">
             <button class="my-button btn-select" type="button">Axes Reorder</button>
+            <select id="select-y-clustering" class="my-button btn-select">
+              <option>All Data</option>
+              <option>Centroids Only</option>
+            </select>
             <div id="unsupervised_parallel" class="inline"></div>
           </div>
 
-          <div class="col-2">
+          <div class="col-3">
             <!--Scatterplot of PCA-->
             <div id="scatter"></div>
           </div>
         
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>RFM SEGMENTATION</legend>
+        <div class="row">
+
         </div>
       </fieldset>
     </div>

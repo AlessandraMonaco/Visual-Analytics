@@ -1,5 +1,5 @@
 // set the dimensions and margins of the graph
-var scatter_margin = {top: 20, right: 0, bottom: 10, left: 10},
+var scatter_margin = {top: -20, right: 0, bottom: 30, left: 30},
     scatter_width = 160 - scatter_margin.left - scatter_margin.right,
     scatter_height = 160 - scatter_margin.top - scatter_margin.bottom;
 
@@ -38,6 +38,8 @@ $(document).ready(function(){
         .range([ 0, scatter_width ]);
         svg.append("g")
         .attr("transform", "translate(0," + scatter_height + ")")
+        .attr("class", "axis")
+        .style("stroke", "white")
         .call(d3.axisBottom(x));
     
         // Add Y axis
@@ -45,6 +47,8 @@ $(document).ready(function(){
         .domain([-3, 3])
         .range([ scatter_height, 0]);
         svg.append("g")
+        .attr("class", "axis")
+        .style("stroke", "white")
         .call(d3.axisLeft(y));
     
         // Color scale: give me a specie name, I return a color
@@ -62,7 +66,7 @@ $(document).ready(function(){
             d3.selectAll(".dot")
                 .transition()
                 .duration(200)
-                .style("fill", "lightgrey")
+                .style("fill", "grey")
                 .attr("r", 1)
         
             d3.selectAll(".dot" + selected_cluster)
@@ -90,7 +94,7 @@ $(document).ready(function(){
             .attr("class", function (d) { return "dot dot" + d.cluster } )
             .attr("cx", function (d) { return x(d.pc_1); } )
             .attr("cy", function (d) { return y(d.pc_2); } )
-            .attr("r", 1)
+            .attr("r", 0.4)
             .style("fill", function (d) { return color(d.cluster) } )
         .on("mouseover", highlight)
         .on("mouseleave", doNotHighlight )
