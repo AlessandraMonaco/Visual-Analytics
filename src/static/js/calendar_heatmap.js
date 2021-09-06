@@ -1,4 +1,4 @@
-var colours=["#ffffd4","#fed98e","#fe9929","#d95f0e","#993404"];
+var colours=["#f7f7f7","#cccccc","#969696","#636363","#252525"]; //ColorBrewer gray scale
 
 //general layout information
 var cellSize = 6;

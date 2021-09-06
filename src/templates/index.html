@@ -10,6 +10,8 @@
   <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
   <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/treemap.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/linechart.js')}}"></script>
@@ -17,6 +19,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/run_kmeans_button.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/parallel_unsupervised.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/cluster_scatter.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/rfm_heatmap.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/clear_viz.js')}}"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
@@ -44,6 +47,11 @@
       <button class="my-button btn-right" id="btn-clear" type="button" onclick="ResetViz();">
         Reset
       </button>
+
+      <!--Button to filter by Shop (multi-option check box)-->
+      <!--Button to filter by Customer Location (city code): 'City 1', 'City 2' ... -->
+      <!--Button to filter customer age category-->
+      <!--Button to filter customer sex-->
     </div>
   </div>
 
@@ -56,6 +64,11 @@
       <script src="https://d3js.org/d3.v4.min.js"></script>
       <div class="col-6">  
         <select id="select-y" class="my-button btn-select"></select>
+        <select class="my-button btn-select">
+          <option>Aggregate by Day</option>
+          <option>Aggregate by Month</option>
+          <option>Aggregate by Year</option>
+        </select>
         <div id="line-chart"></div> 
       </div>
 
@@ -120,18 +133,12 @@
       <fieldset>
         <legend>RFM SEGMENTATION</legend>
         <div class="row">
-
+          <!--Rfm heatmap-->
+          <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+          <div id="rfm-heatmap"></div>
         </div>
       </fieldset>
     </div>
   </div>
-
-    
-    
-  
-
-
-
-
 </body>
 </html>

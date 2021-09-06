@@ -68,7 +68,7 @@ def rfm():
     # Plot distribution of M
     plt.subplot(3, 1, 3); sns.distplot(data_process['monetary'])
     # Show the plot
-    plt.show()
+    #plt.show()
 
     # # # DATA PROCESSING : COMPUTE RFM GROUPS
 
@@ -88,8 +88,8 @@ def rfm():
 
     # Concat RFM quartile values to create RFM Segments
     data_process['RFM_Segment_Concat'] = data_process.apply(join_rfm, axis=1)
-    rfm = data_process
-    #rfm.head()
+    rfm = data_process.sort_values(by=['recency','frequency','monetary'])
+    rfm.head()
 
     # Count num of unique segments
     rfm_count_unique = rfm.groupby('RFM_Segment_Concat')['RFM_Segment_Concat'].nunique()
@@ -114,6 +114,19 @@ def rfm():
     }).round(1)
     # Print the aggregated data
     print("Rfm levels infos: ", rfm_level_agg)
+
+    # # # DATA PROCESSING : CREATE SEGMENTS R,F,avgM
+    rfm.reset_index(inplace=True)
+    rfm_segments = rfm.groupby(['R', 'F']).agg({
+        'monetary' : 'mean',
+        'cust_id' : 'count',
+        'RFM_Level' : lambda x: x.value_counts().index[0]
+    })
+    rfm_segments.reset_index(inplace=True)
+    rfm_segments.columns = ['R','F','Avg_M', 'Count', 'RFM_Level']
+
+    #Write to csv also the segments infos
+    rfm_segments.to_csv(path+'rfm_segments.csv', index=False)
 
 # To run it outside app.py
 #rfm()

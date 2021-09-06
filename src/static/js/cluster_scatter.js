@@ -67,13 +67,13 @@ $(document).ready(function(){
                 .transition()
                 .duration(200)
                 .style("fill", "grey")
-                .attr("r", 1)
+                .attr("r", 0.4)
         
             d3.selectAll(".dot" + selected_cluster)
                 .transition()
                 .duration(200)
                 .style("fill", color(selected_cluster))
-                .attr("r", 2)
+                .attr("r", 1)
         }
     
         // Highlight the specie that is hovered
@@ -82,7 +82,7 @@ $(document).ready(function(){
                 .transition()
                 .duration(200)
                 .style("fill", function (d) { return color(d.cluster) } )
-                .attr("r", 1 )
+                .attr("r", 0.4 )
         }
     
         // Add dots

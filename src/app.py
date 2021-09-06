@@ -1,6 +1,6 @@
 import flask
 from flask import Flask, render_template, request 
-import run_pca_kmeans, create_shared_dataset
+import run_pca_kmeans, create_shared_dataset, run_rfm
  
 # Initialise app: create a new Flask application
 app = Flask(__name__)
@@ -12,6 +12,8 @@ def index():
     create_shared_dataset.create_csv()
     # Run pca and K-Means on default values
     run_pca_kmeans.clustering(2,4)
+    # Run rfm segmentation
+    run_rfm.rfm()
     # Return home page
     return render_template('index.html') # the return type is HTML
 

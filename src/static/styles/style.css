@@ -1,8 +1,7 @@
 body {
   background-color: #282828;
   font-family: "Courier New", monospace;
-  color: white;
-  overflow: hidden; }
+  color: white; }
 
 fieldset {
   margin-left: 5px;
