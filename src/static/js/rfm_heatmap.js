@@ -68,7 +68,7 @@ $(document).ready(function(){
 
         // Build color scale
         var myColor = d3.scaleSequential()
-        .interpolator(d3.interpolateBuGn)
+        .interpolator(d3.interpolateGreys)
         .domain([5185,
             21892])
 
@@ -90,7 +90,7 @@ $(document).ready(function(){
             tooltip
             .style("opacity", 1)
             d3.select(this)
-            .style("stroke", "black")
+            .style("stroke", "white")
             .style("opacity", 1)
         }
         var mousemove = function(d) {
@@ -104,7 +104,7 @@ $(document).ready(function(){
             tooltip
             .style("opacity", 0)
             d3.select(this)
-            .style("stroke", "none")
+            .style("stroke", "black")
             .style("opacity", 0.8)
         }
 
@@ -120,14 +120,15 @@ $(document).ready(function(){
             .attr("width", x.bandwidth() )
             .attr("height", y.bandwidth() )
             .style("fill", function(d) { return myColor(d.Avg_M)} )
-            .style("stroke-width", 4)
-            .style("stroke", "none")
+            .style("stroke-width", 1)
+            .style("stroke", "black")
             .style("opacity", 0.8)
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
 
         // Add legend for M to graph
+       
         
         
     }) //end of d3.csv

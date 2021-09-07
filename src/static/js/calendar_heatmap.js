@@ -206,6 +206,7 @@ function calendar_from_csv(svg, data, y_value) {
         .attr("x",function(d,i){
             return i*70;
         })
+        .style("stroke", "black")
         .attr("fill",function(d){
             return d;
         });
@@ -214,8 +215,9 @@ function calendar_from_csv(svg, data, y_value) {
         .data(colours)
         .enter()
         .append("text")
-        .style("fill", function(d){
-            return d;})
+        //.style("fill", function(d){
+        //    return d;})
+        .style("fill", "white")
         .attr("x",function(d,i){
             return cellSize+5+(i*70);
         })

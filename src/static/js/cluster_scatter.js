@@ -1,5 +1,5 @@
 // set the dimensions and margins of the graph
-var scatter_margin = {top: -20, right: 0, bottom: 30, left: 30},
+var scatter_margin = {top: -20, right: 0, bottom: 15, left: 30},
     scatter_width = 160 - scatter_margin.left - scatter_margin.right,
     scatter_height = 160 - scatter_margin.top - scatter_margin.bottom;
 
@@ -34,7 +34,7 @@ $(document).ready(function(){
 
         // Add X axis
         var x = d3.scaleLinear()
-        .domain([-3, 3])
+        .domain(d3.extent(data, function(d) { return +parseFloat(d.pc_1); }))
         .range([ 0, scatter_width ]);
         svg.append("g")
         .attr("transform", "translate(0," + scatter_height + ")")
@@ -44,16 +44,18 @@ $(document).ready(function(){
     
         // Add Y axis
         var y = d3.scaleLinear()
-        .domain([-3, 3])
+        .domain(d3.extent(data, function(d) { return +parseFloat(d.pc_2); }))
         .range([ scatter_height, 0]);
         svg.append("g")
         .attr("class", "axis")
         .style("stroke", "white")
         .call(d3.axisLeft(y));
+
+        
     
         // Color scale: give me a specie name, I return a color
         var color = d3.scaleOrdinal()
-        .domain(["0", "1", "2", "3" ])
+        .domain(d3.extent(data, function(d) { return +parseInt(d.cluster); }))
         .range(cluster_color)
     
     
@@ -61,28 +63,50 @@ $(document).ready(function(){
         // Highlight the specie that is hovered
         var highlight = function(d){
     
+            // Highlight in the scatter plot
             selected_cluster = d.cluster
         
             d3.selectAll(".dot")
                 .transition()
                 .duration(200)
-                .style("fill", "grey")
-                .attr("r", 0.4)
+                .style("fill", unselected_color)
+                .attr("r", 1)
         
             d3.selectAll(".dot" + selected_cluster)
                 .transition()
                 .duration(200)
                 .style("fill", color(selected_cluster))
-                .attr("r", 1)
+                .attr("r", 1.5)
+            
+                // Highlight in parallel coordinates
+
+                // first every group turns grey
+                d3.selectAll(".pline")
+                .transition().duration(200)
+                .style("stroke", "grey")
+                .style("opacity", "0.2")
+                // Second the hovered specie takes its color
+                d3.selectAll(".pline" + selected_cluster)
+                .transition().duration(200)
+                .style("stroke", color(selected_cluster))
+                .style("opacity", "1")
         }
     
-        // Highlight the specie that is hovered
+        // Remove highlight
         var doNotHighlight = function(){
+
+            // Do not highlight scatter
             d3.selectAll(".dot")
                 .transition()
                 .duration(200)
                 .style("fill", function (d) { return color(d.cluster) } )
-                .attr("r", 0.4 )
+                .attr("r", 1 )
+                
+            // Do not highlight parallel
+            d3.selectAll(".pline")
+                .transition().duration(200).delay(1000)
+                .style("stroke", function(d){ return( color(d.cluster))} )
+                .style("opacity", "1")
         }
     
         // Add dots
@@ -94,13 +118,10 @@ $(document).ready(function(){
             .attr("class", function (d) { return "dot dot" + d.cluster } )
             .attr("cx", function (d) { return x(d.pc_1); } )
             .attr("cy", function (d) { return y(d.pc_2); } )
-            .attr("r", 0.4)
+            .attr("r", 1)
             .style("fill", function (d) { return color(d.cluster) } )
         .on("mouseover", highlight)
         .on("mouseleave", doNotHighlight )
-        
-    
     })
-  
   
 })

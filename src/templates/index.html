@@ -4,15 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!--Bootstrap-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!--Styles-->
   <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
   <link rel="shortcut icon" href="#">
-  <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:ital,wght@1,800&family=Englebert&display=swap" rel="stylesheet">  <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+  <!--D3.js and ajax-->
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="https://d3js.org/d3.v5.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-
   <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="module">import d3_colorLegend from "https://api.observablehq.com/@d3/color-legend.js?v=3";</script>
+  <!--Javascript files-->
   <script type="text/javascript" src="{{ url_for('static', filename='js/treemap.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/linechart.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/calendar_heatmap.js')}}"></script>
@@ -29,7 +37,8 @@
   <!--Top row-->
   <div class="row" id="top">
     <div class="col">
-
+      <span class="material-icons">insights</span>
+      <span id="title"> RETAIL ANALYZER</span>
       <a class="my-button btn-right" href="#info">?</a>
 
       <div id="info" class="overlay">
@@ -99,27 +108,32 @@
       
     <div class="col-8" id="container-row">
       <fieldset>
-        <legend>UNSUPERVISED CUSTOMER SEGMENTATION</legend>
+        <legend>UNSUPERVISED CUSTOMER SEGMENTATION (Pca + K-Means)</legend>
         <!--Setting parameters for PCA ad K-Means-->
         <div class="row" id="row-form">
+          <div class="col-12">
+          <button class="my-button btn-select" type="button">Axes Reorder</button>
+          <select id="select-y-clustering" class="my-button btn-select">
+            <option>All Data</option>
+            <option>Centroids Only</option>
+          </select>
           <form action="/runcluster" method="GET">
-            <label for="n_components">N° Principal Components:</label>
-            <input type="number" id="n_components" name="n_components" class="input-param" min="2" max="18" value="2">
-            <label for="n_clusters">N° Clusters:</label>
-            <input type="number" id="n_clusters" name="n_clusters" class="input-param" min="2" max="6" value="4" >
-            <input type="submit" class="my-button" value="Run K-Means" onclick="RunKmeans();">
+            <label for="n_components">#COMPONENTS:</label>
+            <input type="number" id="n_components" name="n_components" class="input-param btn-select" min="2" max="18" value="2">
+            <label for="n_clusters">#CLUSTERS:</label>
+            <input type="number" id="n_clusters" name="n_clusters" class="input-param btn-select" min="2" max="6" value="4" >
+           <span style="position:relative;margin-top:20px;">
+            <button class="my-button" id="btn-run" onclick="RunKmeans();">
+              <i class="material-icons">restart_alt</i></button></span>
           </form>
         </div>
+      </div>
       
         <!--Parallel coordinates for Unsupervised Clustering-->
         <div class="row">
     
           <div class="col-9">
-            <button class="my-button btn-select" type="button">Axes Reorder</button>
-            <select id="select-y-clustering" class="my-button btn-select">
-              <option>All Data</option>
-              <option>Centroids Only</option>
-            </select>
+            
             <div id="unsupervised_parallel" class="inline"></div>
           </div>
 
@@ -133,9 +147,15 @@
       <fieldset>
         <legend>RFM SEGMENTATION</legend>
         <div class="row">
-          <!--Rfm heatmap-->
-          <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-          <div id="rfm-heatmap"></div>
+          <div class="col-9">
+            <div id="rfm_parallel"></div>
+          </div>
+
+          <div class="col-3">
+            <!--Rfm heatmap-->
+            <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+            <div id="rfm-heatmap"></div>
+          </div>
         </div>
       </fieldset>
     </div>

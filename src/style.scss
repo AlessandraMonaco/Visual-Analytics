@@ -1,21 +1,40 @@
 //Variables
 $main_font: 'Courier New', monospace;
 $main_font_color: white;
-$background_color: #282828;
-$tooltip_color: white;
 $axis_color: gray;
+$body_background_color: #1b1b1b; //backgroud of the entire page
+$background_color: #282828; //background of the boxes containg the visualizations
+$button_background_color : #C0C0C0;
+$selector_background_color : #585858;
+$tooltip_color: white; //background of the tooltip
+
 
 body {
-  background-color: $background_color;
+  background-color: $body_background_color;
   font-family: $main_font;
   color: $main_font_color;
   //overflow: hidden;
 }
 
+#title, .material-icons {
+  font-family: 'Englebert', sans-serif;
+  font-size: 22px;
+  color: $button_background_color;
+
+}
+
+
+
+
+#subtitle {
+  font-family: 'Englebert', sans-serif;
+  font-size: 10px;
+}
+
 fieldset {
   margin-left: 5px;
   padding-bottom: 1px;
-  background-color: black;
+  background-color:$background_color;
   border: $axis_color 1px solid;
   padding: 10px;
   padding-top: 3px;
@@ -37,12 +56,15 @@ legend {
 }
 
 #fieldset-trends {
+  position: relative;
+  margin-top: -7px;
   width: 90%;
 }
 
 
  #top {
    padding-top: 5px;
+   background-color:$body_background_color;
   button {
     position: relative;
     width: fit-content;
@@ -133,16 +155,17 @@ legend {
   height:25px;
   cursor: pointer;
   padding:0 1.2em;
-  border:0.1em solid #FFFFFF;
+  border:0.1em solid $button_background_color;
   margin:0 0.3em 0.3em 0;
   box-sizing: border-box;
   text-decoration:none;
+  text-transform: uppercase;
   font-family: $main_font;
   font-weight: bold;
-  color:#FFFFFF;
+  color: $body_background_color;
   text-align:center;
   transition: all 0.2s;
-  background-color: $background_color;
+  background-color: $button_background_color;
   border-radius: 25px;
 
   &:hover {
@@ -154,6 +177,17 @@ legend {
 .btn-right {
   float:right;
   margin-top: 0pt;
+}
+
+#btn-run {
+  position: relative;
+  width: 30px;
+  text-align: left;
+  i {
+    position: relative;
+    margin-left: -12px;
+    color: $background_color;
+  }
 }
 
 .tooltip {
@@ -206,6 +240,9 @@ legend {
   padding: 2px;
   font-weight: normal;
   border-radius: 3px;
+  background-color: $selector_background_color;
+  border: $selector_background_color;
+  color: white;
 }
 
 
@@ -340,15 +377,39 @@ a {
 
 // Form to set parameters
 form {
+  position: relative;
+  margin-top: -10px;
+  display: inline;
+  margin-left: 300px;
   font-size: 12px;
   .input-param {
-    width: 38px;
+    width: 25px;
     text-align: center;
     margin-right: 15px;
+    background-color: $selector_background_color;
+    color: white;
+    border: $selector_background_color;
+  }
+  label {
+    font-size: 10px;
   }
 
-  
 }
+.parameters {
+  position:relative;
+  margin-top: -40px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+
 
 
 #unsupervised-parallel {
@@ -369,6 +430,8 @@ form {
 #row-form {
   position: relative;
   margin-left: 5px;
+  margin-top: -10px;
+  
 }
 // Scatter plot
 #scatter {

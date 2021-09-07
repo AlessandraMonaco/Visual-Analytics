@@ -1,12 +1,21 @@
 body {
-  background-color: #282828;
+  background-color: #1b1b1b;
   font-family: "Courier New", monospace;
   color: white; }
+
+#title, .material-icons {
+  font-family: 'Englebert', sans-serif;
+  font-size: 22px;
+  color: #C0C0C0; }
+
+#subtitle {
+  font-family: 'Englebert', sans-serif;
+  font-size: 10px; }
 
 fieldset {
   margin-left: 5px;
   padding-bottom: 1px;
-  background-color: black;
+  background-color: #282828;
   border: gray 1px solid;
   padding: 10px;
   padding-top: 3px; }
@@ -25,10 +34,13 @@ legend {
   height: 60%; }
 
 #fieldset-trends {
+  position: relative;
+  margin-top: -7px;
   width: 90%; }
 
 #top {
-  padding-top: 5px; }
+  padding-top: 5px;
+  background-color: #1b1b1b; }
   #top button {
     position: relative;
     width: fit-content;
@@ -102,16 +114,17 @@ legend {
   height: 25px;
   cursor: pointer;
   padding: 0 1.2em;
-  border: 0.1em solid #FFFFFF;
+  border: 0.1em solid #C0C0C0;
   margin: 0 0.3em 0.3em 0;
   box-sizing: border-box;
   text-decoration: none;
+  text-transform: uppercase;
   font-family: "Courier New", monospace;
   font-weight: bold;
-  color: #FFFFFF;
+  color: #1b1b1b;
   text-align: center;
   transition: all 0.2s;
-  background-color: #282828;
+  background-color: #C0C0C0;
   border-radius: 25px; }
   .my-button:hover {
     color: #000000;
@@ -120,6 +133,15 @@ legend {
 .btn-right {
   float: right;
   margin-top: 0pt; }
+
+#btn-run {
+  position: relative;
+  width: 30px;
+  text-align: left; }
+  #btn-run i {
+    position: relative;
+    margin-left: -12px;
+    color: #282828; }
 
 .tooltip {
   position: relative;
@@ -161,7 +183,10 @@ legend {
   font-size: 11px;
   padding: 2px;
   font-weight: normal;
-  border-radius: 3px; }
+  border-radius: 3px;
+  background-color: #585858;
+  border: #585858;
+  color: white; }
 
 #treemap {
   position: relative;
@@ -261,11 +286,35 @@ a {
     font-size: 0.5em; }
 
 form {
+  position: relative;
+  margin-top: -10px;
+  display: inline;
+  margin-left: 300px;
   font-size: 12px; }
   form .input-param {
-    width: 38px;
+    width: 25px;
     text-align: center;
-    margin-right: 15px; }
+    margin-right: 15px;
+    background-color: #585858;
+    color: white;
+    border: #585858; }
+  form label {
+    font-size: 10px; }
+
+.parameters {
+  position: relative;
+  margin-top: -40px; }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0;
+  /* <-- Apparently some margin are still there even though it's hidden */ }
+
+input[type=number] {
+  -moz-appearance: textfield;
+  /* Firefox */ }
 
 #unsupervised-parallel .axis {
   opacity: 0.4; }
@@ -279,7 +328,8 @@ form {
 
 #row-form {
   position: relative;
-  margin-left: 5px; }
+  margin-left: 5px;
+  margin-top: -10px; }
 
 #scatter {
   position: relative; }
