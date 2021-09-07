@@ -1,5 +1,5 @@
 // set the dimensions and margins of the graph
-var parallel_margin = {top: 20, right: 0, bottom: 0, left: 20},
+var parallel_margin = {top: 20, right: 0, bottom: 0, left: 40},
   parallel_width = 860 - parallel_margin.left - parallel_margin.right,
   parallel_height = 130 - parallel_margin.top - parallel_margin.bottom;
 
@@ -22,24 +22,23 @@ $(document).ready(function(){
                     "translate(" + parallel_margin.left + "," + parallel_margin.top + ")");
 
         // Manually set the dimensions
-        var dimensions = ['Recency', 'Frequency', 'Monetary']
+        var dimensions = ['recency', 'frequency', 'monetary']
 
         // Tooltip
         var tool = d3.select("body").append("div").attr("class", "toolTip");
         
         // Color scale: give me a cluster name, I return a color
-        var color = d3.scaleOrdinal()
-            .domain([1,16])
-            .range(cluster_color)
+        /*var color = d3.scaleOrdinal()
+            .domain(d3.extent(data, function(d) { return +parseFloat(d.); }))
+            .range(cluster_color)*/
 
         // For each dimension, I build a linear scale. I store all in a y object
         var y = {} //empty object
         for (i in dimensions) {
             var name = dimensions[i]
             y[name] = d3.scaleLinear()
-            .domain( [0,20] ) // --> Same axis range for each group
-            // --> different axis range for each group --> 
-            //.domain( [d3.extent(data, function(d) { return parseInt(d[name]); })] )
+            //.domain( [0,20] )
+            .domain( d3.extent(data, function(d) { return +parseInt(d[name]); }) )
             .range([height, 0])
         }
 
@@ -49,6 +48,7 @@ $(document).ready(function(){
         .domain(dimensions);
 
         // Highlight the specie that is hovered
+        /*
         var highlight = function(d){
 
             selected_cluster = d.cluster
@@ -78,7 +78,7 @@ $(document).ready(function(){
             .style("opacity", "1")
 
             
-        }
+        }*/
 
         // The path function take a row of the csv as input, and return x and y coordinates of the 
         // line to draw for this raw.
@@ -92,13 +92,15 @@ $(document).ready(function(){
             .data(data)
             .enter()
             .append("path")
-            .attr("class", function (d) { return "pline pline" + d.cluster } ) // 2 class for each line: 'line' and the group name
+            //.attr("class", function (d) { return "pline pline" + d.cluster } ) // 2 class for each line: 'line' and the group name
+            .attr("class", function (d) { return "p2line p2line" + d.R + d.F; } ) // 2 class for each line: 'line' and the group name
             .attr("d",  path)
             .style("fill", "none" )
-            .style("stroke", function(d){ return( color(d.cluster))} )
-            .style("opacity", 0.5)
-            .on("mouseover", highlight)
-            .on("mouseleave", doNotHighlight )
+            //.style("stroke", function(d){ return( color(d.cluster))} )
+            .style("stroke",  unselected_color )
+            .style("opacity", 0.5);
+            //.on("mouseover", highlight)
+            //.on("mouseleave", doNotHighlight )
 
         // Draw the axis:
         svg.selectAll("myAxis")
@@ -115,16 +117,16 @@ $(document).ready(function(){
             .append("text")
                 .style("text-anchor", "middle")
                 .attr("y", -9)
-                .text(function(d) { return d.substring(0,3)+".."; })
-                .style("fill", "white")
-                .on("mousemove", function (d) {
+                .text(function(d) { return d; })
+                .style("fill", "white");
+               /* .on("mousemove", function (d) {
                     tool.style("left", d3.event.pageX + 10 + "px")
                     tool.style("top", d3.event.pageY - 20 + "px")
                     tool.style("display", "inline-block");
                     tool.html(d);
                 }).on("mouseout", function (d) {
                     tool.style("display", "none");
-                });
+                });*/
 
 
     }) //end of d3.csv

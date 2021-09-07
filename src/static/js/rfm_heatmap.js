@@ -68,7 +68,7 @@ $(document).ready(function(){
 
         // Build color scale
         var myColor = d3.scaleSequential()
-        .interpolator(d3.interpolateGreys)
+        .interpolator(d3.interpolatePurples)
         .domain([5185,
             21892])
 
@@ -87,18 +87,37 @@ $(document).ready(function(){
 
         // Three function that change the tooltip when user hover / move / leave a cell
         var mouseover = function(d) {
+
+          // Show tooltip
             tooltip
             .style("opacity", 1)
             d3.select(this)
             .style("stroke", "white")
             .style("opacity", 1)
+
+          // Highlight segment in parallel coordinates
+          selected_R = d.R;
+          selected_F = d.F;
+            
+            // HIghlight parallel
+            // first every group turns grey
+            d3.selectAll(".p2line")
+            .transition().duration(200)
+            .style("stroke", unselected_color)
+            .style("opacity", "0")
+            // Second the hovered specie takes its color
+            d3.selectAll(".p2line" + selected_R + selected_F)
+            .transition().duration(200)
+            .style("stroke", myColor(d.Avg_M))
+            .style("opacity", "1")
+
         }
         var mousemove = function(d) {
             tooltip
             .html("Mean M value: " + parseFloat(d.Avg_M).toFixed(2) +
             "<br>"+ parseInt(d.Count) + " customers.")
             .style("left", (d3.mouse(this)[0] + 50 + "px"))
-            .style("top", (d3.mouse(this)[1] + 250 + "px"))
+            .style("top", (d3.mouse(this)[1] + "px"))
         }
         var mouseleave = function(d) {
             tooltip

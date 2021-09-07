@@ -4,7 +4,7 @@ var parallel_margin = {top: 20, right: 0, bottom: 0, left: 20},
   parallel_height = 130 - parallel_margin.top - parallel_margin.bottom;
 
 // set color for clusters
-var cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33" ];
+var cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
 var unselected_color = "#404040";
 
 $(document).ready(function(){
