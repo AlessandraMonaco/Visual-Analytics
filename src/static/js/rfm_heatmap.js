@@ -120,11 +120,19 @@ $(document).ready(function(){
             .style("top", (d3.mouse(this)[1] + "px"))
         }
         var mouseleave = function(d) {
+
+          //Hide tooltip
             tooltip
             .style("opacity", 0)
             d3.select(this)
             .style("stroke", "black")
             .style("opacity", 0.8)
+          
+            //Set original parallel viz
+            d3.selectAll(".p2line")
+            .transition().duration(200)
+            .style("stroke",  unselected_color )
+            .style("opacity", 0.5);
         }
 
         // add the squares

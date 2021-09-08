@@ -1,5 +1,5 @@
 // set the dimensions and margins of the graph
-var parallel_margin = {top: 20, right: 0, bottom: 0, left: 20},
+var parallel_margin = {top: 20, right: 0, bottom: 0, left: 0},
   parallel_width = 860 - parallel_margin.left - parallel_margin.right,
   parallel_height = 130 - parallel_margin.top - parallel_margin.bottom;
 
@@ -9,6 +9,8 @@ var unselected_color = "#404040";
 
 $(document).ready(function(){
 
+    var cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
+    
     // Parse the Data
     d3.csv("static/dataset/pca_kmeans_data.csv", function(data) {
         
@@ -63,7 +65,7 @@ $(document).ready(function(){
             d3.selectAll(".pline")
             .transition().duration(200)
             .style("stroke", unselected_color)
-            .style("opacity", "0.2")
+            .style("opacity", "0.1")
             // Second the hovered specie takes its color
             d3.selectAll(".pline" + selected_cluster)
             .transition().duration(200)

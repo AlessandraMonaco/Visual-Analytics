@@ -5,7 +5,7 @@ var scatter_margin = {top: -20, right: 0, bottom: 15, left: 30},
 
 
 $(document).ready(function(){
-
+    var cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
     
 
     //Read the data
@@ -20,6 +20,11 @@ $(document).ready(function(){
                 .style("fill", function (d) { return color(d.cluster) })
                 .attr("r", 1 )
         }
+
+        // Color scale: give me a cluster name, I return a color
+        var color = d3.scaleOrdinal()
+            .domain(d3.extent(data, function(d) { return +parseInt(d.cluster); }))
+            .range(cluster_color)
 
         // append the svg object to the body of the page
         var svg = d3.select("#scatter")
@@ -84,7 +89,7 @@ $(document).ready(function(){
                 d3.selectAll(".pline")
                 .transition().duration(200)
                 .style("stroke", "grey")
-                .style("opacity", "0.2")
+                .style("opacity", "0.1")
                 // Second the hovered specie takes its color
                 d3.selectAll(".pline" + selected_cluster)
                 .transition().duration(200)
@@ -122,6 +127,30 @@ $(document).ready(function(){
             .style("fill", function (d) { return color(d.cluster) } )
         .on("mouseover", highlight)
         .on("mouseleave", doNotHighlight )
+
+
+
+        //Add the cluster selector legend
+        // add the options to the button
+        // List of groups (here I have one group per column)
+        var allGroup = d3.range(d3.min(data, function(d) { return +parseInt(d.cluster); }),
+            d3.max(data, function(d) { return +parseInt(d.cluster); })+1);
+
+        var legend = d3.select("#cluster-selector")
+            .selectAll('myClusters')
+            .data(allGroup)
+            .enter()
+            .append('label')
+            .attr('for',function(d,i){ return 'a'+i; })
+            .text(function(d) { return "CLUSTER "+d; })
+            .style("padding", "2px")
+            .style("color", function(d) { return color(d); } )
+            .style("font-size", "10px")
+            .append('input')
+            .attr("type", "checkbox")
+            .attr("value", function (d) { return d; }) // corresponding value returned by the button
+            .style("border", function(d) { return color(d); } )
+        
     })
   
 })

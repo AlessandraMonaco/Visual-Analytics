@@ -380,7 +380,7 @@ form {
   position: relative;
   margin-top: -10px;
   display: inline;
-  margin-left: 300px;
+  margin-left: 50px;
   font-size: 12px;
   .input-param {
     width: 25px;
@@ -427,6 +427,12 @@ input[type=number] {
   margin-left: -60px;
 }
 
+#unsupervised-row {
+  position: relative;
+  margin-left: -40px;
+  width: 100%;
+}
+
 #row-form {
   position: relative;
   margin-left: 5px;
@@ -436,6 +442,8 @@ input[type=number] {
 // Scatter plot
 #scatter {
   position: relative;
+  //margin-left: -45px;
+  margin-top: -30px;
 
   path {
     stroke: $axis_color;
@@ -449,5 +457,25 @@ input[type=number] {
   line, path {
     stroke: $axis_color;
     color: $axis_color;
+  }
+}
+
+// Cluster selector
+#cluster-selector { 
+  position:relative;
+  margin-top: 10px;
+  margin-left: 20px;
+  display: inline-block;
+  border:1px solid $selector_background_color; 
+  background-color: $body_background_color;
+  width:100px; 
+  height: 80px; 
+  overflow-y: scroll;
+  scrollbar-width: thin;
+
+  input {
+    position: relative;
+    margin-left: 8px;
+    margin-right: 2px;
   }
 }

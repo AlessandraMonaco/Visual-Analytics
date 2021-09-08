@@ -289,7 +289,7 @@ form {
   position: relative;
   margin-top: -10px;
   display: inline;
-  margin-left: 300px;
+  margin-left: 50px;
   font-size: 12px; }
   form .input-param {
     width: 25px;
@@ -326,13 +326,19 @@ input[type=number] {
   position: relative;
   margin-left: -60px; }
 
+#unsupervised-row {
+  position: relative;
+  margin-left: -40px;
+  width: 100%; }
+
 #row-form {
   position: relative;
   margin-left: 5px;
   margin-top: -10px; }
 
 #scatter {
-  position: relative; }
+  position: relative;
+  margin-top: -30px; }
   #scatter path {
     stroke: gray;
     color: white; }
@@ -340,3 +346,19 @@ input[type=number] {
 .axis line, .axis path {
   stroke: gray;
   color: gray; }
+
+#cluster-selector {
+  position: relative;
+  margin-top: 10px;
+  margin-left: 20px;
+  display: inline-block;
+  border: 1px solid #585858;
+  background-color: #1b1b1b;
+  width: 100px;
+  height: 80px;
+  overflow-y: scroll;
+  scrollbar-width: thin; }
+  #cluster-selector input {
+    position: relative;
+    margin-left: 8px;
+    margin-right: 2px; }
