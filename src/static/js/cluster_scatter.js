@@ -136,21 +136,83 @@ $(document).ready(function(){
         var allGroup = d3.range(d3.min(data, function(d) { return +parseInt(d.cluster); }),
             d3.max(data, function(d) { return +parseInt(d.cluster); })+1);
 
-        var legend = d3.select("#cluster-selector")
+        
+        // Add option to select all clusters
+        var legend = d3.select("#cluster-selector-select")
+        .append("option")
+        .text("All data ") // text showed in the menu
+        .attr("value", function (d) { return "all"; }) // corresponding value returned by the button
+        .attr("selected", "true")
+        .style("color", "grey")
+        .style("background", "#1b1b1b")
+        .style("font-size", "10px")
+
+        legend = d3.select("#cluster-selector-select")
             .selectAll('myClusters')
             .data(allGroup)
             .enter()
-            .append('label')
-            .attr('for',function(d,i){ return 'a'+i; })
-            .text(function(d) { return "CLUSTER "+d; })
-            .style("padding", "2px")
-            .style("color", function(d) { return color(d); } )
-            .style("font-size", "10px")
-            .append('input')
-            .attr("type", "checkbox")
+            .append("option")
+            .text(function (d) { return "CLUSTER "+d; }) // text showed in the menu
             .attr("value", function (d) { return d; }) // corresponding value returned by the button
-            .style("border", function(d) { return color(d); } )
-        
+            .style("color", function(d) { return color(d); })
+            .style("background", "#1b1b1b")
+            .style("font-size", "10px")
+
+            // Highlight points and lines of selected cluster(s)
+            d3.select("#cluster-selector-select")
+            .on('change', function() {
+                // recover the option that has been chosen
+                options =  this.selectedOptions;
+
+                //All grey
+                //console.log(this.selectedOptions);
+                d3.selectAll(".dot")
+                .transition()
+                .duration(200)
+                .style("fill", unselected_color)
+                .attr("r", 1)
+
+                // first every group turns grey
+                d3.selectAll(".pline")
+                .transition().duration(200)
+                .style("stroke", "grey")
+                .style("opacity", "0.1")
+
+                //Highlight selected
+                for (var i=0; i<options.length; i++) {
+                    selected_cluster = options[i].value;
+                    console.log(selected_cluster)
+                
+                    d3.selectAll(".dot" + selected_cluster)
+                        .transition()
+                        .duration(200)
+                        .style("fill", color(selected_cluster))
+                        .attr("r", 1.5)
+                    
+                        // Highlight in parallel coordinates
+                        d3.selectAll(".pline" + selected_cluster)
+                        .transition().duration(200)
+                        .style("stroke", color(selected_cluster))
+                        .style("opacity", "1")
+
+                    if(selected_cluster=="all") {
+                        d3.selectAll(".dot")
+                        .transition()
+                        .duration(200)
+                        .style("fill", function(d) { return color(d.cluster);})
+                        .attr("r", 1)
+                    
+                        // Highlight in parallel coordinates
+                        d3.selectAll(".pline")
+                        .transition().duration(200)
+                        .style("stroke", function(d) { return color(d.cluster);})
+                        .style("opacity", "1")
+                    }
+                }
+                
+            });
+
+
     })
   
 })

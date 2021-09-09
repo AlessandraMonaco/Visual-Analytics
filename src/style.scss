@@ -13,7 +13,7 @@ body {
   background-color: $body_background_color;
   font-family: $main_font;
   color: $main_font_color;
-  //overflow: hidden;
+  overflow: hidden;
 }
 
 #title, .material-icons {
@@ -430,7 +430,11 @@ input[type=number] {
 #unsupervised-row {
   position: relative;
   margin-left: -40px;
-  width: 100%;
+  
+}
+
+#fieldset-unsupervised {
+  width:950px;
 }
 
 #row-form {
@@ -442,7 +446,7 @@ input[type=number] {
 // Scatter plot
 #scatter {
   position: relative;
-  //margin-left: -45px;
+  margin-left: -75px;
   margin-top: -30px;
 
   path {
@@ -461,21 +465,17 @@ input[type=number] {
 }
 
 // Cluster selector
-#cluster-selector { 
+#cluster-selector-select { 
   position:relative;
   margin-top: 10px;
-  margin-left: 20px;
+  margin-left: -50px;
   display: inline-block;
   border:1px solid $selector_background_color; 
-  background-color: $body_background_color;
+  //background-color: $body_background_color;
   width:100px; 
   height: 80px; 
   overflow-y: scroll;
   scrollbar-width: thin;
-
-  input {
-    position: relative;
-    margin-left: 8px;
-    margin-right: 2px;
-  }
+  
 }
+

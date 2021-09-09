@@ -1,7 +1,8 @@
 body {
   background-color: #1b1b1b;
   font-family: "Courier New", monospace;
-  color: white; }
+  color: white;
+  overflow: hidden; }
 
 #title, .material-icons {
   font-family: 'Englebert', sans-serif;
@@ -328,8 +329,10 @@ input[type=number] {
 
 #unsupervised-row {
   position: relative;
-  margin-left: -40px;
-  width: 100%; }
+  margin-left: -40px; }
+
+#fieldset-unsupervised {
+  width: 950px; }
 
 #row-form {
   position: relative;
@@ -338,6 +341,7 @@ input[type=number] {
 
 #scatter {
   position: relative;
+  margin-left: -75px;
   margin-top: -30px; }
   #scatter path {
     stroke: gray;
@@ -347,18 +351,13 @@ input[type=number] {
   stroke: gray;
   color: gray; }
 
-#cluster-selector {
+#cluster-selector-select {
   position: relative;
   margin-top: 10px;
-  margin-left: 20px;
+  margin-left: -50px;
   display: inline-block;
   border: 1px solid #585858;
-  background-color: #1b1b1b;
   width: 100px;
   height: 80px;
   overflow-y: scroll;
   scrollbar-width: thin; }
-  #cluster-selector input {
-    position: relative;
-    margin-left: 8px;
-    margin-right: 2px; }

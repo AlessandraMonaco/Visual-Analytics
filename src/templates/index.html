@@ -108,7 +108,7 @@
     </div>
       
     <div class="col-8" id="container-row">
-      <fieldset>
+      <fieldset id="fieldset-unsupervised">
         <legend>UNSUPERVISED CUSTOMER SEGMENTATION (Pca + K-Means)</legend>
         <!--Setting parameters for PCA ad K-Means-->
         <div class="row" id="row-form">
@@ -153,6 +153,8 @@
             <!--Cluster selector-->
             <div id="cluster-selector">
               <!--Here you append input type checkbox and <br />-->
+              <select class="my-button btn-select" id="cluster-selector-select"  multiple>
+              </select>
             </div>
           </div>
         
