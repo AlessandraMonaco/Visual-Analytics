@@ -11,6 +11,16 @@ $(document).ready(function(){
     //Read the data
     d3.csv("static/dataset/pca_kmeans_data.csv", function(data) {
         
+        //Compute cluster size
+        var sizes = {};
+        data.forEach(function(r) {
+            if (!sizes[r.cluster]) {
+                sizes[r.cluster] = 0;
+            }
+            sizes[r.cluster]++;
+        });
+        //console.log(sizes[1]);
+
         // Reset visualization with colors if double click on svg
         var resetVisualization = function(d) {
             // Add dots with original colour
@@ -63,7 +73,19 @@ $(document).ready(function(){
         .domain(d3.extent(data, function(d) { return +parseInt(d.cluster); }))
         .range(cluster_color)
     
-    
+        // Tooltip
+        // create a tooltip
+        var tooltip = d3.select("#scatter")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+        .style("width", "auto")
+        .style("height", "auto")
         
         // Highlight the specie that is hovered
         var highlight = function(d){
@@ -95,6 +117,16 @@ $(document).ready(function(){
                 .transition().duration(200)
                 .style("stroke", color(selected_cluster))
                 .style("opacity", "1")
+
+                // Reset selector on All Data
+                d3.select('#cluster-selector-select').property('value', 'all');
+
+                 // Show tooltip
+                tooltip
+                .style("opacity", 1)
+                d3.select(this)
+                .style("stroke", "white")
+                .style("opacity", 1)
         }
     
         // Remove highlight
@@ -112,6 +144,25 @@ $(document).ready(function(){
                 .transition().duration(200).delay(1000)
                 .style("stroke", function(d){ return( color(d.cluster))} )
                 .style("opacity", "1")
+            
+            // Reset selector on All Data
+            d3.select('#cluster-selector-select').property('value', 'all');
+
+            //Hide tooltip
+            tooltip
+            .style("opacity", 0)
+            d3.select(this)
+            .style("stroke", "black")
+            .style("opacity", 0.8)
+        }
+
+        //Detect mouse change for the tooltip to set the text
+        var mousemove = function(d) {
+            tooltip
+            .html("CLUSTER " + d.cluster +
+            "<br>"+ sizes[d.cluster] +" customers.")
+            .style("left", (d3.mouse(this)[0] + 50 + "px"))
+            .style("top", (d3.mouse(this)[1] + "px"))
         }
     
         // Add dots
@@ -126,7 +177,9 @@ $(document).ready(function(){
             .attr("r", 1)
             .style("fill", function (d) { return color(d.cluster) } )
         .on("mouseover", highlight)
+        .on("mousemove", mousemove)
         .on("mouseleave", doNotHighlight )
+        
 
 
 
@@ -194,6 +247,8 @@ $(document).ready(function(){
                         .transition().duration(200)
                         .style("stroke", color(selected_cluster))
                         .style("opacity", "1")
+
+                        
 
                     if(selected_cluster=="all") {
                         d3.selectAll(".dot")

@@ -7,6 +7,7 @@ import sklearn
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 
 def clustering(n_components, n_clusters):
     # Read csv file
@@ -59,12 +60,13 @@ def clustering(n_components, n_clusters):
     # Applying PCA
     pca = PCA(n_components=n_components)
     principalComponents = pca.fit_transform(x) #vector of principal components for each cust_id
-    principalDf = pd.DataFrame(data = principalComponents, columns = ['pc_1', 'pc_2'])
+    #We store just the first 2 components for the 2d visualization
+    principalDf = pd.DataFrame(data = principalComponents[:,:2], columns = ['pc_1', 'pc_2'])
     principalDf = pd.concat([gr_data['cust_id'], principalDf], axis = 1)
     print("principalDf.head", principalDf.head())
 
     # Running K-MEANS
-    kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(x)
+    kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(principalComponents)
     print("kmeans.labels_: ", kmeans.labels_)
     print("cluster centers: ", kmeans.cluster_centers_)
 
@@ -75,4 +77,26 @@ def clustering(n_components, n_clusters):
     clusteredDf = clusteredDf.rename(columns={"cust_id": "cust_id", "pc_1": "pc_1", "pc_2": "pc_2", 0: "cluster"})
     print("clusteredDf.head \n", clusteredDf.head())
     clusteredDf.to_csv(path+'pca_kmeans_data.csv', index=False) #write clustered data to csv
+    
+    # Compute clustering metrics
+    #Silhouette_score => perspective into the density and separation of the formed clusters 
+    #It's value is in the interval [-1,1] (HIGH IS BETTER)
+    silhouette_avg = silhouette_score(principalComponents, labels)
+    print("Silhouette score: ", silhouette_avg)
+    #Inertia : Inertia measures how well a dataset was clustered by K-Means. 
+    #It is calculated by measuring the distance between each data point and its centroid, 
+    #squaring this distance, and summing these squares across one cluster. (LOW IS BETTER)
+    inertia = kmeans.inertia_
+    print("Inertia: ", inertia)
+    #PCA Explained Variance Ratio : The explained variance ratio is the percentage of variance that 
+    #is attributed by each of the selected components. Ideally, you would choose the number of components 
+    #to include in your model by adding the explained variance ratio of each component until you reach a 
+    #total of around 0.8 or 80% to avoid overfitting.
+    variance = pca.explained_variance_ratio_
+    print("PCA Explained Variance Ratio: ", variance)
+    # Store metrics in a csv
+    metrics_df = pd.DataFrame(columns=['silhouette', 'inertia', 'pca_variance'])
+    metrics_df.loc[0] = [silhouette_avg,inertia,variance]
+    metrics_df.to_csv(path+'clustering_metrics_data.csv', index=False) #write clustered data to csv
+
     return "done!"

@@ -14,6 +14,14 @@ $(document).ready(function(){
     // Parse the Data
     d3.csv("static/dataset/pca_kmeans_data.csv", function(data) {
         
+        //Compute cluster size
+        var sizes = {};
+        data.forEach(function(r) {
+            if (!sizes[r.cluster]) {
+                sizes[r.cluster] = 0;
+            }
+            sizes[r.cluster]++;
+        });
 
         // append the svg object to the body of the page
         var svg = d3.select("#unsupervised_parallel")
@@ -32,8 +40,22 @@ $(document).ready(function(){
             '(Footwear) Kids', '(Footwear) Mens', '(Footwear) Women', '(Home and kitchen) Bath', 
             '(Home and kitchen) Furnishing', '(Home and kitchen) Kitchen', '(Home and kitchen) Tools']
 
-        // Tooltip
+        // Tooltip for labels
         var tool = d3.select("body").append("div").attr("class", "toolTip");
+
+        // Tooltip for cluster infos
+        // create a tooltip
+        var tooltip = d3.select("#scatter")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+        .style("width", "auto")
+        .style("height", "auto")
         
         // Color scale: give me a cluster name, I return a color
         var color = d3.scaleOrdinal()
@@ -84,6 +106,16 @@ $(document).ready(function(){
                 .duration(200)
                 .style("fill", color(selected_cluster))
                 .attr("r", 1.5)
+            
+            // Reset selector on All Data
+            d3.select('#cluster-selector-select').property('value', 'all');
+
+             // Show tooltip
+             tooltip
+             .style("opacity", 1)
+             d3.select(this)
+             .style("stroke", "white")
+             .style("opacity", 1)
         }
 
         // Unhighlight
@@ -100,6 +132,25 @@ $(document).ready(function(){
                 .duration(200)
                 .style("fill", function (d) { return color(d.cluster) } )
                 .attr("r", 1 )
+            
+            // Reset selector on All Data
+            d3.select('#cluster-selector-select').property('value', 'all');
+
+            //Hide tooltip
+            tooltip
+            .style("opacity", 0)
+            d3.select(this)
+            .style("stroke", "black")
+            .style("opacity", 0.8)
+        }
+
+        //Detect mouse change for the tooltip to set the text
+        var mousemove = function(d) {
+            tooltip
+            .html("CLUSTER " + d.cluster +
+            "<br>"+ sizes[d.cluster] +" customers.")
+            .style("left", "50px")
+            .style("top", "-10px")
         }
 
         // The path function take a row of the csv as input, and return x and y coordinates of the 
@@ -120,6 +171,7 @@ $(document).ready(function(){
             .style("stroke", function(d){ return( color(d.cluster))} )
             .style("opacity", 0.5)
             .on("mouseover", highlight)
+            .on("mousemove", mousemove)
             .on("mouseleave", doNotHighlight )
 
         // Draw the axis:
