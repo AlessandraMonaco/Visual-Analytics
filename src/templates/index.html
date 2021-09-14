@@ -29,6 +29,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/cluster_scatter.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/rfm_heatmap.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/parallel_rfm.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/metrics_table.js')}}"></script>  
   <script type="text/javascript" src="{{ url_for('static', filename='js/clear_viz.js')}}"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
@@ -153,7 +154,6 @@
             <!--Cluster selector-->
             <div id="cluster-selector">
               <div id="metrics-table">
-                Here the metrics
               </div>
               <!--Here you append input type checkbox and <br />-->
               <select class="my-button btn-select" id="cluster-selector-select"  multiple>

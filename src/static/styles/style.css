@@ -341,7 +341,7 @@ input[type=number] {
 
 #scatter {
   position: relative;
-  margin-left: -75px;
+  margin-left: -78px;
   margin-top: -30px; }
   #scatter path {
     stroke: gray;
@@ -361,3 +361,21 @@ input[type=number] {
   height: 80px;
   overflow-y: scroll;
   scrollbar-width: thin; }
+
+#metrics-table {
+  position: relative;
+  margin-top: -30px;
+  margin-left: -70px;
+  font-size: 9px;
+  color: gray;
+  line-height: 85%;
+  height: 70px;
+  overflow-y: scroll;
+  scrollbar-width: thin; }
+  #metrics-table td {
+    padding-left: 1px;
+    padding-top: 3px;
+    border-bottom: 3px solid #282828; }
+  #metrics-table .header {
+    background-color: #585858;
+    color: white; }

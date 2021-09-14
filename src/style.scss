@@ -446,7 +446,7 @@ input[type=number] {
 // Scatter plot
 #scatter {
   position: relative;
-  margin-left: -75px;
+  margin-left: -78px;
   margin-top: -30px;
 
   path {
@@ -479,3 +479,25 @@ input[type=number] {
   
 }
 
+// Clustering metrics
+#metrics-table { 
+  position:relative;
+  margin-top: -30px;
+  margin-left: -70px;
+  font-size: 9px;
+  color: $axis_color;
+  line-height: 85%;
+  height: 70px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+
+  td {
+    padding-left: 1px;
+    padding-top: 3px;
+    border-bottom: 3px solid $background_color;
+  }
+  .header {
+    background-color: $selector_background_color;
+    color: white;
+  }
+}
