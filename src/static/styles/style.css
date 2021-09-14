@@ -379,3 +379,10 @@ input[type=number] {
   #metrics-table .header {
     background-color: #585858;
     color: white; }
+
+#fieldset-rfm {
+  width: 950px; }
+
+#rfm-heatmap, #rfm-legend {
+  position: relative;
+  margin-left: -50px; }

@@ -65,12 +65,11 @@ $(document).ready(function(){
         .style("fill", "white")
         .text("Frequency");   
       
-
         // Build color scale
         var myColor = d3.scaleSequential()
         .interpolator(d3.interpolatePurples)
-        .domain([5185,
-            21892])
+        .domain([0,
+            22000])
 
         // create a tooltip
         var tooltip = d3.select("#rfm-heatmap")
@@ -154,10 +153,71 @@ $(document).ready(function(){
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
 
-        // Add legend for M to graph
-       
-        
-        
+      // Add legend for M to graph
+ 
+      // create continuous color legend
+      function continuous(selector_id,colorscale) {
+        var legendheight = heat_height+23,
+            legendwidth = 80,
+            margin = {top: 10, right: 60, bottom: 10, left: 3};
+
+        var canvas = d3.select(selector_id)
+          .style("height", legendheight + "px")
+          .style("width", legendwidth + "px")
+          .style("position", "relative")
+          .append("canvas")
+          .attr("height", legendheight - margin.top - margin.bottom)
+          .attr("width", 1)
+          .style("height", (legendheight - margin.top - margin.bottom) + "px")
+          .style("width", (legendwidth - margin.left - margin.right) + "px")
+          .style("border", "1px solid #000")
+          .style("position", "absolute")
+          .style("top", (margin.top) + "px")
+          .style("left", (margin.left) + "px")
+          .node();
+
+        var ctx = canvas.getContext("2d");
+
+        var legendscale = d3.scaleLinear()
+          .range([1, legendheight - margin.top - margin.bottom])
+          .domain(colorscale.domain());
+
+        // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
+  var image = ctx.createImageData(1, legendheight);
+  d3.range(legendheight).forEach(function(i) {
+    var c = d3.rgb(colorscale(legendscale.invert(i)));
+    image.data[4*i] = c.r;
+    image.data[4*i + 1] = c.g;
+    image.data[4*i + 2] = c.b;
+    image.data[4*i + 3] = 255;
+  });
+  ctx.putImageData(image, 0, 0);
+
+  var legendaxis = d3.axisRight()
+    .scale(legendscale)
+    .tickSize(4)
+    .ticks(4);
+
+  var svg = d3.select(selector_id)
+    .append("svg")
+    .attr("height", (legendheight) + "px")
+    .attr("width", (legendwidth) + "px")
+    .style("position", "absolute")
+    .style("left", "0px")
+    .style("top", "0px")
+
+  svg
+    .append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+    .call(legendaxis);
+};
+
+var colorScale1 = d3.scaleSequential(d3.interpolatePRGn)
+  .domain([-5, 5]);
+
+continuous("#rfm-legend", myColor);
+
     }) //end of d3.csv
 
 }) //end of document.ready
