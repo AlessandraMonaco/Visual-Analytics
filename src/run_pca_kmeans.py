@@ -44,14 +44,15 @@ def clustering(n_components, n_clusters):
     gr_data = gr_data.reset_index()
     print(gr_data.head())
     customers = gr_data.cust_id.tolist()
-    print("Customers: ", customers)
+    #print("Customers: ", customers)
 
     # Separating out the features
     x = gr_data.loc[:, features].values
     print("Values: ", x)
 
     # Standardizing the features
-    x = StandardScaler().fit_transform(x)
+    scaler = StandardScaler().fit(x)
+    x = scaler.transform(x)
     print("Standardized values: ", x)
 
 
@@ -93,10 +94,13 @@ def clustering(n_components, n_clusters):
     #to include in your model by adding the explained variance ratio of each component until you reach a 
     #total of around 0.8 or 80% to avoid overfitting.
     variance = pca.explained_variance_ratio_
-    print("PCA Explained Variance Ratio: ", variance)
+    variance_2decimals = []
+    for value in variance:
+        variance_2decimals.append(float(round(value, 2))) #round variance values to 2 decimals
+    print("PCA Explained Variance Ratio: ", variance_2decimals)
     # Store metrics in a csv
     metrics_df = pd.DataFrame(columns=['silhouette', 'inertia', 'pca_variance'])
-    metrics_df.loc[0] = [silhouette_avg,inertia,variance]
+    metrics_df.loc[0] = [silhouette_avg,inertia,variance_2decimals]
     metrics_df.to_csv(path+'clustering_metrics_data.csv', index=False) #write clustered data to csv
 
     return "done!"

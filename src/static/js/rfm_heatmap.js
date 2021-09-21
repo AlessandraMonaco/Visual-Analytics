@@ -81,7 +81,7 @@ $(document).ready(function(){
         .style("border-width", "2px")
         .style("border-radius", "5px")
         .style("padding", "5px")
-        .style("width", "auto")
+        .style("width", "140px")
         .style("height", "auto")
 
         // Three function that change the tooltip when user hover / move / leave a cell
@@ -114,7 +114,8 @@ $(document).ready(function(){
         var mousemove = function(d) {
             tooltip
             .html("Mean M value: " + parseFloat(d.Avg_M).toFixed(2) +
-            "<br>"+ parseInt(d.Count) + " customers.")
+            "<br>("+ parseInt(d.Count) + " customers)"+
+            "<br>" + "<span class='category' >"+d.RFM_Level + "</span>")
             .style("left", (d3.mouse(this)[0] + 50 + "px"))
             .style("top", (d3.mouse(this)[1] + "px"))
         }
@@ -157,9 +158,9 @@ $(document).ready(function(){
  
       // create continuous color legend
       function continuous(selector_id,colorscale) {
-        var legendheight = heat_height+23,
+        var legendheight = heat_height+20,
             legendwidth = 80,
-            margin = {top: 10, right: 60, bottom: 10, left: 3};
+            margin = {top: 22, right: 60, bottom: 10, left: 3};
 
         var canvas = d3.select(selector_id)
           .style("height", legendheight + "px")
@@ -182,41 +183,53 @@ $(document).ready(function(){
           .range([1, legendheight - margin.top - margin.bottom])
           .domain(colorscale.domain());
 
+           
+
         // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
-  var image = ctx.createImageData(1, legendheight);
-  d3.range(legendheight).forEach(function(i) {
-    var c = d3.rgb(colorscale(legendscale.invert(i)));
-    image.data[4*i] = c.r;
-    image.data[4*i + 1] = c.g;
-    image.data[4*i + 2] = c.b;
-    image.data[4*i + 3] = 255;
-  });
-  ctx.putImageData(image, 0, 0);
+        var image = ctx.createImageData(1, legendheight);
+        d3.range(legendheight).forEach(function(i) {
+          var c = d3.rgb(colorscale(legendscale.invert(i)));
+          image.data[4*i] = c.r;
+          image.data[4*i + 1] = c.g;
+          image.data[4*i + 2] = c.b;
+          image.data[4*i + 3] = 255;
+        });
+        ctx.putImageData(image, 0, 0);
 
-  var legendaxis = d3.axisRight()
-    .scale(legendscale)
-    .tickSize(4)
-    .ticks(4);
+        var legendaxis = d3.axisRight()
+          .scale(legendscale)
+          .tickSize(4)
+          .ticks(4);
 
-  var svg = d3.select(selector_id)
-    .append("svg")
-    .attr("height", (legendheight) + "px")
-    .attr("width", (legendwidth) + "px")
-    .style("position", "absolute")
-    .style("left", "0px")
-    .style("top", "0px")
+        var svg = d3.select(selector_id)
+          .append("svg")
+          .attr("height", (legendheight) + "px")
+          .attr("width", (legendwidth) + "px")
+          .style("position", "absolute")
+          .style("left", "0px")
+          .style("top", "0px")
 
-  svg
-    .append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
-    .call(legendaxis);
-};
+        svg
+          .append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+          .call(legendaxis);
+      };
 
-var colorScale1 = d3.scaleSequential(d3.interpolatePRGn)
-  .domain([-5, 5]);
+    
 
-continuous("#rfm-legend", myColor);
+      d3.select("#rfm-legend").append("text")
+          .attr("id", "rfm-legend-title")
+          .attr("transform", "rotate(-90)")
+          .attr("y", -20 )
+        .attr("x",0 - (heat_height / 2))
+          .attr("dy", "1em")
+          .style("font-size", "9px")
+          .style("text-anchor", "middle")
+          .style("fill", "white")
+          .text("Avg Monetary Value");  
+    
+          continuous("#rfm-legend", myColor);
 
     }) //end of d3.csv
 

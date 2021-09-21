@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
-var scatter_margin = {top: -20, right: 0, bottom: 15, left: 30},
-    scatter_width = 160 - scatter_margin.left - scatter_margin.right,
-    scatter_height = 160 - scatter_margin.top - scatter_margin.bottom;
+var scatter_margin = {top: 10, right: 0, bottom: 30, left: 30},
+    scatter_width = 155 - scatter_margin.left - scatter_margin.right,
+    scatter_height = 155 - scatter_margin.top - scatter_margin.bottom;
 
 
 $(document).ready(function(){
@@ -56,6 +56,14 @@ $(document).ready(function(){
         .attr("class", "axis")
         .style("stroke", "white")
         .call(d3.axisBottom(x));
+        svg.append("text")             
+        .attr("transform",
+                "translate(" + (scatter_width/2) +" ," + 
+                            (scatter_height + scatter_margin.top + 15) + ")")
+        .style("text-anchor", "middle")
+        .style("font-size", "9px")
+        .style("fill", "white")
+        .text("Principal Component 1");
     
         // Add Y axis
         var y = d3.scaleLinear()
@@ -65,7 +73,15 @@ $(document).ready(function(){
         .attr("class", "axis")
         .style("stroke", "white")
         .call(d3.axisLeft(y));
-
+        svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -30 )
+        .attr("x",0 - (scatter_height / 2))
+        .attr("dy", "1em")
+        .style("font-size", "9px")
+        .style("text-anchor", "middle")
+        .style("fill", "white")
+        .text("Principal Component 2");   
         
     
         // Color scale: give me a specie name, I return a color
@@ -160,7 +176,7 @@ $(document).ready(function(){
         var mousemove = function(d) {
             tooltip
             .html("CLUSTER " + d.cluster +
-            "<br>"+ sizes[d.cluster] +" customers.")
+            "<br>("+ sizes[d.cluster] +" customers)")
             .style("left", (d3.mouse(this)[0] + 50 + "px"))
             .style("top", (d3.mouse(this)[1] + "px"))
         }

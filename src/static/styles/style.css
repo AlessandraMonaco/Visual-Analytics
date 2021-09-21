@@ -138,6 +138,7 @@ legend {
 #btn-run {
   position: relative;
   width: 30px;
+  height: 30px;
   text-align: left; }
   #btn-run i {
     position: relative;
@@ -338,11 +339,15 @@ input[type=number] {
   position: relative;
   margin-left: 5px;
   margin-top: -10px; }
+  #row-form .my-button {
+    font-size: 10px;
+    height: 20px; }
 
 #scatter {
   position: relative;
-  margin-left: -78px;
-  margin-top: -30px; }
+  margin-left: -68px;
+  margin-top: -10px;
+  margin-bottom: -10px; }
   #scatter path {
     stroke: gray;
     color: white; }
@@ -365,11 +370,12 @@ input[type=number] {
 #metrics-table {
   position: relative;
   margin-top: -30px;
-  margin-left: -70px;
+  margin-left: -50px;
   font-size: 9px;
   color: gray;
   line-height: 85%;
   height: 70px;
+  width: 100px;
   overflow-y: scroll;
   scrollbar-width: thin; }
   #metrics-table td {
@@ -385,4 +391,10 @@ input[type=number] {
 
 #rfm-heatmap, #rfm-legend {
   position: relative;
-  margin-left: -50px; }
+  margin-left: -50px;
+  margin-bottom: -10px; }
+
+#rfm-legend-title {
+  position: relative;
+  margin-top: -40px;
+  margin-left: -10px; }
