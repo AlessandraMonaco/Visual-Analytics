@@ -252,18 +252,21 @@ legend {
 //For the treemap
 #treemap {
   position:relative;
+  margin-top: -50px;
   margin-left: 40px;
   margin-right: 0px;
 }
 
 .node {
-  border: solid 1px white;
+  //border: solid 1px white;
   font: 8.5px $main_font;
   line-height: 90%;
   overflow: hidden;
   position: absolute;
   text-indent: 2px;
   cursor: default;
+  padding-top: 5px;
+  padding-left: 1px;
 }
 
 a {

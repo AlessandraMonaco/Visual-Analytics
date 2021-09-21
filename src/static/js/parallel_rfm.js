@@ -24,6 +24,11 @@ $(document).ready(function(){
         // Manually set the dimensions
         var dimensions = ['recency', 'frequency', 'monetary']
 
+        function unit(dim) {
+            if (dim=='recency') {return " (days)"}
+            if (dim=='frequency') {return " (sales)"}
+            if (dim=='monetary') {return " ($)"}
+        }
         // Tooltip
         var tool = d3.select("body").append("div").attr("class", "toolTip");
         
@@ -117,7 +122,7 @@ $(document).ready(function(){
             .append("text")
                 .style("text-anchor", "middle")
                 .attr("y", -9)
-                .text(function(d) { return d; })
+                .text(function(d) { return d+unit(d); })
                 .style("fill", "white");
                /* .on("mousemove", function (d) {
                     tool.style("left", d3.event.pageX + 10 + "px")

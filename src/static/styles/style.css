@@ -192,17 +192,19 @@ legend {
 
 #treemap {
   position: relative;
+  margin-top: -50px;
   margin-left: 40px;
   margin-right: 0px; }
 
 .node {
-  border: solid 1px white;
   font: 8.5px "Courier New", monospace;
   line-height: 90%;
   overflow: hidden;
   position: absolute;
   text-indent: 2px;
-  cursor: default; }
+  cursor: default;
+  padding-top: 5px;
+  padding-left: 1px; }
 
 a {
   color: dimgray; }

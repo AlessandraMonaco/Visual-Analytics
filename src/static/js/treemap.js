@@ -54,14 +54,15 @@ function treemap_from_csv(filepath) {
         
         // Then d3.treemap computes the position of each element of the hierarchy
         var width = 320,
-        height = 130;
+        height = 200;
         
         var color = d3.scale.ordinal()
         .range(["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02"])
         
         var treemap = d3.layout.treemap()
         .size([width, height])
-        .padding(0.25) //I like the thin interal lines, the group seporations are set in the CSS
+        //.padding(0.25) //I like the thin interal lines, the group seporations are set in the CSS
+        .padding([14, 5, 0, 0])
         .value(function (d) { return d.value; });
         
         var div = d3.select("#treemap").append("div")
@@ -83,8 +84,11 @@ function treemap_from_csv(filepath) {
         .style("top", function (d) { return d.y +25+ "px"; })
         .style("width", function (d) { return Math.max(0, d.dx - 1) + "px"; })
         .style("height", function (d) { return Math.max(0, d.dy - 1) + "px"; })
-        .style("background", function (d) { return d.children ? color(d.data.name) : null; })
-        .text(function (d) { return d.children ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.value +')' : null })
+        .style("background", function (d) { return d.children==null ? color(d.parent.data.name) : null; })
+        .style("color", function(d) {return d.children ? color(d.data.name) : null; } )
+        .style("font-size", function(d) {return d.children ? "11px" : null; } )
+        .text(function (d) { return d.parent==null ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.data.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.data.value +')' : null })
+        //.text(function (d) { return d.children ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.value +')' : null })
         .on("mousemove", function (d) {
             tool.style("left", d3.event.pageX + 10 + "px")
             tool.style("top", d3.event.pageY - 20 + "px")
@@ -105,31 +109,8 @@ function treemap_from_csv(filepath) {
           .attr("font-size", "12px")
           .attr("fill",  function(d){ return color(d.data.name)} )*/
 
-        // Add one dot in the legend for each name.
-        var svg = d3.select("#category-legend").append("svg")
-        
-        svg.selectAll("mydots")
-        .data(root2.descendants().filter(function(d){ return d.depth==1}))
-        .enter()
-        .append("circle")
-        .attr("r", 5)
-        .attr("cx", 20)
-        .attr("cy", function(d,i){ return 40 + i*13}) // 100 is where the first dot appears. 25 is the distance between dots
-        
-        .style("fill", function(d){ return color(d.data.name)})
 
-        // Add one dot in the legend for each name.
-        svg.selectAll("mylabels")
-        .data(root2.descendants().filter(function(d){ return d.depth==1}))
-        .enter()
-        .append("text")
-        .attr("x", 30)
-        .attr("y", function(d,i){ return 45 + i*13}) // 100 is where the first dot appears. 25 is the distance between dots
-        .style("fill", function(d){ return color(d.data.name)})
-        .text(function(d){ return " "+d.data.name})
-        .attr("text-anchor", "left")
-        .attr("font-size", "12px")
-        .style("alignment-baseline", "middle")
+        
     });
 }
 
