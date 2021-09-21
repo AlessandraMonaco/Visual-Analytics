@@ -31,6 +31,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/parallel_rfm.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/metrics_table.js')}}"></script>  
   <script type="text/javascript" src="{{ url_for('static', filename='js/clear_viz.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/compute_aggregated_values.js')}}"></script>
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
 </head>
@@ -73,7 +74,7 @@
     <div class="row">
       <script src="https://d3js.org/d3.v3.js"></script>
       <script src="https://d3js.org/d3.v4.min.js"></script>
-      <div class="col-6">  
+      <div class="col-8">  
         <select id="select-y" class="my-button btn-select"></select>
         <select class="my-button btn-select">
           <option>Aggregate by Day</option>
@@ -83,13 +84,25 @@
         <div id="line-chart"></div> 
       </div>
 
-      <div class="col-4">
+      <div class="col-1">
+        <div class="box-aggregation" id="total-profits">
+          Total Profits
+        </div>
+
+        <div class="box-aggregation" id="total-sales">
+          Total Sales
+        </div>
+
+        <div class="box-aggregation" id="avg-daily-profit">
+          Avg Daily Profit
+        </div>
+
+      </div>
+
+      <div class="col-3">
         <div id="treemap" ></div>
       </div>
 
-      <div class="col-2">
-        <div id="category-legend"></div>
-      </div>
       
     </div>  
   </fieldset>  

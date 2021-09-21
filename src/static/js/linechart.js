@@ -2,6 +2,11 @@ var margin = {top: 15, right: 7, bottom: 30, left: 40},
 width = 650 - margin.left - margin.right,
 height = 150 - margin.top - margin.bottom;
 
+  
+var lin_margin = {top: 15, right: 7, bottom: 30, left: 40},
+lin_width = 850 - lin_margin.left - lin_margin.right,
+lin_height = 150 - lin_margin.top - lin_margin.bottom;
+
 // List of groups (here I have one group per column)
 var allGroup = ["Profit", "Sales"]
 
@@ -44,7 +49,7 @@ function linechart_from_csv(svg,data,y_value) {
     // Add X axis --> it is a date format
     var x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.date; }))
-      .range([ 0, width ]);
+      .range([ 0, lin_width ]);
     xAxis = svg.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
@@ -53,7 +58,7 @@ function linechart_from_csv(svg,data,y_value) {
     // Add Y axis
     var y = d3.scaleLinear()
       .domain([0, d3.max(data, function(d) { return +d.value; })])
-      .range([ height, 0 ]);
+      .range([ lin_height, 0 ]);
     yAxis = svg.append("g")
       .attr("class", "axis")
       .call(d3.axisLeft(y))
@@ -63,6 +68,7 @@ function linechart_from_csv(svg,data,y_value) {
         .attr("dy", ".31em")
         .style("text-anchor", "end")
         .style("color", "white")
+        .style("fill", "white")
         .text(y_value);
     
 
@@ -71,14 +77,14 @@ function linechart_from_csv(svg,data,y_value) {
     var clip = svg.append("defs").append("svg:clipPath")
       .attr("id", "clip")
       .append("svg:rect")
-      .attr("width", width )
-      .attr("height", height )
+      .attr("width", lin_width )
+      .attr("height", lin_height )
       .attr("x", 0)
       .attr("y", 0);
       
     // Add brushing
     var brush = d3.brushX()                   // Add the brush feature using the d3.brush function
-      .extent( [ [0,0], [width,height] ] )  // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+      .extent( [ [0,0], [lin_width,lin_height] ] )  // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
       .on("end", updateChart)
 
     // Create the line variable: where both the line and the brush take place
@@ -121,7 +127,7 @@ var focusText = svg
       .attr("class", "line")  // I add the class line to be able to modify this line later on.
       .attr("fill", "none")
       .attr("stroke", "white")
-      .attr("stroke-width", 0.3)
+      .attr("stroke-width", 1)
       .transition()
       .duration(3000)
       .attr("d", d3.line()
@@ -231,14 +237,15 @@ $(document).ready(function(){
     
     function(data) {
       // append the svg object to the body of the page
-  
+
+
   var svg = d3.select("#line-chart")
   .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
+  .attr("width", lin_width + lin_margin.left + lin_margin.right)
+  .attr("height", lin_height + lin_margin.top + lin_margin.bottom)
   .append("g")
   .attr("transform",
-  "translate(" + margin.left + "," + margin.top + ")");
+  "translate(" + lin_margin.left + "," + lin_margin.top + ")");
 
 
 
@@ -265,11 +272,11 @@ $(document).ready(function(){
         //Add the new visualization
         var svg = d3.select("#line-chart")
           .append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
+          .attr("width", lin_width + lin_margin.left + lin_margin.right)
+          .attr("height", lin_height + lin_margin.top + lin_margin.bottom)
           .append("g")
           .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+            "translate(" + lin_margin.left + "," + lin_margin.top + ")");
         linechart_from_csv(svg,data,selectedGroup);
       }
 

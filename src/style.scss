@@ -58,7 +58,7 @@ legend {
 #fieldset-trends {
   position: relative;
   margin-top: -7px;
-  width: 90%;
+  width: 1355px;
 }
 
 
@@ -253,7 +253,7 @@ legend {
 #treemap {
   position:relative;
   margin-top: -50px;
-  margin-left: 40px;
+  margin-left: -30px;
   margin-right: 0px;
 }
 
@@ -335,6 +335,29 @@ a {
     border: 1px;		
     border-radius: 8px;					
 }
+
+.box-aggregation {
+  position: relative;
+  margin-left: -70px;
+  width: auto;
+  //background-color: $body_background_color;
+  font-size: 10px;
+  text-align: center;
+  padding: 4px;
+  color: $axis_color;
+}
+
+.num-aggregation {
+  position: relative;
+  margin-top: -7px;
+  font-weight: bold;
+  font-size: 24px;
+  color: white;
+  text-align: center;
+  font-stretch: condensed;
+}
+
+
 
 //For the calendar-heatmap
 #calendar-heatmap {
