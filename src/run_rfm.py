@@ -60,13 +60,13 @@ def rfm():
       .format(data_process.shape[0], data_process.shape[1]))
     
     # If you want, plot the RFM distributions
-    plt.figure(figsize=(12,10))
+#    plt.figure(figsize=(12,10))
     # Plot distribution of R
-    plt.subplot(3, 1, 1); sns.distplot(data_process['recency'])
+#    plt.subplot(3, 1, 1); sns.distplot(data_process['recency'])
     # Plot distribution of F
-    plt.subplot(3, 1, 2); sns.distplot(data_process['frequency'])
+#    plt.subplot(3, 1, 2); sns.distplot(data_process['frequency'])
     # Plot distribution of M
-    plt.subplot(3, 1, 3); sns.distplot(data_process['monetary'])
+#    plt.subplot(3, 1, 3); sns.distplot(data_process['monetary'])
     # Show the plot
     #plt.show()
 
@@ -77,9 +77,9 @@ def rfm():
     f_labels = range(1, 5) #from 1 to 4, increasing by 1
     m_labels = range(1, 5)
     # Assign these labels to 4 equal percentile groups (qcut = quantile-based discretization)
-    r_groups = pd.qcut(data_process['recency'], q=4, labels=r_labels)
-    f_groups = pd.qcut(data_process['frequency'], q=4, labels=f_labels)
-    m_groups = pd.qcut(data_process['monetary'], q=4, labels=m_labels)
+    r_groups = pd.qcut(data_process['recency'].rank(method='first'), q=4, labels=r_labels)
+    f_groups = pd.qcut(data_process['frequency'].rank(method='first'), q=4, labels=f_labels)
+    m_groups = pd.qcut(data_process['monetary'].rank(method='first'), q=4, labels=m_labels)
     # Create new columns R, F, M
     data_process = data_process.assign(R = r_groups.values, F = f_groups.values, M = m_groups.values)
     #data_process.head()
@@ -88,7 +88,7 @@ def rfm():
 
     # Concat RFM quartile values to create RFM Segments
     data_process['RFM_Segment_Concat'] = data_process.apply(join_rfm, axis=1)
-    rfm = data_process.sort_values(by=['recency','frequency','monetary'])
+    rfm = data_process.sort_values(by=['R','F','M'])
     rfm.head()
 
     # Count num of unique segments
@@ -124,6 +124,7 @@ def rfm():
     })
     rfm_segments.reset_index(inplace=True)
     rfm_segments.columns = ['R','F','Avg_M', 'Count', 'RFM_Level']
+    rfm_segments = rfm_segments.sort_values(by=['R', 'F'], ascending=True)
 
     #Write to csv also the segments infos
     rfm_segments.to_csv(path+'rfm_segments.csv', index=False)

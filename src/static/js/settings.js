@@ -4,6 +4,9 @@ var best_n_components = 2;
 
 $(document).ready(function(){
 
+    //-----------------------------------------------------------------
+    // SHOW INSERTED PARAMETERS
+
     // For the K-Means parameters
     if (localStorage.getItem("n_components")) {
         document.getElementById("n_components").value = localStorage.getItem("n_components");
@@ -29,11 +32,38 @@ $(document).ready(function(){
     if (localStorage.getItem("shop")) {
         document.getElementById("shop").value = localStorage.getItem("shop");
     }
-    else {document.getElementById("shop").value = "all";}
+    //else {document.getElementById("shop").value = "all";}
 
 
-    
+    //-----------------------------------------------------------------
+    // ADD OPTIONS IN SHOP SELECTOR
+    //Read the data
+    d3.csv("static/dataset/Transactions.csv", 
+        function(d){
+            return { store : d.Store_type
+            }
+        },
+
+        function(data) {
+            var shops = d3.map(data, function(d){return d.store;}).keys();
+            shops.push("All shops");
+
+            d3.select("#shop").selectAll(null)
+                .data(shops)
+                .enter()
+                .append("option")
+                .text(function(d){return d;})
+                .attr("value",function(d){if (d=="All shops") {return "all";} else return d;});
+            console.log(d3.map(data, function(d){return d.store;}).keys());
+
+            //d3.select("#shop").append("option")
+            //.text("All shops")
+            //.attr("value","all");
+        });
+
+    //Store_type
 })
+
 
 
 //On submit button for kmeans
@@ -75,6 +105,7 @@ function FilterData() {
     var city = document.getElementById("city").value;
     var sex = document.getElementById("sex").value;
     var shop = document.getElementById("shop").value;
+    console.log(shop);
 
     //Save the inserted value to display it in the input box
     localStorage.setItem("city", city);

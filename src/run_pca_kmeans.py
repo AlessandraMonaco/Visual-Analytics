@@ -10,6 +10,9 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
 def clustering(n_components, n_clusters):
+    # Set numpy random seed (to avoid having always different results)
+    np.random.seed(0)
+
     # Read csv file
     path = "src/static/dataset/"
     data = pd.read_csv(path+"full_data.csv")
