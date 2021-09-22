@@ -24,7 +24,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/treemap.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/linechart.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/calendar_heatmap.js')}}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/run_kmeans_button.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/save_parameters.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/parallel_unsupervised.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/cluster_scatter.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/rfm_heatmap.js')}}"></script>
@@ -42,6 +42,7 @@
     <div class="col">
       <span class="material-icons">insights</span>
       <span id="title"> RETAIL ANALYZER</span>
+
       <a class="my-button btn-right" href="#info">?</a>
 
       <div id="info" class="overlay">
@@ -56,9 +57,48 @@
         </div>
       </div>
 
-      <button class="my-button btn-right" id="btn-clear" type="button" onclick="ResetViz();">
-        Reset
-      </button>
+      <form action="/reset" method="GET">
+        <button class="my-button btn-right" id="btn-clear" onclick="ResetViz();">
+          Reset
+        </button>
+      </form>
+
+      <!-- Customer sex filter-->
+      <form action="/applyfilters" method="GET" id="customer-filters" class="btn-right">
+        <select class="my-button btn-select" name="sex" id="sex"> 
+          <option value="" disabled>- Customer Sex -</option>
+          <option value="all" selected>Male/Female</option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select> 
+
+        <!-- Customer city filter-->     
+        <select class="my-button btn-select" name="city" id="city"> 
+          <option value="" disabled>- Customer City -</option>
+          <option value="all" selected>All Cities</option>
+          <option value="1">City 1</option>
+          <option value="2">City 2</option>
+          <option value="3">City 3</option>
+          <option value="4">City 4</option>
+          <option value="5">City 5</option>
+          <option value="6">City 6</option>
+          <option value="7">City 7</option>
+          <option value="8">City 8</option>
+          <option value="9">City 9</option>
+          <option value="10">City 10</option>
+        </select>
+
+        <select class="my-button btn-select" name="shop" id="shop"> 
+          <option value="" disabled>- Shop -</option>
+          <option value="all" selected>All Shops</option>
+        </select>
+
+        <!-- Button to actually run the filtering -->
+        <button class="my-button" id="btn-filter" onclick="FilterData();">
+          Filter<i class="material-icons">filter_alt</i></button>
+      </form>
+
+      
 
       <!--Button to filter by Shop (multi-option check box)-->
       <!--Button to filter by Customer Location (city code): 'City 1', 'City 2' ... -->
@@ -137,9 +177,8 @@
               <input type="number" id="n_components" name="n_components" class="input-param btn-select" min="2" max="18" value="2">
               <label for="n_clusters">#CLUSTERS:</label>
               <input type="number" id="n_clusters" name="n_clusters" class="input-param btn-select" min="2" max="6" value="4" >
-            <span style="position:relative;margin-top:20px;">
-              <button class="my-button" id="btn-run" onclick="RunKmeans();">
-                <i class="material-icons">restart_alt</i></button></span>
+              <button class="my-button" id="btn-run" style="vertical-align:middle;font-size:12px;padding-bottom:4px;" onclick="RunKmeans();">
+                Run<span class="material-icons" style="font-size:22px;">restart_alt</span></button>
             </form>
 
             

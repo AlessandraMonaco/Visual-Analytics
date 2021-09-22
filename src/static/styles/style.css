@@ -9,6 +9,10 @@ body {
   font-size: 22px;
   color: #C0C0C0; }
 
+form .material-icons {
+  color: #282828;
+  vertical-align: middle; }
+
 #subtitle {
   font-family: 'Englebert', sans-serif;
   font-size: 10px; }
@@ -51,6 +55,13 @@ legend {
     #top button a {
       color: #FFFFFF;
       text-decoration: none; }
+
+#customer-filters {
+  position: relative;
+  margin-right: 300px; }
+  #customer-filters select.btn-select {
+    position: relative;
+    margin-top: -30px; }
 
 .overlay {
   z-index: 2;
@@ -137,8 +148,9 @@ legend {
 
 #btn-run {
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: auto;
+  font-size: 18px;
+  height: auto;
   text-align: left; }
   #btn-run i {
     position: relative;
@@ -309,7 +321,7 @@ a {
 
 form {
   position: relative;
-  margin-top: -10px;
+  margin-top: 10px;
   display: inline;
   margin-left: 50px;
   font-size: 12px; }
@@ -358,7 +370,7 @@ input[type=number] {
 #row-form {
   position: relative;
   margin-left: 5px;
-  margin-top: -10px; }
+  margin-top: 0px; }
   #row-form .my-button {
     font-size: 10px;
     height: 20px; }

@@ -2,11 +2,13 @@ import flask
 from flask import Flask, render_template, request 
 import run_pca_kmeans, create_shared_dataset, run_rfm
  
+#Flask variables can be displayed in HTML by wrapping them in the double braces ({{ }})
+
 # Initialise app: create a new Flask application
 app = Flask(__name__)
 
 # Basic function to call the index.html template
-@app.route('/' ) #app.route() tells us what URL triggers our next function ('/' = no url)
+@app.route('/') #app.route() tells us what URL triggers our next function ('/' = no url)
 def index():
     # Create a unique preprocessed dataset from multiple files
     create_shared_dataset.create_csv()
@@ -33,8 +35,33 @@ def run_clustering():
     # Return again the same html template
     return render_template('index.html')
 
+# Service to filter the csv dataset based on user selections
+# It reads all the actual selections (category/categories, sex, city, cluster, rfm segment)
+# and applies the selections on the standard full_data csv (after having recrated id), 
+# storing the filtered data in the same full_data file
+@app.route('/applyfilters', methods = ['GET', 'POST'] )
+def filter_csv():
+    # Start with the full dataset (to remove previous filters)
+    create_shared_dataset.create_csv()
+    # Read inserted parameters (callig them by their 'name' value)
+    sex = request.args.get('sex')
+    city = request.args.get('city')
+    shop = request.args.get('shop') 
+    # Call the function to create the filtered dataset
+    create_shared_dataset.filter_csv(sex,city,shop)
+    # Run K-Means Clustering on the new data (with default params)
+    run_pca_kmeans.clustering(2,4) 
+    # Run again rfm segmentation on the new data
+    run_rfm.rfm()
+    # Return again the same html template
+    return render_template('index.html')
 
+# Service to reset the original visualization, removing all selections
+@app.route('/reset', methods = ['GET', 'POST'] )
+def reset():
+    return index()
 
+    
 ####
 # Code to actually run the Flask app
 if(__name__ == '__main__'):

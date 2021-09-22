@@ -23,7 +23,12 @@ body {
 
 }
 
-
+form {
+  .material-icons {
+    color: $background_color;
+    vertical-align: middle;
+  }
+}
 
 
 #subtitle {
@@ -82,6 +87,15 @@ legend {
     
   }
 
+}
+
+#customer-filters {
+  position: relative;
+  margin-right: 300px;
+  select.btn-select{
+    position: relative;
+    margin-top: -30px;
+  }
 }
 
 //Popup
@@ -181,8 +195,11 @@ legend {
 
 #btn-run {
   position: relative;
-  width: 30px;
-  height: 30px;
+  //margin-top: -10px;
+  width: auto;
+  font-size: 18px;
+  //height: 30px;
+  height: auto;
   text-align: left;
   i {
     position: relative;
@@ -405,7 +422,7 @@ a {
 // Form to set parameters
 form {
   position: relative;
-  margin-top: -10px;
+  margin-top: 10px;
   display: inline;
   margin-left: 50px;
   font-size: 12px;
@@ -468,7 +485,7 @@ input[type=number] {
 #row-form {
   position: relative;
   margin-left: 5px;
-  margin-top: -10px;
+  margin-top: 0px;
   
   .my-button {
     font-size: 10px;

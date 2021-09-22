@@ -90,7 +90,7 @@ function treemap_from_csv(filepath) {
         .text(function (d) { return d.parent==null ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.data.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.data.value +')' : null })
         //.text(function (d) { return d.children ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.value +')' : null })
         .on("mousemove", function (d) {
-            tool.style("left", d3.event.pageX + 10 + "px")
+            tool.style("left", d3.event.pageX + 1 + "px")
             tool.style("top", d3.event.pageY - 20 + "px")
             tool.style("display", "inline-block");
             tool.html(d.children ? null : "<span class='category'>"+d.parent.data.name+" : "+d.parent.value+"</span>" + "<br>"+ d.data.name + " : " + d.data.value);

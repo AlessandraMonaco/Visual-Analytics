@@ -25,7 +25,7 @@ function change_json_format(root,value_key) {
 
 $(document).ready(function(){
 //set the dimensions and margins of the graph
-var margin = {top: 2, right: 10, bottom: 2, left: 10},
+var margin = {top: 20, right: 10, bottom: 2, left: 10},
   width = 455 - margin.left - margin.right,
   height = 400 - margin.top - margin.bottom;
 

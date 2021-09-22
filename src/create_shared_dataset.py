@@ -29,7 +29,39 @@ def create_csv():
     tr_final = tr_final.sort_values(by=["tran_date"])
     tr_final.head()
 
+    # Convert city codes to integer
+    tr_final['city_code'] = tr_final['city_code'].astype('Int64')
+
     # Write final dataset to csv
     tr_final.to_csv(path+'full_data.csv', index=False)
 
     print("Dataset created")
+
+
+
+def filter_csv(sex,city,shop):
+
+    # Read full data from csv
+    path = "src/static/dataset/"
+    df = pd.read_csv(path+"full_data.csv")
+    
+    # Convert types
+    df.city_code = df.city_code.astype('Int64')
+
+    # Filter the sex
+    if (sex!="all"):
+        this_sex =  df['Gender']==sex #boolean variable to filter by sex
+        df = df[this_sex] #take only True rows
+    # Filter the city
+    if (city!="all"):
+        this_city = df['city_code']==int(city)
+        df = df[this_city] #take only True rows
+    # Filter the shop
+    if (shop!="all"):
+        this_shop = df['Store_type']==shop
+        df = df[this_shop] #take only True rows
+    print(df.head())
+    # Write filtered data in csv
+    df.to_csv(path+'full_data.csv', index=False)
+
+    print("Dataset filtered")
