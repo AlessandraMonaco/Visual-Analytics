@@ -45,8 +45,15 @@ $(document).ready(function(){
         },
 
         function(data) {
-            var shops = d3.map(data, function(d){return d.store;}).keys();
+
+
+            /*var shops = d3.map(data, function(d){return d.store;}).keys();
             shops.push("All shops");
+
+            d3.select("#shop").append("option")
+            .text("- Shop -")
+            .attr("value","")
+            .attr("disabled", "True");
 
             d3.select("#shop").selectAll(null)
                 .data(shops)
@@ -55,10 +62,8 @@ $(document).ready(function(){
                 .text(function(d){return d;})
                 .attr("value",function(d){if (d=="All shops") {return "all";} else return d;});
             console.log(d3.map(data, function(d){return d.store;}).keys());
-
-            //d3.select("#shop").append("option")
-            //.text("All shops")
-            //.attr("value","all");
+*/
+            
         });
 
     //Store_type
