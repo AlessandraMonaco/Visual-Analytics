@@ -194,9 +194,7 @@ $(document).ready(function(){
             .style("fill", function (d) { return color(d.cluster) } )
         .on("mouseover", highlight)
         .on("mousemove", mousemove)
-        .on("mouseleave", doNotHighlight )
-        
-
+        .on("mouseleave", doNotHighlight );
 
 
         //Add the cluster selector legend

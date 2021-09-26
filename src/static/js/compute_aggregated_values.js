@@ -51,7 +51,7 @@ $(document).ready(function(){
                 .append("text")
                 .html("$"+avg_daily_profit);
 
-            console.log(total_sales, total_profits, avg_daily_profit);
+            //console.log(total_sales, total_profits, avg_daily_profit);
         
         // append the svg object to the body of the page
     
