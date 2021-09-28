@@ -23,9 +23,7 @@ function change_json_format(root,value_key) {
 }
 
 /*A function to create the treemap visualization*/
-function treemap_from_csv(filepath) {
-    //Read data from csv and transform into nested json
-    d3.csv(filepath, function(csv_data){
+function treemap_from_csv(csv_data) { 
         
         // Nest data by categories and subcategories
         var nested_data = d3.nest()
@@ -87,7 +85,7 @@ function treemap_from_csv(filepath) {
         .style("background", function (d) { return d.children==null ? color(d.parent.data.name) : null; })
         .style("color", function(d) {return d.children ? color(d.data.name) : null; } )
         .style("font-size", function(d) {return d.children ? "11px" : null; } )
-        .text(function (d) { return d.parent==null ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.data.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.data.value +')' : null })
+        .text(function (d) { return d.parent==null ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : d.children!=null ? d.data.name : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.data.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.data.value +')' : null })
         //.text(function (d) { return d.children ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.value +')' : null })
         .on("mousemove", function (d) {
             tool.style("left", d3.event.pageX + 1 + "px")
@@ -109,13 +107,13 @@ function treemap_from_csv(filepath) {
           .attr("font-size", "12px")
           .attr("fill",  function(d){ return color(d.data.name)} )*/
 
-
-        
-    });
 }
 
 $(document).ready(function(){
-    treemap_from_csv("static/dataset/full_data.csv");          
+    //Read data from csv and transform into nested json
+    d3.csv("static/dataset/full_data.csv", function(data){
+        treemap_from_csv(data);          
+    });
 });
 
 
