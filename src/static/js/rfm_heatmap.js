@@ -19,6 +19,7 @@ $(document).ready(function(){
     //Read the data
     d3.csv("static/dataset/rfm_segments.csv", function(data) {
 
+
         // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
         var myGroups = d3.map(data, function(d){return d.R;}).keys().sort() //rows of heat
         var myVars = d3.map(data, function(d){return d.F;}).keys() //cols of heat
@@ -66,9 +67,9 @@ $(document).ready(function(){
         .text("Frequency");   
       
         // Build color scale
-        var avg_max = d3.max(data.map(function(d) { return parseFloat(d.Avg_M); }));
+        avg_max = d3.max(data.map(function(d) { return parseFloat(d.Avg_M); }));
 
-        var myColor = d3.scaleSequential()
+        myColor = d3.scaleSequential()
         .interpolator(d3.interpolatePurples)
         .domain([0,
           avg_max])
@@ -232,7 +233,7 @@ $(document).ready(function(){
           .text("Avg Monetary Value");  
     
           continuous("#rfm-legend", myColor);
-
+          
     }) //end of d3.csv
 
 }) //end of document.ready

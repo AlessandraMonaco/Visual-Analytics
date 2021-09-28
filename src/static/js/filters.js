@@ -103,7 +103,23 @@ $(document).ready(function(){
             }); //end csv full data
         }
 
+        function filterRfmDataByCustomers(customers) {
+            d3.csv("static/dataset/rfm_data.csv", function(data) {
 
+                //filter basing on customers
+                var filtered_data = data.filter(function(d){ return customers.includes(d.cust_id);});
+
+                //remove old data
+                var svg = d3.select('#rfm_parallel svg g');
+                svg.selectAll(".p2line").remove();
+
+                //show new data : TO DO: DEFINE FUNCTION AND CALL IT
+                // Draw the lines
+                // line to draw for this raw.
+                rfm_parallel_from_csv(svg,dimensions,filtered_data);
+
+            });
+        }
 
         var filterByCluster = function(){
 
@@ -215,9 +231,10 @@ $(document).ready(function(){
             });
             console.log(customers);
 
-            // FILTER BASING ON CUSTOMER LIST
+            // FILTER FULL DATA BASING ON CUSTOMER LIST
             filterFullDataByCustomers(customers);
-           
+           // FILTER RFM DATA BASING ON CUSTOMER LIST
+           filterRfmDataByCustomers(customers);
 
 
 

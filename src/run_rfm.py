@@ -102,8 +102,7 @@ def rfm():
     # Create a new variable RFM_Level
     rfm['RFM_Level'] = rfm.apply(rfm_level, axis=1)
 
-    # Write processed data in a csv file
-    rfm.to_csv(path+'rfm_data.csv', index=True)
+    
 
     # Print some aggregated info on rfm levels
     # Calculate average values for each RFM_Level, and return a size of each segment 
@@ -125,7 +124,14 @@ def rfm():
     rfm_segments.reset_index(inplace=True)
     rfm_segments.columns = ['R','F','Avg_M', 'Count', 'RFM_Level']
     rfm_segments = rfm_segments.sort_values(by=['R', 'F'], ascending=True)
+    rfm_segments.reset_index(inplace=True)
 
+
+    #Add avg M to rfm data
+    rfm = pd.merge(rfm,rfm_segments[['R','F','Avg_M']], how='left', left_on=['R','F'], right_on=['R','F'])
+    
+    # Write processed data in a csv file
+    rfm.to_csv(path+'rfm_data.csv', index=True)
     #Write to csv also the segments infos
     rfm_segments.to_csv(path+'rfm_segments.csv', index=False)
 
