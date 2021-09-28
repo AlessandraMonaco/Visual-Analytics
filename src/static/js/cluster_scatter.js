@@ -105,21 +105,22 @@ $(document).ready(function(){
         
         // Highlight the specie that is hovered
         var highlight = function(d){
-    
-            // Highlight in the scatter plot
-            selected_cluster = d.cluster
+            var clicked = document.getElementById('cluster-selector-select').value;
+            if (clicked == 'all') {
+                // Highlight in the scatter plot
+                selected_cluster = d.cluster
         
-            d3.selectAll(".dot")
-                .transition()
-                .duration(200)
-                .style("fill", unselected_color)
-                .attr("r", 1)
+                d3.selectAll(".dot")
+                    .transition()
+                    .duration(200)
+                    .style("fill", unselected_color)
+                    .attr("r", 1)
         
-            d3.selectAll(".dot" + selected_cluster)
-                .transition()
-                .duration(200)
-                .style("fill", color(selected_cluster))
-                .attr("r", 1.5)
+                d3.selectAll(".dot" + selected_cluster)
+                    .transition()
+                    .duration(200)
+                    .style("fill", color(selected_cluster))
+                    .attr("r", 1.5)
             
                 // Highlight in parallel coordinates
 
@@ -137,48 +138,51 @@ $(document).ready(function(){
                 // Reset selector on All Data
                 d3.select('#cluster-selector-select').property('value', 'all');
 
-                 // Show tooltip
-                tooltip
-                .style("opacity", 1)
-                d3.select(this)
-                .style("stroke", "white")
-                .style("opacity", 1)
+                
+            }
+             // Show tooltip
+             tooltip
+             .style("opacity", 1)
+             
         }
     
         // Remove highlight
         var doNotHighlight = function(){
-
-            // Do not highlight scatter
-            d3.selectAll(".dot")
-                .transition()
-                .duration(200)
-                .style("fill", function (d) { return color(d.cluster) } )
-                .attr("r", 1 )
-                
-            // Do not highlight parallel
-            d3.selectAll(".pline")
-                .transition().duration(200).delay(1000)
-                .style("stroke", function(d){ return( color(d.cluster))} )
-                .style("opacity", "1")
+            var clicked = document.getElementById('cluster-selector-select').value;
+            if (clicked == 'all') {
+                // Do not highlight scatter
+                d3.selectAll(".dot")
+                    .transition()
+                    .duration(200)
+                    .style("fill", function (d) { return color(d.cluster) } )
+                    .attr("r", 1 )
+                    
+                // Do not highlight parallel
+                d3.selectAll(".pline")
+                    .transition().duration(200).delay(1000)
+                    .style("stroke", function(d){ return( color(d.cluster))} )
+                    .style("opacity", "1")
             
-            // Reset selector on All Data
-            d3.select('#cluster-selector-select').property('value', 'all');
+                // Reset selector on All Data
+                d3.select('#cluster-selector-select').property('value', 'all');
 
-            //Hide tooltip
-            tooltip
-            .style("opacity", 0)
-            d3.select(this)
-            .style("stroke", "black")
-            .style("opacity", 0.8)
+                //Hide tooltip
+                tooltip
+                .style("opacity", 0)
+                
+            }
         }
 
         //Detect mouse change for the tooltip to set the text
         var mousemove = function(d) {
-            tooltip
-            .html("CLUSTER " + d.cluster +
-            "<br>("+ sizes[d.cluster] +" customers)")
-            .style("left", (d3.mouse(this)[0] + 50 + "px"))
-            .style("top", (d3.mouse(this)[1] + "px"))
+            var clicked = document.getElementById('cluster-selector-select').value;
+            if (clicked == 'all') {
+                tooltip
+                .html("CLUSTER " + d.cluster +
+                "<br>("+ sizes[d.cluster] +" customers)")
+                .style("left", (d3.mouse(this)[0] + 50 + "px"))
+                .style("top", (d3.mouse(this)[1] + "px"))
+            }
         }
     
         // Add dots
@@ -194,93 +198,20 @@ $(document).ready(function(){
             .style("fill", function (d) { return color(d.cluster) } )
         .on("mouseover", highlight)
         .on("mousemove", mousemove)
-        .on("mouseleave", doNotHighlight );
+        .on("mouseleave", doNotHighlight )
+        .on("click", function(d) {
+            document.getElementById('cluster-selector-select').value = d.cluster;
+            //Hide tooltip (we show it again in the selector code)
+            tooltip
+            .style("opacity", 0)
+            // Notify the change of the cluster selector forcing the change event
+            var element = document.getElementById('cluster-selector-select');
+            var event = new Event('change');
+            element.dispatchEvent(event);
+        });
 
-
-        //Add the cluster selector legend
-        // add the options to the button
-        // List of groups (here I have one group per column)
-        var allGroup = d3.range(d3.min(data, function(d) { return +parseInt(d.cluster); }),
-            d3.max(data, function(d) { return +parseInt(d.cluster); })+1);
 
         
-        // Add option to select all clusters
-        var legend = d3.select("#cluster-selector-select")
-        .append("option")
-        .text("All data ") // text showed in the menu
-        .attr("value", function (d) { return "all"; }) // corresponding value returned by the button
-        .attr("selected", "true")
-        .style("color", "grey")
-        .style("background", "#1b1b1b")
-        .style("font-size", "10px")
-
-        legend = d3.select("#cluster-selector-select")
-            .selectAll('myClusters')
-            .data(allGroup)
-            .enter()
-            .append("option")
-            .text(function (d) { return "CLUSTER "+d; }) // text showed in the menu
-            .attr("value", function (d) { return d; }) // corresponding value returned by the button
-            .style("color", function(d) { return color(d); })
-            .style("background", "#1b1b1b")
-            .style("font-size", "10px")
-
-            // Highlight points and lines of selected cluster(s)
-            d3.select("#cluster-selector-select")
-            .on('change', function() {
-                // recover the option that has been chosen
-                options =  this.selectedOptions;
-
-                //All grey
-                //console.log(this.selectedOptions);
-                d3.selectAll(".dot")
-                .transition()
-                .duration(200)
-                .style("fill", unselected_color)
-                .attr("r", 1)
-
-                // first every group turns grey
-                d3.selectAll(".pline")
-                .transition().duration(200)
-                .style("stroke", "grey")
-                .style("opacity", "0.1")
-
-                //Highlight selected
-                for (var i=0; i<options.length; i++) {
-                    selected_cluster = options[i].value;
-                    console.log(selected_cluster)
-                
-                    d3.selectAll(".dot" + selected_cluster)
-                        .transition()
-                        .duration(200)
-                        .style("fill", color(selected_cluster))
-                        .attr("r", 1.5)
-                    
-                        // Highlight in parallel coordinates
-                        d3.selectAll(".pline" + selected_cluster)
-                        .transition().duration(200)
-                        .style("stroke", color(selected_cluster))
-                        .style("opacity", "1")
-
-                        
-
-                    if(selected_cluster=="all") {
-                        d3.selectAll(".dot")
-                        .transition()
-                        .duration(200)
-                        .style("fill", function(d) { return color(d.cluster);})
-                        .attr("r", 1)
-                    
-                        // Highlight in parallel coordinates
-                        d3.selectAll(".pline")
-                        .transition().duration(200)
-                        .style("stroke", function(d) { return color(d.cluster);})
-                        .style("opacity", "1")
-                    }
-                }
-                
-            });
-
 
     })
   
