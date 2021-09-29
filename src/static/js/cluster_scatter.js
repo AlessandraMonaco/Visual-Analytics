@@ -138,9 +138,9 @@ $(document).ready(function(){
                 // Reset selector on All Data
                 d3.select('#cluster-selector-select').property('value', 'all');
 
-             // Show tooltip
-             tooltip
-             .style("opacity", 1)   
+                // Show tooltip
+                tooltip
+                .style("opacity", 1)   
             }
              
              

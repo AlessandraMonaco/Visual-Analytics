@@ -80,77 +80,82 @@ $(document).ready(function(){
 
         // Highlight the specie that is hovered
         var highlight = function(d){
+            var clicked = document.getElementById('cluster-selector-select').value;
+            if (clicked == 'all') {
+                selected_cluster = d.cluster
 
-            selected_cluster = d.cluster
+                // first every group turns grey
+                d3.selectAll(".pline")
+                .transition().duration(200)
+                .style("stroke", unselected_color)
+                .style("opacity", "0.1")
+                // Second the hovered specie takes its color
+                d3.selectAll(".pline" + selected_cluster)
+                .transition().duration(200)
+                .style("stroke", color(selected_cluster))
+                .style("opacity", "1")
 
-            // first every group turns grey
-            d3.selectAll(".pline")
-            .transition().duration(200)
-            .style("stroke", unselected_color)
-            .style("opacity", "0.1")
-            // Second the hovered specie takes its color
-            d3.selectAll(".pline" + selected_cluster)
-            .transition().duration(200)
-            .style("stroke", color(selected_cluster))
-            .style("opacity", "1")
-
-            // Highlight scatter
-            d3.selectAll(".dot")
-                .transition()
-                .duration(200)
-                .style("fill", unselected_color)
-                .attr("r", 1)
+                // Highlight scatter
+                d3.selectAll(".dot")
+                    .transition()
+                    .duration(200)
+                    .style("fill", unselected_color)
+                    .attr("r", 1)
         
-            d3.selectAll(".dot" + selected_cluster)
-                .transition()
-                .duration(200)
-                .style("fill", color(selected_cluster))
-                .attr("r", 1.5)
+                d3.selectAll(".dot" + selected_cluster)
+                    .transition()
+                    .duration(200)
+                    .style("fill", color(selected_cluster))
+                    .attr("r", 1.5)
             
-            // Reset selector on All Data
-            d3.select('#cluster-selector-select').property('value', 'all');
+                // Reset selector on All Data
+                d3.select('#cluster-selector-select').property('value', 'all');
 
-             // Show tooltip
-             tooltip
-             .style("opacity", 1)
-             d3.select(this)
-             .style("stroke", "white")
-             .style("opacity", 1)
+                // Show tooltip
+                tooltip
+                .style("opacity", 1)
+                d3.select(this)
+                .style("stroke", "white")
+                .style("opacity", 1);
+            }
         }
 
         // Unhighlight
         var doNotHighlight = function(d){
-            // Do not highlight parallel
-            d3.selectAll(".pline")
-            .transition().duration(200).delay(1000)
-            .style("stroke", function(d){ return( color(d.cluster))} )
-            .style("opacity", "1")
+            var clicked = document.getElementById('cluster-selector-select').value;
+            if (clicked == 'all') {
+                // Do not highlight parallel
+                d3.selectAll(".pline")
+                .transition().duration(200).delay(1000)
+                .style("stroke", function(d){ return( color(d.cluster))} )
+                .style("opacity", "1");
 
-            // Do not highlight scatter
-            d3.selectAll(".dot")
-                .transition()
-                .duration(200)
-                .style("fill", function (d) { return color(d.cluster) } )
-                .attr("r", 1 )
+                // Do not highlight scatter
+                d3.selectAll(".dot")
+                    .transition()
+                    .duration(200)
+                    .style("fill", function (d) { return color(d.cluster) } )
+                    .attr("r", 1 );
             
-            // Reset selector on All Data
-            d3.select('#cluster-selector-select').property('value', 'all');
+                // Reset selector on All Data
+                d3.select('#cluster-selector-select').property('value', 'all');
 
-            //Hide tooltip
-            tooltip
-            .style("opacity", 0)
-            d3.select(this)
-            .style("stroke", "black")
-            .style("opacity", 0.8)
+                //Hide tooltip
+                tooltip
+                .style("opacity", 0)
+            }
         }
 
         //Detect mouse change for the tooltip to set the text
         var mousemove = function(d) {
-            tooltip
-            .html("CLUSTER " + d.cluster +
-            "<br>"+ sizes[d.cluster] +" customers.")
-            .style("left", "50px")
-            .style("top", "-10px")
+            var clicked = document.getElementById('cluster-selector-select').value;
+            if (clicked == 'all') {
+                tooltip
+                .html("CLUSTER " + d.cluster +
+                "<br>"+ sizes[d.cluster] +" customers.")
+                .style("left", "50px")
+                .style("top", "-10px")
+            }
         }
 
         // The path function take a row of the csv as input, and return x and y coordinates of the 
@@ -173,6 +178,16 @@ $(document).ready(function(){
             .on("mouseover", highlight)
             .on("mousemove", mousemove)
             .on("mouseleave", doNotHighlight )
+            .on("click", function(d) {
+                document.getElementById('cluster-selector-select').value = d.cluster;
+                //Hide tooltip (we show it again in the selector code)
+                tooltip
+                .style("opacity", 0)
+                // Notify the change of the cluster selector forcing the change event
+                var element = document.getElementById('cluster-selector-select');
+                var event = new Event('change');
+                element.dispatchEvent(event);
+            });
 
         // Draw the axis:
         svg.selectAll("myAxis")

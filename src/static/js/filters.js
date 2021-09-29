@@ -280,7 +280,7 @@ $(document).ready(function(){
             .style("background", "#1b1b1b")
             .style("font-size", "10px")
 
-            // Highlight points and lines of selected cluster(s)
+            // Highlight points and lines of selected cluster(s), filter other viz
             d3.select("#cluster-selector-select")
             .on('change', filterByCluster);
 
