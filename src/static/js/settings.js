@@ -2,6 +2,12 @@
 var best_n_clusters = 4;
 var best_n_components = 2;
 
+//when browser closed clear storage
+$(window).on("unload", function(e) {
+    window.localStorage.clear();
+});
+
+
 $(document).ready(function(){
 
     //-----------------------------------------------------------------

@@ -131,7 +131,7 @@ def rfm():
     rfm = pd.merge(rfm,rfm_segments[['R','F','Avg_M']], how='left', left_on=['R','F'], right_on=['R','F'])
     
     # Write processed data in a csv file
-    rfm.to_csv(path+'rfm_data.csv', index=True)
+    rfm.to_csv(path+'rfm_data.csv', index=False)
     #Write to csv also the segments infos
     rfm_segments.to_csv(path+'rfm_segments.csv', index=False)
 

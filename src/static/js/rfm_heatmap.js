@@ -87,32 +87,41 @@ $(document).ready(function(){
         .style("width", "140px")
         .style("height", "auto")
 
-        // Three function that change the tooltip when user hover / move / leave a cell
+        // Three function that change the tooltip when user hover / move / leave a cell OK!!
         var mouseover = function(d) {
 
           // Show tooltip
             tooltip
             .style("opacity", 1)
+          
+          // Set rect border to white
             d3.select(this)
             .style("stroke", "white")
             .style("opacity", 1)
 
-          // Highlight segment in parallel coordinates
+          
           selected_R = d.R;
           selected_F = d.F;
             
             // HIghlight parallel
-            // first every group turns grey
+            // first every group turns grey TO DO: EVERY CLASSED "unselected" turns grey
+            // Second the hovered specie takes its color
+            // TO FIX
+          if(localStorage.getItem("rfm_customers") &&
+          localStorage.getItem("rfm_customers")!="[]" ) { }
+
+          else { //OKKKKKKK
             d3.selectAll(".p2line")
             .transition().duration(200)
             .style("stroke", unselected_color)
-            .style("opacity", "0")
-            // Second the hovered specie takes its color
+            .style("opacity", "0");
+            
+
             d3.selectAll(".p2line" + selected_R + selected_F)
             .transition().duration(200)
             .style("stroke", myColor(d.Avg_M))
-            .style("opacity", "1")
-
+            .style("opacity", "1");
+          }
         }
         var mousemove = function(d) {
             tooltip
@@ -123,19 +132,50 @@ $(document).ready(function(){
             .style("top", (d3.mouse(this)[1] + "px"))
         }
         var mouseleave = function(d) {
-
+          
           //Hide tooltip
             tooltip
             .style("opacity", 0)
-            d3.select(this)
-            .style("stroke", "black")
-            .style("opacity", 0.8)
+
+            if(d3.select(this).attr("class")=="unselected") {
+              d3.select(this)
+              .style("stroke", "black")
+              .style("opacity", 0.8)
           
+              /*Set original parallel viz
+              d3.selectAll(".unselected .p2line")
+              .transition().duration(200)
+              .style("stroke",  unselected_color )
+              .style("opacity", 0);*/
+            }
+
+            // IF THERE ARE RFM SEGMENTS SELECTIONS, COLOR ACCORDING TO THE SELECTIONS
+            // TO FIX
+            /*if(localStorage.getItem("rfm_customers") && 
+            localStorage.getItem("rfm_customers")!=[] ) {
+              // Unselected in grey
+              /*d3.selectAll(".unselected .p2line")
+              .transition().duration(200)
+              .style("opacity", "0");
+              // Selected in their colour
+              d3.selectAll(".selected .p2line")
+              .transition().duration(200)
+              .style("stroke",  function(d) { return myColor(d.Avg_M);} )
+              .style("opacity", "1");
+            }
+            // IF NO SELECTION, COLOR ALL AS DEFAULT MYCOLOR
+            else {
+              d3.selectAll(".p2line")
+              .transition().duration(200)
+              .style("stroke",  function(d) { return myColor(d.Avg_M);} )
+              .style("opacity", "1");
+            }*/
+
             //Set original parallel viz
-            d3.selectAll(".p2line")
+            /*d3.selectAll(".p2line .unselected")
             .transition().duration(200)
             .style("stroke",  unselected_color )
-            .style("opacity", 0.5);
+            .style("opacity", 0);*/
         }
 
         // add the squares
@@ -147,6 +187,7 @@ $(document).ready(function(){
             .attr("y", function(d) { return y(d.F) })
             .attr("rx", 2)
             .attr("ry", 2)
+            .attr("class", "unselected")
             .attr("width", x.bandwidth() )
             .attr("height", y.bandwidth() )
             .style("fill", function(d) { return myColor(d.Avg_M)} )
@@ -234,6 +275,6 @@ $(document).ready(function(){
     
           continuous("#rfm-legend", myColor);
           
-    }) //end of d3.csv
+    }); //end of d3.csv
 
 }) //end of document.ready

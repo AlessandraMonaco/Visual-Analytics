@@ -10,7 +10,7 @@ dimensions = ['recency', 'frequency', 'monetary'];
 
 function unit(dim) {
     if (dim=='recency') {return " (days)"}
-    if (dim=='frequency') {return " (sales)"}
+    if (dim=='frequency') {return " (orders)"}
     if (dim=='monetary') {return " ($)"}
 }
 
@@ -59,7 +59,7 @@ function rfm_parallel_from_csv(svg,dimensions,data) {
     .enter()
     .append("path")
     //.attr("class", function (d) { return "pline pline" + d.cluster } ) // 2 class for each line: 'line' and the group name
-    .attr("class", function (d) { return "p2line p2line" + d.R + d.F; } ) // 2 class for each line: 'line' and the group name
+    .attr("class", function (d) { return "unselected p2line p2line" + d.R + d.F; } ) // 2 class for each line: 'line' and the group name
     .attr("d",  path)
     .style("fill", "none" )
     .style("stroke", function(d){ return myColor(d.Avg_M);} )

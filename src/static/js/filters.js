@@ -24,13 +24,14 @@ $(document).ready(function(){
         .key(function(d){ return d.cluster; })
         .entries(data);
 
-         console.log(nested_data);
+         //console.log(nested_data);
 
-        function filterFullDataByCustomers(customers) {
+        function filterFullDataByCustomers(customers,filter) {
             d3.csv("static/dataset/full_data.csv",  
                 
                 function(d){
-                    if (document.getElementById("cluster-selector-select").value == 'all') {
+                    if (document.getElementById("cluster-selector-select").value == 'all' &&
+                    filter=='cluster' || customers.length==0) {
                         // take all data
                         return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
                             profit : d.total_amt, 
@@ -103,20 +104,26 @@ $(document).ready(function(){
             }); //end csv full data
         }
 
-        function filterRfmDataByCustomers(customers) {
+        function filterRfmDataByCustomers(customers, filter) {
             d3.csv("static/dataset/rfm_data.csv", function(data) {
 
                 //filter basing on customers
-                var filtered_data = data.filter(function(d){ return customers.includes(d.cust_id);});
+                if (document.getElementById("cluster-selector-select").value == 'all' &&
+                filter == 'cluster') {
+                    new_data = data;
+                }
+                else {
+                    new_data = data.filter(function(d){ return customers.includes(d.cust_id);});
+                }
 
                 //remove old data
                 var svg = d3.select('#rfm_parallel svg g');
                 svg.selectAll(".p2line").remove();
 
-                //show new data : TO DO: DEFINE FUNCTION AND CALL IT
+                //show new data 
                 // Draw the lines
                 // line to draw for this raw.
-                rfm_parallel_from_csv(svg,dimensions,filtered_data);
+                rfm_parallel_from_csv(svg,dimensions,new_data);
 
             });
         }
@@ -229,12 +236,12 @@ $(document).ready(function(){
                     });
                 }    
             });
-            console.log(customers);
+            //console.log(customers);
 
             // FILTER FULL DATA BASING ON CUSTOMER LIST
-            filterFullDataByCustomers(customers);
+            filterFullDataByCustomers(customers, 'cluster');
            // FILTER RFM DATA BASING ON CUSTOMER LIST
-           filterRfmDataByCustomers(customers);
+           filterRfmDataByCustomers(customers, 'cluster');
 
 
 
@@ -247,11 +254,108 @@ $(document).ready(function(){
             // FILTER CUSTOMERS IN THE RFM PARALLEL COORDINATE SEGMENTATION
         }
 
+        var filterBySegment = function(d) {
+
+            if(d3.select(this).attr("class")=="unselected") {
+                already_selected = false;
+                // Set class "selected" to that rect
+                d3.select(this).attr("class", "selected");
+            }
+            else {
+                already_selected = true;
+                // Set class "unselected" to that rect
+                d3.select(this).attr("class", "unselected");
+            }
+            // INITIALIZE CUSTOMERS
+            // Get current rfm customers ids (other rects are selected)
+            if (localStorage.getItem("rfm_customers")) {
+                customers = JSON.parse(localStorage.getItem("rfm_customers"));
+            }
+            else {
+                customers = [];
+            }
+            
+            // Get selected segment coordinates
+            selected_R = d.R;
+            selected_F = d.F;
+
+            // Get the customers belonging to that segment
+            d3.csv("static/dataset/rfm_data.csv",  function(r_data) {
+                this_customers = [];
+                r_data.forEach(function(r){
+                    if (r.R==selected_R && r.F==selected_F) {
+                        //console.log(r.cust_id);
+                        this_customers.push(r.cust_id);
+                    }    
+                });
+
+                
+
+                // If not selected, lets select it and filter
+                if(already_selected==false) {
+                    
+
+                    // RESET CLUSTER SELECTION TO ALL
+                    document.getElementById("cluster-selector-select").value = 'all';
+                    var element = document.getElementById('cluster-selector-select');
+                    var event = new Event('change');
+                    element.dispatchEvent(event);
 
 
+                    // UPDATE CUSTOMERS FILTER
+                    all_customers = customers.concat(this_customers);
+                    localStorage.setItem("rfm_customers", JSON.stringify(all_customers));
 
-        // FILTER BY SELECTING ON A CLUSTER
+                    // FILTER FULL DATA BASING ON CUSTOMER LIST
+                    filterFullDataByCustomers(all_customers,'rfm');
+                    // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
+                    //filterRfmDataByCustomers(this_customers,'rfm');
+                
+                    // Set parallel to selected class
+                    //d3.selectAll(".p2line" + selected_R + selected_F).classed("unselected", false);
+                    //d3.selectAll(".p2line" + selected_R + selected_F).attr("class", "selected");
 
+                    // Select it
+                    /*d3.selectAll(".p2line" + selected_R + selected_F)
+                    .transition().duration(200)
+                    .style("stroke", myColor(d.Avg_M))
+                    .style("opacity", "1");*/
+                    console.log(all_customers);
+                }
+
+                // If selected, lets unselect and remove the filtering
+                else {
+                    
+
+                    // UPDATE CUSTOMER FILTER
+                    difference = customers.filter(x => !this_customers.includes(x));
+                    localStorage.setItem("rfm_customers", JSON.stringify(difference));
+
+                    // FILTER FULL DATA BASING ON CUSTOMER LIST
+                    filterFullDataByCustomers(difference,'rfm');
+                    // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
+                    //filterRfmDataByCustomers(difference, 'rfm');
+
+                    // Set parallel to selected class
+                    //d3.selectAll(".p2line" + selected_R + selected_F).classed("unselected", true);
+                    //d3.selectAll(".p2line" + selected_R + selected_F).classed("selected", false);
+
+                    // Deselect it
+                    /*d3.selectAll(".p2line" + selected_R + selected_F)
+                    .transition().duration(200)
+                    .style("stroke", unselected_color)
+                    .style("opacity", "0");
+                    console.log(difference);*/
+                }
+
+                
+              
+
+            });
+        }
+
+// --------------------------------------------------------------------------------
+        // ADD A CLUSTER SELECTOR
 
         //Add the cluster selector legend
         // add the options to the button
@@ -280,10 +384,15 @@ $(document).ready(function(){
             .style("background", "#1b1b1b")
             .style("font-size", "10px")
 
-            // Highlight points and lines of selected cluster(s), filter other viz
-            d3.select("#cluster-selector-select")
+// --------------------------------------------------------------------------------
+
+        // FILTER USING CLUSTER SELECTOR
+        d3.select("#cluster-selector-select")
             .on('change', filterByCluster);
 
+        // FILTER USING RFM HEATMAP
+        d3.select("#rfm-heatmap svg").selectAll('rect')
+            .on('click', filterBySegment);
                 
                 
         
