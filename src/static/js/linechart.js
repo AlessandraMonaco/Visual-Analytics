@@ -3,7 +3,7 @@ width = 650 - margin.left - margin.right,
 height = 150 - margin.top - margin.bottom;
 
   
-var lin_margin = {top: 15, right: 7, bottom: 30, left: 40},
+var lin_margin = {top: 15, right: 7, bottom: 30, left: 58},
 lin_width = 850 - lin_margin.left - lin_margin.right,
 lin_height = 150 - lin_margin.top - lin_margin.bottom;
 
@@ -25,8 +25,15 @@ function linechart_from_csv(svg,data,y_value) {
 
   // Aggregate by summing daily amounts
   // IMPORTANT : The csv must be sorted on dates
+  // Check the selected level of aggregation
+  var aggr_level = d3.select("#select-aggr").property("value");
   var nested_data = d3.nest()
-    .key(function(d){ return d.date; })
+    //.key(function(d){ return d.date; })
+    .key(function(d) { 
+      if(aggr_level=="day") return d.date; 
+      if(aggr_level=="month") return d3.timeMonth(d.date); //
+      if(aggr_level=="year") return d3.timeYear(d.date);
+    })
     .rollup(function(d) { 
       if(y_value=="Profit") {
         return d3.sum(d, function(d) {return d.profit; })
@@ -36,7 +43,10 @@ function linechart_from_csv(svg,data,y_value) {
       }
     }).entries(data)
     .map(function(d){
-      return { date: new Date(d.key), value: d.value};
+       return { date: new Date(d.key), value: d.value};
+      //if(aggr_level=="month") return { date: new Date(1, d.key, 1), value: d.value};
+      //if(aggr_level=="year") return { date: new Date(d.key, 1, 1), value: d.value};
+      
     });
 
     //Debug
@@ -47,17 +57,19 @@ function linechart_from_csv(svg,data,y_value) {
     data = nested_data;
       
     // Add X axis --> it is a date format
-    var x = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.date; }))
-      .range([ 0, lin_width ]);
-    xAxis = svg.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+      var x = d3.scaleTime()
+        .domain(d3.extent(data, function(d) { return d.date; }))
+        .range([ 0, lin_width ]);
+      xAxis = svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
       
     // Add Y axis
+    var max = d3.max(data, function(d) { return +d.value; });
     var y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.value; })])
+      .domain([0, max ])
       .range([ lin_height, 0 ]);
     yAxis = svg.append("g")
       .attr("class", "axis")
@@ -283,10 +295,26 @@ $(document).ready(function(){
       // When the button is changed, run the updateChart function
       d3.select("#select-y").on("change", function(d) {
         // recover the option that has been chosen
-        var selectedOption = d3.select(this).property("value")
+        var selectedOption = d3.select(this).property("value");
         // run the updateChart function with this selected option
         update(selectedOption);
       })
+
+      // When the aggregation level is changed, update with the selected aggr level
+      d3.select("#select-aggr").on("change", function(d) {
+        //Drop previous visualization
+        d3.select("#line-chart svg").remove()
+        var selectedGroup = d3.select("#select-y").property("value");
+        //Add the new visualization
+        var svg = d3.select("#line-chart")
+          .append("svg")
+          .attr("width", lin_width + lin_margin.left + lin_margin.right)
+          .attr("height", lin_height + lin_margin.top + lin_margin.bottom)
+          .append("g")
+          .attr("transform",
+            "translate(" + lin_margin.left + "," + lin_margin.top + ")");
+        linechart_from_csv(svg,data,selectedGroup);
+      });
     })
   
 });
