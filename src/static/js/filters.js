@@ -31,7 +31,7 @@ $(document).ready(function(){
                 
                 function(d){
                     if (document.getElementById("cluster-selector-select").value == 'all' &&
-                    filter=='cluster' || customers.length==0) {
+                    filter=='cluster' || filter=='all') {
                         // take all data
                         return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
                             profit : d.total_amt, 
@@ -125,6 +125,52 @@ $(document).ready(function(){
                 // line to draw for this raw.
                 rfm_parallel_from_csv(svg,dimensions,new_data);
 
+                // Now, for each rfm segment R-F count the number of customers after the filtering
+                var nested_data = d3.nest()
+                    .key(function(d){ return d.R; })
+                    .key(function(d) { return d.F; })
+                    .rollup(function(v) { return v.length; })
+                .entries(new_data);
+                //.map(function(d){
+                 //  return { R: d.key, F: d.key, value: d.values.value};
+                //});
+                console.log(nested_data);
+                var flatten_data = nested_data.flatMap((item, i) => {
+                    const R = item.key;
+                    return item.values.map(x => ({
+                      R : R,
+                      F: x.key,
+                      value: x.value
+                    }));
+                  });
+                console.log(flatten_data);
+                // Get the segment data.. change just the count value
+                d3.csv("static/dataset/rfm_segments.csv", function(segment_data) {
+                    segment_data.forEach(function(d) {
+                        flatten_data.forEach(function(f) {
+                            if(d.R==f.R && d.F==f.F) {
+                                d.Count = f.value;
+                            }
+                        });
+                    });
+                    console.log(segment_data);
+
+                    // Now enter new data in rfm_heatmap
+                    //remove old data
+                    var svg = d3.select('#rfm-heatmap svg g');
+                    svg.selectAll("rect").remove();
+
+                    //show new data 
+                    // Draw the lines
+                    // line to draw for this raw.
+                    rfm_heatmap_from_csv(svg,segment_data);
+
+                    //Hide tooltip (for a bug a tooltip remains visible)
+                    var tooltip = svg.select(".tooltip");
+                    tooltip
+                    .style("opacity", 0);
+                });
+               
             });
         }
 
@@ -243,15 +289,6 @@ $(document).ready(function(){
            // FILTER RFM DATA BASING ON CUSTOMER LIST
            filterRfmDataByCustomers(customers, 'cluster');
 
-
-
-            
-
-            // HIGHLIGHT SCATTERPLOT AND PARALLEL SETTING CLUSTER SELECTOR
-            //d3.select('#cluster-selector-select').property('value', selected_cluster);
-
-
-            // FILTER CUSTOMERS IN THE RFM PARALLEL COORDINATE SEGMENTATION
         }
 
         var filterBySegment = function(d) {
@@ -301,6 +338,29 @@ $(document).ready(function(){
                     var event = new Event('change');
                     element.dispatchEvent(event);
 
+                    
+
+                    // IF not selected previously and THERE IS ALREADY SOMETHING FILTERED, 
+                    //JUST COLOR THIS SEGMENT
+                    /*if(localStorage.getItem("rfm_customers") &&
+                        localStorage.getItem("rfm_customers")!="[]" ) { 
+                            d3.selectAll(".p2line" + selected_R + selected_F)
+                                .transition().duration(200)
+                                .style("stroke", myColor(d.Avg_M))
+                                .style("opacity", "1");
+                    }
+                    else {
+                        // IF NO SELECTION HAS BEEN DONE YET, SET ALL to undefined_color
+                        /*d3.selectAll(".p2line")
+                            .transition().duration(200)
+                            .style("stroke", unselected_color)
+                            .style("opacity", "0");*/
+                        // And the set this to its color
+                        /*d3.selectAll(".p2line" + selected_R + selected_F)
+                                .transition().duration(200)
+                                .style("stroke", myColor(d.Avg_M))
+                                .style("opacity", "1");
+                    }*/
 
                     // UPDATE CUSTOMERS FILTER
                     all_customers = customers.concat(this_customers);
@@ -332,7 +392,12 @@ $(document).ready(function(){
                     localStorage.setItem("rfm_customers", JSON.stringify(difference));
 
                     // FILTER FULL DATA BASING ON CUSTOMER LIST
-                    filterFullDataByCustomers(difference,'rfm');
+                    if (difference.length!=0) {
+                        filterFullDataByCustomers(difference,'rfm');
+                    }
+                    else {
+                        filterFullDataByCustomers(difference,'all');
+                    }
                     // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
                     //filterRfmDataByCustomers(difference, 'rfm');
 
