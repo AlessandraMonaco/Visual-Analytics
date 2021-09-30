@@ -374,6 +374,7 @@ $(document).ready(function(){
                     // UPDATE CUSTOMERS FILTER
                     all_customers = customers.concat(this_customers);
                     localStorage.setItem("rfm_customers", JSON.stringify(all_customers));
+                    final_customers = all_customers;
 
                     // FILTER FULL DATA BASING ON CUSTOMER LIST
                     filterFullDataByCustomers(all_customers,'rfm');
@@ -390,6 +391,7 @@ $(document).ready(function(){
                     // UPDATE CUSTOMER FILTER
                     difference = customers.filter(x => !this_customers.includes(x));
                     localStorage.setItem("rfm_customers", JSON.stringify(difference));
+                    final_customers = difference;
 
                     // FILTER FULL DATA BASING ON CUSTOMER LIST
                     if (difference.length!=0) {
@@ -398,12 +400,64 @@ $(document).ready(function(){
                         filterRfmDataByCustomers(difference, 'rfm', false);
                     }
                     else {
+                        // reset the selection on rfm segments
+                        localStorage.removeItem("rfm_customers");   
                         filterFullDataByCustomers(difference,'all');
                         // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
                         filterRfmDataByCustomers(difference, 'all', false);
                     }
                     
 
+                }
+
+                // FILTER SCATTER AND UNSUPERVISED PARALLEL
+                if (final_customers.length!=0) {
+
+                    //HIGHLIGHT SCATTER
+                    // Now highlight all scatter and pline such that cust_id in customers
+                    var scatter = d3.select("#scatter svg");
+                    scatter.selectAll(".dot")
+                    .transition()
+                    .duration(200)
+                    .style("fill", function(d) { 
+                        if (final_customers.includes(d.cust_id)) return color(d.cluster);
+                        else return unselected_color;
+                    })
+                    .attr("r",  function(d) { 
+                        if (final_customers.includes(d.cust_id)) return 1.5;
+                        else return 1;
+                    });
+
+                    //HIGHLIGHT PARALLEL UNSUPERVISED
+                    var parallel = d3.select("#unsupervised_parallel svg");
+                    parallel.selectAll(".pline")
+                    .transition()  
+                    .duration(200)
+                    .style("stroke", function(d) { 
+                        if (final_customers.includes(d.cust_id)) return color(d.cluster);
+                        else return unselected_color;
+                    })
+                    .style("opacity", function(d) { 
+                        if (final_customers.includes(d.cust_id)) return 1;
+                        else return 0.2;
+                    });
+                }
+
+                else {
+                    //RESET ORIGINAL VISUALIZATION
+                    var scatter = d3.select("#scatter svg");
+                    scatter.selectAll(".dot")
+                    .transition()
+                    .duration(200)
+                    .style("fill", function(d) {  return color(d.cluster);})
+                    .attr("r", 1);
+
+                    var parallel = d3.select("#unsupervised_parallel svg");
+                    parallel.selectAll(".pline")
+                    .transition()  
+                    .duration(200)
+                    .style("stroke", function(d) { return color(d.cluster);})
+                    .style("opacity", 1);
                 }
 
             });

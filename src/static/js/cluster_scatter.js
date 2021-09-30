@@ -106,7 +106,7 @@ $(document).ready(function(){
         // Highlight the specie that is hovered
         var highlight = function(d){
             var clicked = document.getElementById('cluster-selector-select').value;
-            if (clicked == 'all') {
+            if (clicked == 'all' && localStorage.getItem("rfm_customers")==null) {
                 // Highlight in the scatter plot
                 selected_cluster = d.cluster
         
@@ -149,7 +149,7 @@ $(document).ready(function(){
         // Remove highlight
         var doNotHighlight = function(){
             var clicked = document.getElementById('cluster-selector-select').value;
-            if (clicked == 'all') {
+            if (clicked == 'all'  && localStorage.getItem("rfm_customers")==null) {
                 // Do not highlight scatter
                 d3.selectAll(".dot")
                     .transition()
@@ -176,7 +176,7 @@ $(document).ready(function(){
         //Detect mouse change for the tooltip to set the text
         var mousemove = function(d) {
             var clicked = document.getElementById('cluster-selector-select').value;
-            if (clicked == 'all') {
+            if (clicked == 'all'  && localStorage.getItem("rfm_customers")==null) {
                 tooltip
                 .html("CLUSTER " + d.cluster +
                 "<br>("+ sizes[d.cluster] +" customers)")
