@@ -30,8 +30,8 @@ $(document).ready(function(){
             d3.csv("static/dataset/full_data.csv",  
                 
                 function(d){
-                    if (document.getElementById("cluster-selector-select").value == 'all' &&
-                    filter=='cluster' || filter=='all') {
+                    if ((document.getElementById("cluster-selector-select").value == 'all' &&
+                    filter=='cluster') || filter=='all') {
                         // take all data
                         return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
                             profit : d.total_amt, 
@@ -104,12 +104,12 @@ $(document).ready(function(){
             }); //end csv full data
         }
 
-        function filterRfmDataByCustomers(customers, filter) {
+        function filterRfmDataByCustomers(customers, filter, heatmap) {
             d3.csv("static/dataset/rfm_data.csv", function(data) {
 
                 //filter basing on customers
-                if (document.getElementById("cluster-selector-select").value == 'all' &&
-                filter == 'cluster') {
+                if ((document.getElementById("cluster-selector-select").value == 'all' &&
+                filter == 'cluster') || filter=="all") {
                     new_data = data;
                 }
                 else {
@@ -123,64 +123,78 @@ $(document).ready(function(){
                 //show new data 
                 // Draw the lines
                 // line to draw for this raw.
-                rfm_parallel_from_csv(svg,dimensions,new_data);
+                // Manually set the dimensions
+                dimensions = ['recency', 'frequency', 'monetary'];
 
-                // Now, for each rfm segment R-F count the number of customers after the filtering
-                var nested_data = d3.nest()
-                    .key(function(d){ return d.R; })
-                    .key(function(d) { return d.F; })
-                    .rollup(function(v) { return v.length; })
-                .entries(new_data);
-                //.map(function(d){
-                 //  return { R: d.key, F: d.key, value: d.values.value};
-                //});
-                console.log(nested_data);
-                var flatten_data = nested_data.flatMap((item, i) => {
-                    const R = item.key;
-                    return item.values.map(x => ({
-                      R : R,
-                      F: x.key,
-                      value: x.value
-                    }));
-                  });
-                console.log(flatten_data);
-                // Get the segment data.. change just the count value
-                d3.csv("static/dataset/rfm_segments.csv", function(segment_data) {
-                    segment_data.forEach(function(d) {
-                        flatten_data.forEach(function(f) {
-                            if(d.R==f.R && d.F==f.F) {
-                                d.Count = f.value;
-                            }
-                        });
+                rfm_parallel_from_csv(svg,dimensions,new_data, myColor, x, y);
+
+                if(heatmap==true) {
+                    // Now, for each rfm segment R-F count the number of customers after the filtering
+                    var nested_data = d3.nest()
+                        .key(function(d){ return d.R; })
+                        .key(function(d) { return d.F; })
+                        .rollup(function(v) { return v.length; })
+                    .entries(new_data);
+                    //.map(function(d){
+                    //  return { R: d.key, F: d.key, value: d.values.value};
+                    //});
+                    //console.log(nested_data);
+                    var flatten_data = nested_data.flatMap((item, i) => {
+                        const R = item.key;
+                        return item.values.map(x => ({
+                        R : R,
+                        F: x.key,
+                        value: x.value
+                        }));
                     });
-                    console.log(segment_data);
+                    //console.log(flatten_data);
+                    // Get the segment data.. change just the count value
+                    d3.csv("static/dataset/rfm_segments.csv", function(segment_data) {
+                        segment_data.forEach(function(d) {
+                            flatten_data.forEach(function(f) {
+                                if(d.R==f.R && d.F==f.F) {
+                                    d.Count = f.value;
+                                }
+                            });
+                        });
+                        //console.log(segment_data);
 
-                    // Now enter new data in rfm_heatmap
-                    //remove old data
-                    var svg = d3.select('#rfm-heatmap svg g');
-                    svg.selectAll("rect").remove();
+                        // Now enter new data in rfm_heatmap
+                        //remove old data
+                        var svg = d3.select('#rfm-heatmap svg g');
+                        svg.selectAll("rect").remove();
 
-                    //show new data 
-                    // Draw the lines
-                    // line to draw for this raw.
-                    rfm_heatmap_from_csv(svg,segment_data);
+                        //show new data 
+                        // Draw the lines
+                        // line to draw for this raw.
+                        rfm_heatmap_from_csv(svg,segment_data);
+                        svg.selectAll('rect').attr("class", "unselected");
 
-                    //Hide tooltip (for a bug a tooltip remains visible)
-                    var tooltip = svg.select(".tooltip");
-                    tooltip
-                    .style("opacity", 0);
-                });
+                        //Hide tooltip (for a bug a tooltip remains visible)
+                        var tooltip = svg.select(".tooltip");
+                        tooltip
+                        .style("opacity", 0);
+
+                        // Set it again, not working after cluster selection
+                        d3.select("#rfm-heatmap svg").selectAll('rect')
+                            .on('click', filterBySegment);
+                    });
+                }
                
             });
         }
 
         var filterByCluster = function(){
 
+            // reset the selection on rfm segments
+            localStorage.removeItem("rfm_customers");
+
             // recover the option that has been chosen
             options =  this.selectedOptions;
 
             //tooltip
-            var tooltip = d3.select('#scatter .tooltip');
+            var scatter = d3.select('#scatter');
+            var tooltip = scatter.select(".tooltip");
             
             //All grey
             //console.log(this.selectedOptions);
@@ -286,23 +300,49 @@ $(document).ready(function(){
 
             // FILTER FULL DATA BASING ON CUSTOMER LIST
             filterFullDataByCustomers(customers, 'cluster');
-           // FILTER RFM DATA BASING ON CUSTOMER LIST
-           filterRfmDataByCustomers(customers, 'cluster');
+           // FILTER RFM DATA BASING ON CUSTOMER LIST (true: filter also heatmap to change tooltips)
+           filterRfmDataByCustomers(customers, 'cluster', true);
 
         }
 
         var filterBySegment = function(d) {
 
-            if(d3.select(this).attr("class")=="unselected") {
-                already_selected = false;
-                // Set class "selected" to that rect
-                d3.select(this).attr("class", "selected");
+            // RESET CLUSTER SELECTION TO ALL if a cluster is selected
+            // This triggers on change => triggers filterByCluster => triggers filterFullData and filterRfm
+            if(document.getElementById("cluster-selector-select").value == 'all') {
+                //ok, you don't need to reset to all and run again the filter all
+                //console.log("is all");
+
+                //Check if the box was selected or not
+                if(d3.select(this).attr("class")=="unselected") {
+                    already_selected = false;
+                    // Set class "selected" to that rect
+                    d3.select(this).classed("unselected", false);
+                }
+                else {
+                    already_selected = true;
+                    // Set class "unselected" to that rect
+                    d3.select(this).classed("unselected", true);
+
+                }
+                
             }
             else {
-                already_selected = true;
-                // Set class "unselected" to that rect
-                d3.select(this).attr("class", "unselected");
+                //console.log("is not all");
+                //document.getElementById("cluster-selector-select").value = 'all';
+                d3.select('#cluster-selector-select').property('value', 'all');
+                var element = document.getElementById('cluster-selector-select');
+                var event = new Event('change');
+                element.dispatchEvent(event);
+
+                already_selected = false;
+                // Set class "selected" to that rect
+                d3.select(this).classed("unselected", false);
+                
             }
+
+            
+            
             // INITIALIZE CUSTOMERS
             // Get current rfm customers ids (other rects are selected)
             if (localStorage.getItem("rfm_customers")) {
@@ -330,37 +370,6 @@ $(document).ready(function(){
 
                 // If not selected, lets select it and filter
                 if(already_selected==false) {
-                    
-
-                    // RESET CLUSTER SELECTION TO ALL
-                    document.getElementById("cluster-selector-select").value = 'all';
-                    var element = document.getElementById('cluster-selector-select');
-                    var event = new Event('change');
-                    element.dispatchEvent(event);
-
-                    
-
-                    // IF not selected previously and THERE IS ALREADY SOMETHING FILTERED, 
-                    //JUST COLOR THIS SEGMENT
-                    /*if(localStorage.getItem("rfm_customers") &&
-                        localStorage.getItem("rfm_customers")!="[]" ) { 
-                            d3.selectAll(".p2line" + selected_R + selected_F)
-                                .transition().duration(200)
-                                .style("stroke", myColor(d.Avg_M))
-                                .style("opacity", "1");
-                    }
-                    else {
-                        // IF NO SELECTION HAS BEEN DONE YET, SET ALL to undefined_color
-                        /*d3.selectAll(".p2line")
-                            .transition().duration(200)
-                            .style("stroke", unselected_color)
-                            .style("opacity", "0");*/
-                        // And the set this to its color
-                        /*d3.selectAll(".p2line" + selected_R + selected_F)
-                                .transition().duration(200)
-                                .style("stroke", myColor(d.Avg_M))
-                                .style("opacity", "1");
-                    }*/
 
                     // UPDATE CUSTOMERS FILTER
                     all_customers = customers.concat(this_customers);
@@ -369,18 +378,9 @@ $(document).ready(function(){
                     // FILTER FULL DATA BASING ON CUSTOMER LIST
                     filterFullDataByCustomers(all_customers,'rfm');
                     // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
-                    //filterRfmDataByCustomers(this_customers,'rfm');
+                    filterRfmDataByCustomers(all_customers,'rfm',false);
                 
-                    // Set parallel to selected class
-                    //d3.selectAll(".p2line" + selected_R + selected_F).classed("unselected", false);
-                    //d3.selectAll(".p2line" + selected_R + selected_F).attr("class", "selected");
-
-                    // Select it
-                    /*d3.selectAll(".p2line" + selected_R + selected_F)
-                    .transition().duration(200)
-                    .style("stroke", myColor(d.Avg_M))
-                    .style("opacity", "1");*/
-                    console.log(all_customers);
+                    //console.log(all_customers);
                 }
 
                 // If selected, lets unselect and remove the filtering
@@ -394,27 +394,17 @@ $(document).ready(function(){
                     // FILTER FULL DATA BASING ON CUSTOMER LIST
                     if (difference.length!=0) {
                         filterFullDataByCustomers(difference,'rfm');
+                        // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
+                        filterRfmDataByCustomers(difference, 'rfm', false);
                     }
                     else {
                         filterFullDataByCustomers(difference,'all');
+                        // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
+                        filterRfmDataByCustomers(difference, 'all', false);
                     }
-                    // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
-                    //filterRfmDataByCustomers(difference, 'rfm');
+                    
 
-                    // Set parallel to selected class
-                    //d3.selectAll(".p2line" + selected_R + selected_F).classed("unselected", true);
-                    //d3.selectAll(".p2line" + selected_R + selected_F).classed("selected", false);
-
-                    // Deselect it
-                    /*d3.selectAll(".p2line" + selected_R + selected_F)
-                    .transition().duration(200)
-                    .style("stroke", unselected_color)
-                    .style("opacity", "0");
-                    console.log(difference);*/
                 }
-
-                
-              
 
             });
         }

@@ -59,18 +59,7 @@ function rfm_heatmap_from_csv(svg,data) {
   .interpolator(d3.interpolatePurples)
   .domain([0,avg_max]);
 
-  // create a tooltip
-  var tooltip = d3.select("#rfm-heatmap")
-  .append("div")
-  .style("opacity", 0)
-  .attr("class", "tooltip")
-  .style("background-color", "white")
-  .style("border", "solid")
-  .style("border-width", "2px")
-  .style("border-radius", "5px")
-  .style("padding", "5px")
-  .style("width", "140px")
-  .style("height", "auto");
+  
 
   // Three function that change the tooltip when user hover / move / leave a cell OK!!
   var mouseover = function(d) {
@@ -125,7 +114,7 @@ function rfm_heatmap_from_csv(svg,data) {
       if(d3.select(this).attr("class")=="unselected") {
         d3.select(this)
         .style("stroke", "black")
-        .style("opacity", 0.8)
+        .style("opacity", 0.8);
     
         /*Set original parallel viz
         d3.selectAll(".unselected .p2line")
@@ -133,6 +122,16 @@ function rfm_heatmap_from_csv(svg,data) {
         .style("stroke",  unselected_color )
         .style("opacity", 0);*/
       }
+      else {
+        d3.select(this)
+        .style("stroke", "white")
+        .style("opacity", 1);
+      }
+
+      d3.selectAll(".p2line")
+        .transition().duration(200)
+        .style("stroke",  function(d) { return myColor(d.Avg_M);} )
+        .style("opacity", "1");
 
       // IF THERE ARE RFM SEGMENTS SELECTIONS, COLOR ACCORDING TO THE SELECTIONS
       // TO FIX
@@ -172,7 +171,6 @@ function rfm_heatmap_from_csv(svg,data) {
       .attr("y", function(d) { return y(d.F) })
       .attr("rx", 2)
       .attr("ry", 2)
-      .attr("class", "unselected")
       .attr("width", x.bandwidth() )
       .attr("height", y.bandwidth() )
       .style("fill", function(d) { return myColor(d.Avg_M)} )
@@ -199,8 +197,23 @@ $(document).ready(function(){
 
     //Read the data
     d3.csv("static/dataset/rfm_segments.csv", function(data) {
+      tooltip = d3.select("#rfm-heatmap")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px")
+      .style("width", "140px")
+      .style("height", "auto");
 
         rfm_heatmap_from_csv(svg,data);
+      
+      svg.selectAll('rect').attr("class", "unselected");
+      // create a tooltip
+  
 
         // Add legend for M to graph
 

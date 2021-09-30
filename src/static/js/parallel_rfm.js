@@ -14,37 +14,13 @@ function unit(dim) {
     if (dim=='monetary') {return " ($)"}
 }
 
-function rfm_parallel_from_csv(svg,dimensions,data) {
+function rfm_parallel_from_csv(svg,dimensions,data, myColor, x, y) {
     
 
     // Tooltip
     var tool = d3.select("body").append("div").attr("class", "toolTip");
 
-    // Colors 
-    avg_max = d3.max(data.map(function(d) { return parseFloat(d.Avg_M); }));
-    myColor = d3.scaleSequential()
-            .interpolator(d3.interpolatePurples)
-            .domain([0,avg_max]);
-
-    // Color scale: give me a cluster name, I return a color
-        /*var color = d3.scaleOrdinal()
-            .domain(d3.extent(data, function(d) { return +parseFloat(d.); }))
-            .range(cluster_color)*/
-
-    // For each dimension, I build a linear scale. I store all in a y object
-    var y = {} //empty object
-    for (i in dimensions) {
-        var name = dimensions[i]
-        y[name] = d3.scaleLinear()
-        //.domain( [0,20] )
-        .domain( d3.extent(data, function(d) { return +parseInt(d[name]); }) )
-        .range([height, 0])
-    }
-
-    // Build the X scale -> it find the best position for each Y axis
-    x = d3.scalePoint()
-    .range([0, width])
-    .domain(dimensions);
+    
 
     // The path function take a row of the csv as input, and return x and y coordinates of the 
         // line to draw for this raw.
@@ -59,7 +35,7 @@ function rfm_parallel_from_csv(svg,dimensions,data) {
     .enter()
     .append("path")
     //.attr("class", function (d) { return "pline pline" + d.cluster } ) // 2 class for each line: 'line' and the group name
-    .attr("class", function (d) { return "unselected p2line p2line" + d.R + d.F; } ) // 2 class for each line: 'line' and the group name
+    .attr("class", function (d) { return "p2line p2line" + d.R + d.F; } ) // 2 class for each line: 'line' and the group name
     .attr("d",  path)
     .style("fill", "none" )
     .style("stroke", function(d){ return myColor(d.Avg_M);} )
@@ -87,11 +63,34 @@ $(document).ready(function(){
             .attr("transform",
                     "translate(" + parallel_margin.left + "," + parallel_margin.top + ")");
 
-        
+         // Colors 
+    avg_max = d3.max(data.map(function(d) { return parseFloat(d.Avg_M); }));
+    myColor = d3.scaleSequential()
+            .interpolator(d3.interpolatePurples)
+            .domain([0,avg_max]);
 
-        var xy = [];
-        xy = rfm_parallel_from_csv(svg,dimensions,data);
-        var x = xy[0], y = xy[1];
+    // Color scale: give me a cluster name, I return a color
+        /*var color = d3.scaleOrdinal()
+            .domain(d3.extent(data, function(d) { return +parseFloat(d.); }))
+            .range(cluster_color)*/
+
+    // For each dimension, I build a linear scale. I store all in a y object
+    y = {} //empty object
+    for (i in dimensions) {
+        var name = dimensions[i]
+        y[name] = d3.scaleLinear()
+        //.domain( [0,20] )
+        .domain( d3.extent(data, function(d) { return +parseInt(d[name]); }) )
+        .range([height, 0])
+    }
+
+    // Build the X scale -> it find the best position for each Y axis
+    x = d3.scalePoint()
+    .range([0, width])
+    .domain(dimensions);
+
+        rfm_parallel_from_csv(svg,dimensions,data, myColor, x, y);
+       
 
         // Highlight the specie that is hovered
         /*
