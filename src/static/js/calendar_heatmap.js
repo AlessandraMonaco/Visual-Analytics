@@ -1,5 +1,6 @@
 var colours=["#f7f7f7","#cccccc","#969696","#636363","#252525"]; //ColorBrewer gray scale
 
+
 //general layout information
 var cellSize = 6;
 var xOffset=10; //margin-left
@@ -24,18 +25,13 @@ function monthPath(t0) {
         + "H" + (w0 + 1) * cellSize + "Z";
   }
 
+
 //Draw the calendar heatmap
 function calendar_from_csv(svg, data, y_value) {
 
-    //Set units and breaks depeding on the selected y_value
-    if(y_value=="Profit") { 
-        var units=" $";
-        var breaks=[10000,20000,40000,60000]; //to do
-    }
-    else { 
-        var units=" sales";
-        var breaks=[10,25,50,100]; //to do
-    }
+    
+
+    
 
     // Aggregate by summing daily amounts
     // IMPORTANT : The csv must be sorted on dates
@@ -52,6 +48,28 @@ function calendar_from_csv(svg, data, y_value) {
         .map(function(d){
             return { date: d.key, value: d.value};
         });
+
+    // Set color scale
+    // Build color scale
+  max = d3.max(nested_data.map(function(d) { return parseFloat(d.value); }));
+
+  myColorCal = d3.scaleSequential()
+  .interpolator(d3.interpolatePurples)
+  .domain([0,max]);
+
+
+  //Set units and breaks depeding on the selected y_value
+  var add = max/4;
+  if(y_value=="Profit") { 
+    var units=" $";
+    var breaks=[parseInt(0+add),parseInt(0+2*add),parseInt(0+3*add),parseInt(max)]; //to do
+}
+else { 
+    var units=" sales";
+    var breaks=[parseInt(0+add),parseInt(0+2*add),parseInt(0+3*add),parseInt(max)]; //to do
+}
+
+
     var yearlyData = d3.nest()
         .key(function(d){ return (new Date (d.date)).getFullYear(); })
         .entries(nested_data)
@@ -133,7 +151,7 @@ function calendar_from_csv(svg, data, y_value) {
         .attr("x", function(d){return xOffset+calX+(d3.time.weekOfYear(new Date(d.date)) * cellSize);})
         .attr("y", function(d) { return calY+(new Date(d.date).getDay() * cellSize); })
         .attr("fill", function(d) {
-            if (d.value<breaks[0]) {
+            /*if (d.value<breaks[0]) {
                 return colours[0];
             }
             for (i=0;i<breaks.length+1;i++){
@@ -142,8 +160,9 @@ function calendar_from_csv(svg, data, y_value) {
                 }
             }
             if (d.value>breaks.length-1){
-                return colours[breaks.length]   
-            }
+                return colours[breaks.length];   
+            }*/
+            return myColorCal(parseFloat(d.value));
         })
     
     //append a title element to give basic mouseover info
@@ -222,12 +241,16 @@ function calendar_from_csv(svg, data, y_value) {
             return cellSize+5+(i*70);
         })
         .attr("y","1em")
-        .text(function(d,i){
-            if (i<colours.length-1){
+        .style("font-size", "9px")
+        .text(function(d,i){ 
+            if(i==0) {return "0"+"-"+breaks[i];}
+            if(breaks[i]==undefined) {return breaks[i-1];}
+            else { return breaks[i-1]+"-"+breaks[i];}
+            /*if (i<colours.length-1){
                 return "up to "+breaks[i];
             }   else    {
                 return "over "+breaks[i-1];   
-            }
+            }*/
         });
 
 }
@@ -251,12 +274,14 @@ $(document).ready(function(){
             var svg = d3.select("#calendar-heatmap").append("svg")
                         .attr("width", "420px")
                         .attr("viewBox","0 0 "+(xOffset+year_width)+" 540")
-
+            
+            
+                        
             //At the beginning, initialize the graph with profits
             document.getElementById("select-y-cal").value = "Profit"
             var y_value = document.getElementById("select-y-cal").value;
             calendar_from_csv(svg,data,y_value);
-   
+          
             
         
         
@@ -279,12 +304,12 @@ $(document).ready(function(){
             // When the button is changed, run the updateChart function
             d3.select("#select-y-cal").on("change", function(d) {
                 // recover the option that has been chosen
-                var selectedOption = d3.select(this).property("value")
+                selectedOption = d3.select(this).property("value")
                 // run the updateChart function with this selected option
                 update_calendar(selectedOption);  
             })
         
-        
+            
         
 
 
