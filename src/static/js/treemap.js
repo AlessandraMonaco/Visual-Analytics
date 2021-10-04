@@ -77,7 +77,7 @@ function treemap_from_csv(csv_data) {
         div.selectAll(".node")
         .data(treemap.nodes(root2))
         .enter().append("div")
-        .attr("class", "node")
+        .attr("class", "node unselected")
         .style("left", function (d) { return d.x +25+ "px"; })
         .style("top", function (d) { return d.y +25+ "px"; })
         .style("width", function (d) { return Math.max(0, d.dx - 1) + "px"; })
@@ -88,10 +88,12 @@ function treemap_from_csv(csv_data) {
         .text(function (d) { return d.parent==null ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : d.children!=null ? d.data.name : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.data.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.data.value +')' : null })
         //.text(function (d) { return d.children ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.value +')' : null })
         .on("mousemove", function (d) {
+            if (d3.select(this).attr("class")=="node unselected") {
             tool.style("left", d3.event.pageX + 1 + "px")
             tool.style("top", d3.event.pageY - 20 + "px")
             tool.style("display", "inline-block");
             tool.html(d.children ? null : "<span class='category'>"+d.parent.data.name+" : "+d.parent.value+"</span>" + "<br>"+ d.data.name + " : " + d.data.value);
+            }
         }).on("mouseout", function (d) {
             tool.style("display", "none");
         });

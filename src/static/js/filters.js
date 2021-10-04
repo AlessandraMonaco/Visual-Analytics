@@ -26,7 +26,7 @@ $(document).ready(function(){
 
          //console.log(nested_data);
 
-        function filterFullDataByCustomers(customers,filter) {
+        function filterFullDataByCustomers(customers,filter, selections_cat, selections_sub) {
             d3.csv("static/dataset/full_data.csv",  
                 
                 function(d){
@@ -42,14 +42,55 @@ $(document).ready(function(){
                         }
                     }
                     else { //filter customer ids
-                        if (customers.includes(d.cust_id)) {
-                            //console.log(d);
-                            return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
-                                profit : d.total_amt, 
-                                sales : d.Qty,
-                                Qty : d.Qty,
-                                prod_cat : d.prod_cat,
-                                prod_subcat : d.prod_subcat
+
+                        if (filter!='category') {
+                            if (customers.includes(d.cust_id)) {
+                                //console.log(d);
+                                return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
+                                    profit : d.total_amt, 
+                                    sales : d.Qty,
+                                    Qty : d.Qty,
+                                    prod_cat : d.prod_cat,
+                                    prod_subcat : d.prod_subcat
+                                }
+                            }
+                        }
+
+                        else { //check customer and category
+                            if (customers.length!=0) {
+                                if (customers.includes(d.cust_id)) {
+                                    for (i=0;i<selections_cat.length;i++) {
+                                        if (selections_cat[i] == d.prod_cat &&
+                                            selections_sub[i] == d.prod_subcat) {
+                               // && selections_cat.includes(d.prod_cat) && selections_sub.includes(d.prod_subcat) 
+                                //&& selections_sub[(selections_cat.findIndex(item => item==d.prod_cat))]==d.prod_subcat) {
+                                    //console.log(d);
+                                            return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
+                                                profit : d.total_amt, 
+                                                sales : d.Qty,
+                                                Qty : d.Qty,
+                                                prod_cat : d.prod_cat,
+                                                prod_subcat : d.prod_subcat
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                //Check only the categories
+                                for (i=0;i<selections_cat.length;i++) {
+                                    if (selections_cat[i] == d.prod_cat &&
+                                        selections_sub[i] == d.prod_subcat) {
+                                        //console.log(d);
+                                        return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
+                                            profit : d.total_amt, 
+                                            sales : d.Qty,
+                                            Qty : d.Qty,
+                                            prod_cat : d.prod_cat,
+                                            prod_subcat : d.prod_subcat
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -98,8 +139,17 @@ $(document).ready(function(){
 
 
                     // FILTER TREEMAP VISUALIZATION
-                    d3.select("#treemap .treemap").remove();
-                    treemap_from_csv(full_data); 
+                    if (filter!='category') {
+                        d3.select("#treemap .treemap").remove();
+                        d3.select(".toolTip").style("opacity", 0);
+                        d3.select(".toolTip").remove();
+                        localStorage.removeItem("categories");
+                        localStorage.removeItem("subcategories");
+                        treemap_from_csv(full_data); 
+                        d3.select("#treemap").selectAll(".node")
+                            .on("click", filterByCategory);
+                        
+                    }
             
             }); //end csv full data
         }
@@ -127,6 +177,9 @@ $(document).ready(function(){
                 dimensions = ['recency', 'frequency', 'monetary'];
 
                 rfm_parallel_from_csv(svg,dimensions,new_data, myColor, x, y);
+                // FILTER USING CATEGORY TREEMAP
+                d3.select("#treemap").selectAll(".node")
+                .on('click', filterByCategory);
 
                 if(heatmap==true) {
                     // Now, for each rfm segment R-F count the number of customers after the filtering
@@ -178,7 +231,11 @@ $(document).ready(function(){
                         // Set it again, not working after cluster selection
                         d3.select("#rfm-heatmap svg").selectAll('rect')
                             .on('click', filterBySegment);
+                        
                     });
+                    // FILTER USING CATEGORY TREEMAP
+                    d3.select("#treemap").selectAll(".node")
+                    .on('click', filterByCategory);
                 }
                
             });
@@ -236,6 +293,8 @@ $(document).ready(function(){
                     
 
                 if(selected_cluster=="all") {
+                    localStorage.removeItem("cluster_customers");
+
                     d3.selectAll(".dot")
                     .transition()
                     .duration(200)
@@ -255,6 +314,7 @@ $(document).ready(function(){
                     /*Reset selector on All Data ('all' can not be selected together with other 
                     clusters, it does not make sense)*/
                     d3.select('#cluster-selector-select').property('value', 'all');
+                    localStorage.removeItem("cluster_customers");
                     break;
 
                 }
@@ -269,6 +329,9 @@ $(document).ready(function(){
                     .style("opacity", 1)
                     .style("left", 50 + "px")
                     .style("top", 1 + "px");
+                }
+                else {
+                    localStorage.removeItem("cluster_customers");
                 }
             }
 
@@ -297,11 +360,141 @@ $(document).ready(function(){
                 }    
             });
             //console.log(customers);
+            localStorage.setItem("cluster_customers", JSON.stringify(customers));
 
             // FILTER FULL DATA BASING ON CUSTOMER LIST
-            filterFullDataByCustomers(customers, 'cluster');
+            filterFullDataByCustomers(customers, 'cluster', null, null);
            // FILTER RFM DATA BASING ON CUSTOMER LIST (true: filter also heatmap to change tooltips)
            filterRfmDataByCustomers(customers, 'cluster', true);
+
+        }
+
+        var filterByCategory = function(d) {
+
+            // Hide tooltip
+            d3.select(".toolTip").style("display", "none");
+
+            //Check if the box was selected or not
+            if(d3.select(this).attr("class")=="node unselected") {
+                already_selected = false;
+                // Set class "selected" to that rect
+                d3.select(this).classed("node unselected", false);
+                d3.select(this).classed("node", true);
+                // Draw the border on the div
+                d3.select(this).style("border", "3px solid white");
+            }
+            else {
+                already_selected = true;
+                // Set class "unselected" to that rect
+                d3.select(this).classed("node unselected", true);
+                // Remove the border from the div
+                d3.select(this).style("border", "0px solid white");
+                // Hide tooltip
+                d3.select(".toolTip").style("display", "none");
+            
+            }            
+
+            
+            console.log(d.data.name, d.parent.data.name);
+            selected_category = d.parent.data.name;
+            selected_subcategory = d.data.name;
+
+            // Consider previously selected categories
+            if (localStorage.getItem("categories")) {
+                selections_cat = JSON.parse(localStorage.getItem("categories"));
+                selections_sub = JSON.parse(localStorage.getItem("subcategories"));
+            }
+            else { selections_cat = []; selections_sub = [];}
+
+            // If is not selected, we have to add this, such that then we compute the customers to filter
+            if (already_selected==false) {
+                selections_cat.push(selected_category);
+                selections_sub.push(selected_subcategory);
+            }
+            else {
+                // we do not push but remove this cat and subcat from array
+                for (i=0;i<selections_cat.length;i++) {
+                    if (selections_cat[i] == selected_category &&
+                        selections_sub[i] == selected_subcategory) {
+
+                        selections_cat.splice(i, 1);
+                        selections_sub.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            console.log("sub",selections_sub);
+            console.log("cat", selections_cat);
+
+            // Update local storage with the new selections
+            if(selections_cat.length!=0) {
+                localStorage.setItem("categories", JSON.stringify(selections_cat));
+                localStorage.setItem("subcategories", JSON.stringify(selections_sub));
+            }
+            else {
+                localStorage.removeItem("categories");
+                localStorage.removeItem("subcategories");
+            }
+            
+            // Compute the associated customers
+            /*d3.csv("static/dataset/full_data.csv", 
+            function(d) {
+                if (selections_cat.includes(d.prod_cat) && selections_sub.includes(d.prod_subcat) 
+                && selections_sub[(selections_cat.findIndex(item => item==d.prod_cat))]==d.prod_subcat)
+                    return d.cust_id;
+            },
+            function(data) {*/
+                
+            // Get unique customer ids
+            function onlyUnique(value, index, self) {
+                return self.indexOf(value) === index;
+            }
+                //selected_customers = data.filter(onlyUnique);
+                //console.log(selected_customers);
+
+
+                // Check if there are customers selected in rfm
+            if (localStorage.getItem("rfm_customers")) {
+                previous_customers = JSON.parse(localStorage.getItem("rfm_customers"));
+            }
+
+            // Or Check if a cluster is selected
+            else if (localStorage.getItem("cluster_customers")) {
+                previous_customers = JSON.parse(localStorage.getItem("cluster_customers"));
+            }
+            // No previous selection has been made
+            else {
+                previous_customers = [];
+            }
+
+                // previous_customers are the ones to consider because of rfm/clustering
+                // selected_customers are the ones to filter basing on categories
+                // (already removed what to unselect)
+                
+                /*if (previous_customers.length==0) { all_customers = selected_customers; }
+                // Intersect the filters: customers that are in previous AND in the selected
+                else {
+                    all_customers = previous_customers.filter(x => selected_customers.includes(x));
+                }*/
+                
+
+            console.log("all", previous_customers);
+                // Filter views basing on the new computed customers
+                //'category' allows to NOT change the treemap view
+                
+                    // quando resetti la treemap on click non funziona più
+                    // All the customers should be taken into account, reset
+            if (selections_sub.length!=0) {
+                filterFullDataByCustomers(previous_customers, 'category', selections_cat, selections_sub);
+            }
+            else {
+                filterFullDataByCustomers(previous_customers, 'all', null, null);
+            }
+            d3.select("#treemap").selectAll(".node")
+                .on('click', filterByCategory);
+                //}
+                //console.log("cluster cust", localStorage.getItem('cluster_customers'));
+            //});
 
         }
 
@@ -310,6 +503,7 @@ $(document).ready(function(){
             // RESET CLUSTER SELECTION TO ALL if a cluster is selected
             // This triggers on change => triggers filterByCluster => triggers filterFullData and filterRfm
             if(document.getElementById("cluster-selector-select").value == 'all') {
+                localStorage.removeItem("cluster_customers");
                 //ok, you don't need to reset to all and run again the filter all
                 //console.log("is all");
 
@@ -331,6 +525,7 @@ $(document).ready(function(){
                 //console.log("is not all");
                 //document.getElementById("cluster-selector-select").value = 'all';
                 d3.select('#cluster-selector-select').property('value', 'all');
+                localStorage.removeItem("cluster_customers");
                 var element = document.getElementById('cluster-selector-select');
                 var event = new Event('change');
                 element.dispatchEvent(event);
@@ -377,7 +572,7 @@ $(document).ready(function(){
                     final_customers = all_customers;
 
                     // FILTER FULL DATA BASING ON CUSTOMER LIST
-                    filterFullDataByCustomers(all_customers,'rfm');
+                    filterFullDataByCustomers(all_customers,'rfm', null, null);
                     // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
                     filterRfmDataByCustomers(all_customers,'rfm',false);
                 
@@ -395,7 +590,7 @@ $(document).ready(function(){
 
                     // FILTER FULL DATA BASING ON CUSTOMER LIST
                     if (difference.length!=0) {
-                        filterFullDataByCustomers(difference,'rfm');
+                        filterFullDataByCustomers(difference,'rfm', null, null);
                         // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
                         filterRfmDataByCustomers(difference, 'rfm', false);
                     }
@@ -410,6 +605,7 @@ $(document).ready(function(){
 
                 }
 
+               
                 // FILTER SCATTER AND UNSUPERVISED PARALLEL
                 if (final_customers.length!=0) {
 
@@ -460,8 +656,12 @@ $(document).ready(function(){
                     .style("opacity", 1);
                 }
 
+                
+
             });
         }
+
+        
 
 // --------------------------------------------------------------------------------
         // ADD A CLUSTER SELECTOR
@@ -501,11 +701,13 @@ $(document).ready(function(){
 
         // FILTER USING RFM HEATMAP
         d3.select("#rfm-heatmap svg").selectAll('rect')
-            .on('click', filterBySegment);
-                
-                
+            .on('click', filterBySegment);              
         
-
+        // FILTER USING CATEGORY TREEMAP
+        d3.select("#treemap").selectAll(".node")
+            .on('click', filterByCategory);
+        
+        
 
     }); //close csv
 

@@ -215,6 +215,6 @@ $(document).ready(function(){
                     tool.style("display", "none");
                 });
 
-
+        localStorage.removeItem("cluster_customers");
     }) //end of d3.csv
 }) //end of document.ready
