@@ -69,7 +69,7 @@ function treemap_from_csv(csv_data) {
         .style("width", width + "px")
         .style("height", height + "px");
         
-        var tool = d3.select("body").append("div").attr("class", "toolTip");
+        var tool = d3.select("body").append("div").attr("class", "toolTip toolCat");
         
         d3.select(self.frameElement).style("height", height + 300 + "px");
         d3.select(self.frameElement).style("width", width+20 + "px");

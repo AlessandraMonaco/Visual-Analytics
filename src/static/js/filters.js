@@ -141,8 +141,8 @@ $(document).ready(function(){
                     // FILTER TREEMAP VISUALIZATION
                     if (filter!='category') {
                         d3.select("#treemap .treemap").remove();
-                        d3.select(".toolTip").style("opacity", 0);
-                        d3.select(".toolTip").remove();
+                        d3.select(".toolTip toolCat").style("opacity", 0);
+                        d3.select(".toolTip toolCat").remove();
                         localStorage.removeItem("categories");
                         localStorage.removeItem("subcategories");
                         treemap_from_csv(full_data); 
@@ -390,7 +390,7 @@ $(document).ready(function(){
                 // Remove the border from the div
                 d3.select(this).style("border", "0px solid white");
                 // Hide tooltip
-                d3.select(".toolTip").style("display", "none");
+                d3.select(".toolTip toolCat").style("display", "none");
             
             }            
 

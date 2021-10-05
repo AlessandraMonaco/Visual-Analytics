@@ -167,7 +167,9 @@ else {
     
     //append a title element to give basic mouseover info
     dataRects.append("title")
-        .text(function(d) { return toolDate(new Date(d.date))+":\n"+d.value+units; });
+        .text(function(d) { return toolDate(new Date(d.date))+":\n"+d.value.toFixed(2)+units; });
+    
+    
                 
     //add montly outlines for calendar
     cals.append("g")

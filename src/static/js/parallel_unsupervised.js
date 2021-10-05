@@ -33,12 +33,18 @@ $(document).ready(function(){
                     "translate(" + parallel_margin.left + "," + parallel_margin.top + ")");
 
         // Manually set the dimensions
-        var dimensions = ['(Bags) Women', '(Books) Academic', '(Books) Children', '(Books) Comics', 
+        // Original dimension order
+        var dimensions = ['(Bags) Women','(Books) Academic', '(Books) Children', '(Books) Comics', 
             '(Books) DIY', '(Books) Fiction', '(Books) Non-Fiction', '(Clothing) Kids', '(Clothing) Mens', 
             '(Clothing) Women', '(Electronics) Audio and video', '(Electronics) Cameras', 
             '(Electronics) Computers', '(Electronics) Mobiles', '(Electronics) Personal Appliances', 
             '(Footwear) Kids', '(Footwear) Mens', '(Footwear) Women', '(Home and kitchen) Bath', 
-            '(Home and kitchen) Furnishing', '(Home and kitchen) Kitchen', '(Home and kitchen) Tools']
+            '(Home and kitchen) Furnishing', '(Home and kitchen) Kitchen', '(Home and kitchen) Tools'];
+
+        
+        
+        
+            
 
         // Tooltip for labels
         var tool = d3.select("body").append("div").attr("class", "toolTip");
@@ -55,28 +61,12 @@ $(document).ready(function(){
         .style("border-radius", "5px")
         .style("padding", "5px")
         .style("width", "auto")
-        .style("height", "auto")
+        .style("height", "auto");
         
         // Color scale: give me a cluster name, I return a color
         var color = d3.scaleOrdinal()
             .domain(d3.extent(data, function(d) { return +parseInt(d.cluster); }))
             .range(cluster_color)
-
-        // For each dimension, I build a linear scale. I store all in a y object
-        var y = {} //empty object
-        for (i in dimensions) {
-            var name = dimensions[i]
-            y[name] = d3.scaleLinear()
-            .domain( [0,20] ) // --> Same axis range for each group
-            // --> different axis range for each group --> 
-            //.domain( [d3.extent(data, function(d) { return parseInt(d[name]); })] )
-            .range([height, 0])
-        }
-
-        // Build the X scale -> it find the best position for each Y axis
-        x = d3.scalePoint()
-        .range([0, width])
-        .domain(dimensions);
 
         // Highlight the specie that is hovered
         var highlight = function(d){
@@ -158,14 +148,34 @@ $(document).ready(function(){
             }
         }
 
-        // The path function take a row of the csv as input, and return x and y coordinates of the 
-        // line to draw for this raw.
-        function path(d) {
-            return d3.line()(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
-        }
+        
 
-        // Draw the lines
-        svg
+        function Parallel(svg,dimensions) {
+
+             // The path function take a row of the csv as input, and return x and y coordinates of the 
+            // line to draw for this raw.
+            function path(d) {
+                return d3.line()(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
+            }
+
+            // For each dimension, I build a linear scale. I store all in a y object
+            var y = {} //empty object
+            for (i in dimensions) {
+                var name = dimensions[i]
+                y[name] = d3.scaleLinear()
+                .domain( [0,20] ) // --> Same axis range for each group
+                // --> different axis range for each group --> 
+                //.domain( [d3.extent(data, function(d) { return parseInt(d[name]); })] )
+                .range([height, 0])
+            }
+
+            // Build the X scale -> it find the best position for each Y axis
+            x = d3.scalePoint()
+            .range([0, width])
+            .domain(dimensions);
+
+            // Draw the lines
+            svg
             .selectAll("myPath")
             .data(data)
             .enter()
@@ -189,7 +199,7 @@ $(document).ready(function(){
                 element.dispatchEvent(event);
             });
 
-        // Draw the axis:
+            // Draw the axis:
         svg.selectAll("myAxis")
         // For each dimension of the dataset I add a 'g' element:
             .data(dimensions).enter()
@@ -215,6 +225,65 @@ $(document).ready(function(){
                     tool.style("display", "none");
                 });
 
+        }
+
+        Parallel(svg,dimensions);
+
         localStorage.removeItem("cluster_customers");
+
+
+        // ORDER AXES BY CATEGORY (ORIGINAL ORDER)
+        d3.select("#btn-original-order").on("click", function() {
+            var orig_dimensions = ['(Bags) Women', '(Books) Academic', '(Books) Children', '(Books) Comics', 
+            '(Books) DIY', '(Books) Fiction', '(Books) Non-Fiction', '(Clothing) Kids', '(Clothing) Mens', 
+            '(Clothing) Women', '(Electronics) Audio and video', '(Electronics) Cameras', 
+            '(Electronics) Computers', '(Electronics) Mobiles', '(Electronics) Personal Appliances', 
+            '(Footwear) Kids', '(Footwear) Mens', '(Footwear) Women', '(Home and kitchen) Bath', 
+            '(Home and kitchen) Furnishing', '(Home and kitchen) Kitchen', '(Home and kitchen) Tools'];
+            //For each dimension, I build a linear scale. I store all in a y object
+
+            // Remove prevous data and axes
+            svg.selectAll(".axis").remove();
+            svg.selectAll(".pline").remove();
+
+            // Draw again data and axes
+            Parallel(svg,orig_dimensions);
+        })
+
+       // SUFFLE AXES ORDER (AT RANDOM CONTINUOUSLY)
+        d3.select("#btn-shuffle-order").on("click", function() {
+            //console.log(dimensions);
+
+            function shuffle(array) {
+                let currentIndex = array.length,  randomIndex;
+              
+                // While there remain elements to shuffle...
+                while (currentIndex != 0) {
+              
+                  // Pick a remaining element...
+                  randomIndex = Math.floor(Math.random() * currentIndex);
+                  currentIndex--;
+              
+                  // And swap it with the current element.
+                  [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]];
+                }
+              
+                return array;
+              }
+            //console.log(shuffle(dimensions));
+            // dimensions are the actual dimensions (ultime inserite)
+            // do a random shuffle on them
+            new_dimensions = shuffle(dimensions);
+            // Remove prevous data and axes
+            svg.selectAll(".axis").remove();
+            svg.selectAll(".pline").remove();
+
+            // Draw again data and axes
+            Parallel(svg,new_dimensions);
+        })
+
+
+
     }) //end of d3.csv
 }) //end of document.ready
