@@ -141,6 +141,7 @@ else {
         })
         .enter()
         .append("rect")
+        .style("cursor", "help")
         .attr("id",function(d) {
             //console.log(format(new Date(d.date))+":"+d.value);
             return format(new Date(d.date))+":"+d.value;

@@ -232,6 +232,7 @@ function rfm_heatmap_from_csv(svg,data) {
       .attr("ry", 2)
       .attr("width", x.bandwidth() )
       .attr("height", y.bandwidth() )
+      .style("cursor", "pointer")
       .style("fill", function(d) { return myColor(d.Avg_M)} )
       .style("stroke-width", 1)
       .style("stroke", "black")

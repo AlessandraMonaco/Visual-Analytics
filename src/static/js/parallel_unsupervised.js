@@ -182,6 +182,7 @@ $(document).ready(function(){
             .append("path")
             .attr("class", function (d) { return "pline pline" + d.cluster } ) // 2 class for each line: 'line' and the group name
             .attr("d",  path)
+            .style("cursor", "pointer")
             .style("fill", "none" )
             .style("stroke", function(d){ return( color(d.cluster))} )
             .style("opacity", 0.5)
@@ -214,6 +215,7 @@ $(document).ready(function(){
             .append("text")
                 .style("text-anchor", "middle")
                 .attr("y", -9)
+                .style("cursor", "help")
                 .text(function(d) { return d.substring(0,3)+".."; })
                 .style("fill", "white")
                 .on("mousemove", function (d) {

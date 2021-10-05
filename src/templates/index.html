@@ -60,7 +60,7 @@
       </div>
 
       <form action="/reset" method="GET">
-        <button class="my-button btn-right" id="btn-clear" onclick="ResetViz();">
+        <button class="my-button btn-right" id="btn-clear" onclick="ResetViz(); document.body.style.cursor='wait'; return true;">
           Reset
         </button>
       </form>
@@ -100,7 +100,7 @@
         </select>
 
         <!-- Button to actually run the filtering -->
-        <button class="my-button" id="btn-filter" onclick="FilterData();">
+        <button class="my-button" id="btn-filter" onclick="FilterData(); document.body.style.cursor='wait'; return true;">
           Analyze<i class="material-icons">filter_alt</i></button>
       </form>
 
@@ -183,7 +183,7 @@
               <input type="number" id="n_components" name="n_components" class="input-param btn-select" min="2" max="18" value="2">
               <label for="n_clusters">#CLUSTERS:</label>
               <input type="number" id="n_clusters" name="n_clusters" class="input-param btn-select" min="2" max="6" value="4" >
-              <button class="my-button" id="btn-run" style="vertical-align:middle;font-size:12px;padding-bottom:4px;" onclick="RunKmeans();">
+              <button class="my-button" id="btn-run" style="vertical-align:middle;font-size:12px;padding-bottom:4px;" onclick="RunKmeans();document.body.style.cursor='wait'; return true;">
                 Run<span class="material-icons" style="font-size:22px;">restart_alt</span></button>
             </form>
 

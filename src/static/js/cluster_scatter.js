@@ -196,6 +196,7 @@ $(document).ready(function(){
             .attr("cy", function (d) { return y(d.pc_2); } )
             .attr("r", 1)
             .style("fill", function (d) { return color(d.cluster) } )
+            .style("cursor", "pointer")
         .on("mouseover", highlight)
         .on("mousemove", mousemove)
         .on("mouseleave", doNotHighlight )
