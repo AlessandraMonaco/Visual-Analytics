@@ -245,6 +245,8 @@ $(document).ready(function(){
 
             // reset the selection on rfm segments
             localStorage.removeItem("rfm_customers");
+            localStorage.removeItem("categories");
+            localStorage.removeItem("subcategories");
 
             // recover the option that has been chosen
             options =  this.selectedOptions;
@@ -488,7 +490,15 @@ $(document).ready(function(){
                 filterFullDataByCustomers(previous_customers, 'category', selections_cat, selections_sub);
             }
             else {
-                filterFullDataByCustomers(previous_customers, 'all', null, null);
+                if (localStorage.getItem("cluster_customers")) {
+                    filterFullDataByCustomers(previous_customers, 'cluster', null, null);
+                }
+                else if (localStorage.getItem("rfm_customers")) {
+                    filterFullDataByCustomers(previous_customers, 'rfm', null, null);
+                }
+                else {
+                    filterFullDataByCustomers(previous_customers, 'all', null, null);
+                }
             }
             d3.select("#treemap").selectAll(".node")
                 .on('click', filterByCategory);
