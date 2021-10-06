@@ -25,13 +25,88 @@ function monthPath(t0) {
         + "H" + (w0 + 1) * cellSize + "Z";
   }
 
+// create continuous color legend
+// create continuous color legend
+
+
+function continuous_h(selector_id,colorscale) {
+    var legendheight = heat_height+300,
+        legendwidth = 80,
+        margin = {top: 0, right: 60, bottom: 10, left: 3};
+  
+    
+    var canvas = d3.select(selector_id)
+      .style("height", legendwidth + "px")
+      .style("width", legendheight + "px")
+      .style("position", "relative")
+      //.attr("translate", "rotate(-90)")
+      .append("canvas")
+      .attr("height", legendheight - margin.top - margin.bottom)
+      .attr("width", 1)
+      .style("height", (legendheight - margin.top - margin.bottom) + "px")
+      .style("width", (legendwidth - margin.left - margin.right) + "px")
+      .style("border", "1px solid #000")
+      .style("position", "absolute")
+      //.attr("transform", "rotate(-90)")
+      .style("top", (margin.top) + "px")
+      .style("left", (margin.left) + "px")
+      .node();
+  
+    var ctx = canvas.getContext("2d");
+    var ox = canvas.width / 2;
+    var oy = canvas.height / 2;
+ 
+    var legendscale = d3.scaleLinear()
+      .range([1, legendheight - margin.top - margin.bottom])
+      .domain(colorscale.domain());
+ 
+    // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
+    var image = ctx.createImageData(1, legendheight);
+    
+    d3.range(legendheight).forEach(function(i) {
+      var c = d3.rgb(colorscale(legendscale.invert(i)));
+      image.data[4*i] = c.r;
+      image.data[4*i + 1] = c.g;
+      image.data[4*i + 2] = c.b;
+      image.data[4*i + 3] = 255;
+    });
+    ctx.putImageData(image, 0, 0);
+    //ctx.translate(ox, oy); // change origin
+    //ctx.rotate(-(Math.PI)/2);
+    //ctx.save();
+    //ctx.restore();
+  
+    var legendaxis = d3.axisRight()
+      .scale(legendscale)
+      .tickSize(4)
+      .ticks();
+  
+    var svg = d3.select(selector_id)
+      .append("svg")
+      .attr("height", (legendheight) + "px")
+      .attr("width", (legendwidth) + "px")
+      //.attr("translate", "rotate(-90)")
+      .style("position", "absolute")
+      .style("left", "0px")
+      .style("top", "0px")
+      .style("pointer-events", "none");
+  
+    svg
+      .append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+      .call(legendaxis)
+      .selectAll("text")  
+      .style("text-anchor", "middle")
+      .attr("dx", "-.8em")
+    .attr("dy", "-1em")
+    .attr("transform", "rotate(90)");
+    //d3.select("#legend1").attr("translate", "rotate(90deg)");
+  };
 
 //Draw the calendar heatmap
 function calendar_from_csv(svg, data, y_value) {
 
-    
-
-    
 
     // Aggregate by summing daily amounts
     // IMPORTANT : The csv must be sorted on dates
@@ -57,6 +132,7 @@ function calendar_from_csv(svg, data, y_value) {
   .interpolator(d3.interpolatePurples)
   .domain([0,max]);
 
+  continuous_h("#legend1", myColorCal);
 
   //Set units and breaks depeding on the selected y_value
   var add = max/4;
@@ -212,7 +288,7 @@ else {
     })
 
     //create key
-    var key = svg.append("g")
+    /*var key = svg.append("g")
         .attr("id","key")
         .attr("class","key")
         .attr("transform",function(d){
@@ -253,8 +329,8 @@ else {
                 return "up to "+breaks[i];
             }   else    {
                 return "over "+breaks[i-1];   
-            }*/
-        });
+            }
+        });*/
 
 }
 

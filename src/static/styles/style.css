@@ -431,3 +431,13 @@ input[type=number] {
   position: relative;
   margin-top: -40px;
   margin-left: -10px; }
+
+#legend1 {
+  position: relative;
+  margin-top: -210px;
+  margin-left: -180px;
+  margin-bottom: 150px;
+  -ms-transform: rotate(270deg);
+  /* IE 9 */
+  transform: rotate(270deg);
+  z-index: 2; }
