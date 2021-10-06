@@ -32,7 +32,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/metrics_table.js')}}"></script>  
   <script type="text/javascript" src="{{ url_for('static', filename='js/clear_viz.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/compute_aggregated_values.js')}}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/filters.js')}}"></script>
+  <script type="text/javascript" type="module" src="{{ url_for('static', filename='js/filters.js')}}"></script>
 
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
   <title>Retail Analytics</title>
@@ -219,7 +219,7 @@
         </div>
       </fieldset>
       <fieldset id="fieldset-rfm">
-        <legend>RFM SEGMENTATION</legend>
+        <legend>RFM CUSTOMER SEGMENTATION</legend>
         <div class="row">
           <div class="col-9">
             <div id="rfm_parallel"></div>

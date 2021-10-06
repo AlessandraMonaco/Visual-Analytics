@@ -96,7 +96,8 @@ function treemap_from_csv(csv_data) {
             }
         }).on("mouseout", function (d) {
             tool.style("display", "none");
-        });
+        })
+        .on('click', filterByCategory);
 
         /*div
         .selectAll("titles")

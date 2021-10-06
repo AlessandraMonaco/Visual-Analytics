@@ -371,7 +371,7 @@ $(document).ready(function(){
 
         }
 
-        var filterByCategory = function(d) {
+        filterByCategory = function(d) {
 
             // Hide tooltip
             d3.select(".toolTip").style("display", "none");
@@ -671,7 +671,6 @@ $(document).ready(function(){
             });
         }
 
-        
 
 // --------------------------------------------------------------------------------
         // ADD A CLUSTER SELECTOR

@@ -8,7 +8,9 @@ lin_width = 850 - lin_margin.left - lin_margin.right,
 lin_height = 150 - lin_margin.top - lin_margin.bottom;
 
 // List of groups (here I have one group per column)
-var allGroup = ["Profit", "Sales"]
+var allGroup = ["Profit", "Sales"];
+
+//import { filterByCategory } from './filters.js';
 
 //Pretty print for date in tooltips
 function pretty_date(mydate) {
@@ -20,9 +22,212 @@ function pretty_value(myvalue, y_value) {
   else return myvalue;
 }
 
+function FilterByTime(starting_date, ending_date) {
+
+  localStorage.setItem("starting_date", starting_date);
+  localStorage.setItem("ending_date", ending_date);
+
+  // TO DO: CONSIDER ALSO IF YOU SELECT FIRST THE CLUSTER/RFM THEN CATEGORY AND THEN TIME FILTER
+  // Check if there are other filters
+  if(localStorage.getItem("cluster_customers")) {
+    previous_customers = JSON.parse(localStorage.getItem("cluster_customers"));
+  }
+  else if(localStorage.getItem("rfm_customers")) {
+    previous_customers = JSON.parse(localStorage.getItem("rfm_customers"));
+  }
+  else {
+    previous_customers = [];
+  }
+  
+  
+  // If categories are selected, they should remain the same
+  if(localStorage.getItem("categories")) {
+    selections_cat = JSON.parse(localStorage.getItem("categories"));
+    selections_sub = JSON.parse(localStorage.getItem("subcategories"));
+    // RECOMPUTE AGGREGATED VALUES
+    d3.csv("static/dataset/full_data.csv", 
+    function(d){
+      for (i=0;i<selections_cat.length;i++) {
+        if (selections_cat[i] == d.prod_cat &&
+          selections_sub[i] == d.prod_subcat &&
+          d3.timeParse("%Y-%m-%d")(d.tran_date)>=starting_date &&
+          d3.timeParse("%Y-%m-%d")(d.tran_date)<=ending_date) {
+            if ((previous_customers.length!=0 && previous_customers.includes(d.cust_id)) ||
+            previous_customers.length==0 ) {
+              //Check also customer containment
+                return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
+                profit : d.total_amt,
+                sales : d.Qty
+                } 
+            }
+      
+        }
+      }
+    },
+      function(filtered_data){
+    compute_aggregated_values(filtered_data); 
+  });
+  }
+  else {
+    // TO DO: MAKE CATEGORIES UNCLICKABLE
+    //Remove the treemap
+  d3.select("#treemap .treemap").remove();
+  d3.select(".toolTip toolCat").style("opacity", 0);
+  d3.select(".toolTip toolCat").remove();
+    // Filter data from full data csv
+    d3.csv("static/dataset/full_data.csv", 
+      function(d) {
+        if (d3.timeParse("%Y-%m-%d")(d.tran_date)>=starting_date &&
+            d3.timeParse("%Y-%m-%d")(d.tran_date)<=ending_date) {
+              if ((previous_customers.length!=0 && previous_customers.includes(d.cust_id)) ||
+            previous_customers.length==0 ) {
+              return d;
+            }
+        }
+      },
+    function(filtered_data){
+      // UPDATE TREEMAP
+      treemap_from_csv(filtered_data); 
+      // Make categories unclickable
+      d3.selectAll(".node").style("cursor", "default").on("click", null);
+    });
+
+    // RECOMPUTE AGGREGATED VALUES
+    d3.csv("static/dataset/full_data.csv", 
+    function(d){
+      if (d3.timeParse("%Y-%m-%d")(d.tran_date)>=starting_date &&
+          d3.timeParse("%Y-%m-%d")(d.tran_date)<=ending_date) {
+      return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
+            profit : d.total_amt,
+            sales : d.Qty
+          }
+      }
+    },
+      function(filtered_data){
+    compute_aggregated_values(filtered_data); 
+  });
+}
+  //
+  //d3.select("#treemap").selectAll(".node")
+  //  .on("click", filterByCategory);
+}
+
+function ResetTime() {
+  
+  // Check if clusters or rfm customers are selected
+  // Check if there are other filters
+  if(localStorage.getItem("cluster_customers")) {
+    previous_customers = JSON.parse(localStorage.getItem("cluster_customers"));
+  }
+  else if(localStorage.getItem("rfm_customers")) {
+    previous_customers = JSON.parse(localStorage.getItem("rfm_customers"));
+  }
+  else {
+    previous_customers = [];
+  }
+
+  if (localStorage.getItem("starting_date")) {
+    if(localStorage.getItem("categories")) {
+      // RECOMPUTE AGGREGATED VALUES
+      d3.csv("static/dataset/full_data.csv", 
+        function(d){
+          for (i=0;i<selections_cat.length;i++) {
+            if (selections_cat[i] == d.prod_cat &&
+              selections_sub[i] == d.prod_subcat) {
+                if ((previous_customers.length!=0 && previous_customers.includes(d.cust_id)) ||
+            previous_customers.length==0 ) 
+              return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
+                    profit : d.total_amt,
+                    sales : d.Qty
+              }
+            }
+          }
+        },
+        function(filtered_data){
+          compute_aggregated_values(filtered_data); 
+      });
+    }
+    else {
+    // Reset treemap
+    d3.select("#treemap .treemap").remove();
+    d3.select(".toolTip toolCat").style("opacity", 0);
+    d3.select(".toolTip toolCat").remove();
+    // reset the categories
+    localStorage.removeItem("categories");
+    localStorage.removeItem("subcategories");
+    
+    d3.csv("static/dataset/full_data.csv", 
+      function(d) {
+        if ((previous_customers.length!=0 && previous_customers.includes(d.cust_id)) ||
+            previous_customers.length==0 ) 
+            return d;
+      },
+      function(full_data) {
+        treemap_from_csv(full_data); 
+      });
+    d3.csv("static/dataset/full_data.csv",
+      function(d) {
+        if ((previous_customers.length!=0 && previous_customers.includes(d.cust_id)) ||
+            previous_customers.length==0 ) 
+        return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
+          profit : d.total_amt,
+          sales : d.Qty
+        }
+      }, function(full_data) {
+      // RECOMPUTE AGGREGATED VALUES
+      compute_aggregated_values(full_data); 
+    });
+  }
+  }
+  // Reset storage
+  localStorage.removeItem("starting_date");
+  localStorage.removeItem("ending_date");
+}
+
+function ActiveFilters(data) {
+  if(localStorage.getItem("cluster_customers")) 
+    previous_customers = JSON.parse(localStorage.getItem("cluster_customers"));
+  else if (localStorage.getItem("rfm_customers"))
+    previous_customers = JSON.parse(localStorage.getItem("rfm_customers"));
+  else previous_customers = [];
+
+  // CHECK IF CATEGORIES WERE SELECTED
+  if(localStorage.getItem("categories")) {
+    selections_cat = JSON.parse(localStorage.getItem("categories"));
+    selections_sub = JSON.parse(localStorage.getItem("subcategories"));
+  }
+  else {
+    selections_cat = [];
+    selections_sub = [];
+  }
+
+  if (previous_customers.length!=0 || selections_sub!=0) {
+    // filter
+    filtered = data.filter(function(d) {
+      // 1 If there are  categories AND/ANDNOT customers
+      if(selections_sub!=0) {
+        for (i=0;i<selections_cat.length;i++) {
+          if (selections_cat[i] == d.prod_cat &&
+            selections_sub[i] == d.prod_subcat &&
+            (previous_customers.length==0 || 
+              (previous_customers.length!=0 && previous_customers.includes(d.cust_id))) )
+              return d;
+        }
+      }
+      else { 
+        //No selections
+        if (previous_customers.length!=0 && previous_customers.includes(d.cust_id))
+        return d;
+      }
+  });
+  }
+  else filtered = data;
+  return filtered;
+}
 
 function linechart_from_csv(svg,data,y_value) {
 
+  
   // Aggregate by summing daily amounts
   // IMPORTANT : The csv must be sorted on dates
   // Check the selected level of aggregation
@@ -195,15 +400,21 @@ var focusText = svg
       function updateChart() {
         
         // What are the selected boundaries?
-        extent = d3.event.selection
+        extent = d3.event.selection;
         
         // If no selection, back to initial coordinate. Otherwise, update X axis domain
         if(!extent){
           if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
-          x.domain([ 4,8])
+          x.domain([ 4,8]);
         }else{
           x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
-          line.select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
+          line.select(".brush").call(brush.move, null); // This remove the grey brush area as soon as the selection has been done
+          //console.log(d3.event.selection);
+          starting_date = x.invert(d3.event.selection[0]); //starting date
+          ending_date = x.invert(d3.event.selection[1]); //ending date
+
+          // FILTER VIZ
+          FilterByTime(starting_date, ending_date);
         }
         
         // Update axis and line position
@@ -229,6 +440,9 @@ var focusText = svg
         .x(function(d) { return x(d.date) })
         .y(function(d) { return y(d.value) })
         )
+
+        // Reset all time filter
+        ResetTime();
       });
       
    
@@ -236,7 +450,7 @@ var focusText = svg
 }
 
 $(document).ready(function(){
-
+  
   //Read the data
   d3.csv("static/dataset/full_data.csv", 
     
@@ -244,7 +458,10 @@ $(document).ready(function(){
     function(d){
       return { date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
                 profit : d.total_amt, 
-                sales : d.Qty}
+                sales : d.Qty,
+                cust_id : d.cust_id,
+                prod_cat : d.prod_cat,
+                prod_subcat : d.prod_subcat}
     },          
     
     function(data) {
@@ -276,7 +493,7 @@ $(document).ready(function(){
       }
       else {linechart_from_csv(svg,data,y_value);}
       
-      //Update function when the selectButton is clicked
+      //UPDATE BASING ON PROFIT/SALES SELECTION
       // A function that updates the chart
       function update(selectedGroup) {
         //Drop previous visualization
@@ -289,7 +506,15 @@ $(document).ready(function(){
           .append("g")
           .attr("transform",
             "translate(" + lin_margin.left + "," + lin_margin.top + ")");
-        linechart_from_csv(svg,data,selectedGroup);
+        
+          // CHECK OTHER SELECTIONS AND FILTERS
+          filtered = ActiveFilters(data);
+          
+
+        linechart_from_csv(svg,filtered,selectedGroup);
+        // Reset also previous time filters
+        // TO DO: ADJUST THE FILTERING IN Sales/Profit CLICKING
+        ResetTime();
       }
 
       // When the button is changed, run the updateChart function
@@ -313,7 +538,11 @@ $(document).ready(function(){
           .append("g")
           .attr("transform",
             "translate(" + lin_margin.left + "," + lin_margin.top + ")");
-        linechart_from_csv(svg,data,selectedGroup);
+        
+        //CHECK OTHER ACTIVE FILTERS 
+        
+        filtered = ActiveFilters(data);
+        linechart_from_csv(svg,filtered,selectedGroup);
       });
     })
   
