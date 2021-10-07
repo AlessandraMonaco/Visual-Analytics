@@ -30,13 +30,13 @@ function monthPath(t0) {
 
 
 function continuous_h(selector_id,colorscale) {
-    var legendheight = heat_height+300,
+    var legendheight = heat_height+280,
         legendwidth = 80,
-        margin = {top: 0, right: 60, bottom: 10, left: 3};
+        margin = {top: 10, right: 60, bottom: 10, left: 3};
   
     
     var canvas = d3.select(selector_id)
-      .style("height", legendwidth + "px")
+      .style("height", 40 + "px")
       .style("width", legendheight + "px")
       .style("position", "relative")
       //.attr("translate", "rotate(-90)")
@@ -132,6 +132,8 @@ function calendar_from_csv(svg, data, y_value) {
   .interpolator(d3.interpolatePurples)
   .domain([0,max]);
 
+  // Drop previous legend if exists
+  d3.select("#legend1").select("svg").remove(); //legend
   continuous_h("#legend1", myColorCal);
 
   //Set units and breaks depeding on the selected y_value
@@ -344,7 +346,10 @@ $(document).ready(function(){
             return { 
                 date : d3.timeParse("%Y-%m-%d")(d.tran_date), 
                 profit : parseInt(d.total_amt), 
-                sales : parseInt(d.Qty)}
+                sales : parseInt(d.Qty),
+                cust_id : d.cust_id,
+                prod_cat : d.prod_cat,
+                prod_subcat : d.prod_subcat}
         },          
       
         function(data) {
@@ -370,13 +375,16 @@ $(document).ready(function(){
                 y_value = selectedOption;
 
                 //Drop previous visualization
-                d3.select("#calendar-heatmap svg").remove()
+                d3.select("#calendar-heatmap svg").remove(); //view
                 //Add the new visualization
                 var svg = d3.select("#calendar-heatmap").append("svg")
                     .attr("width", "420px")
                     .attr("viewBox","0 0 "+(xOffset+year_width)+" 540")
 
-                calendar_from_csv(svg,data,y_value);
+                //Check if other filters were active
+                // CHECK OTHER SELECTIONS AND FILTERS
+                filtered = ActiveFilters(data);
+                calendar_from_csv(svg,filtered,y_value);
                 
             }
       

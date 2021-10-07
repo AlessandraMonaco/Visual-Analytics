@@ -434,10 +434,10 @@ input[type=number] {
 
 #legend1 {
   position: relative;
-  margin-top: -210px;
-  margin-left: -180px;
-  margin-bottom: 150px;
+  margin-top: -175px;
+  margin-left: -185px;
+  margin-bottom: 160px;
   -ms-transform: rotate(270deg);
   /* IE 9 */
   transform: rotate(270deg);
-  z-index: 2; }
+  pointer-events: none; }
