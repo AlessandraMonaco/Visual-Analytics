@@ -9,6 +9,9 @@ body {
   font-size: 22px;
   color: #C0C0C0; }
 
+#title {
+  font-size: 18px; }
+
 form .material-icons {
   color: #282828;
   vertical-align: middle; }
@@ -119,7 +122,8 @@ legend {
 .description {
   position: relative;
   margin-top: 5px;
-  font-size: 10px; }
+  font-size: 10px;
+  color: gray; }
 
 .my-button {
   display: inline-block;
@@ -324,12 +328,13 @@ form {
   position: relative;
   margin-top: 10px;
   display: inline;
-  margin-left: 50px;
+  margin-left: 40px;
   font-size: 12px; }
   form .input-param {
     width: 25px;
     text-align: center;
-    margin-right: 15px;
+    margin-left: -3px;
+    margin-right: 6px;
     background-color: #585858;
     color: white;
     border: #585858; }
@@ -370,7 +375,7 @@ input[type=number] {
 
 #row-form {
   position: relative;
-  margin-left: 5px;
+  margin-left: -10px;
   margin-top: 0px; }
   #row-form .my-button {
     font-size: 10px;
@@ -426,6 +431,11 @@ input[type=number] {
   position: relative;
   margin-left: -50px;
   margin-bottom: -10px; }
+
+#rfm-legend {
+  position: relative;
+  margin-top: -5px;
+  margin-left: -60px; }
 
 #rfm-legend-title {
   position: relative;

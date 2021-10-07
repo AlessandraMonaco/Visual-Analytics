@@ -52,7 +52,7 @@ function treemap_from_csv(csv_data) {
         
         // Then d3.treemap computes the position of each element of the hierarchy
         var width = 320,
-        height = 200;
+        height = 180;
         
         var color = d3.scale.ordinal()
         .range(["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02"])

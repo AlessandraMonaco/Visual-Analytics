@@ -10,7 +10,8 @@ lin_height = 150 - lin_margin.top - lin_margin.bottom;
 // List of groups (here I have one group per column)
 var allGroup = ["Profit", "Sales"];
 
-//import { filterByCategory } from './filters.js';
+var parseDate = d3.time.format("%d/%m/%y").parse;
+format = d3.time.format("%d-%m-%Y");
 
 //Pretty print for date in tooltips
 function pretty_date(mydate) {
@@ -314,7 +315,7 @@ function linechart_from_csv(svg,data,y_value) {
     var bisect = d3.bisector(function(d) { return d.date; }).left;
 
     // Create the circle that travels along the curve of chart
-    var focus = svg
+     focus = svg
       .append('g')
       .append('circle')
     .style("fill", "none")
@@ -323,7 +324,7 @@ function linechart_from_csv(svg,data,y_value) {
     .style("opacity", 0)
 
 // Create the text that travels along the curve of chart
-var focusText = svg
+ focusText = svg
   .append('g')
   .append('text')
     //.attr("class", "tooltip")
@@ -332,8 +333,16 @@ var focusText = svg
     .style("font-weight", "bold")
     .attr("stroke-width", 3.0)
     .attr("text-anchor", "left")
-    .attr("alignment-baseline", "bottom")
-    
+    .attr("alignment-baseline", "bottom");
+focusDate = svg.append('text')
+//.attr("class", "tooltip")
+.style("opacity", 0)
+.style("fill", "white")
+.style("font-weight", "bold")
+.style("font-size", "9px")
+.attr("stroke-width", 3.0)
+.attr("text-anchor", "left")
+.attr("alignment-baseline", "bottom")
 
 
 
@@ -366,15 +375,34 @@ var focusText = svg
 
      // What happens when the mouse move -> show the annotations at the right positions.
   function mouseover() {
-    focus.style("opacity", 1)
-    focusText.style("opacity",1)
+    // Show tooltip
+    focus.style("opacity", 1);
+    focusText.style("opacity",1);
+    focusDate.style("opacity",1);
+
+    // Highlight in the calendar heatmap the correspondent rect by date id
+    //d3.select("rect")
+    /*var x0 = x.invert(d3.mouse(this)[0]);
+    var i = bisect(data, x0, 1);
+    selectedData = data[i];
+    myid = format(new Date(selectedData.date));
+    console.log("#"+myid);
+    var element = document.getElementById(myid);
+    //d3.select(element).style("stroke", "black").style("stroke-width", 2);
+// Turn all white
+d3.selectAll(".dataday").attr("fill", "white");*/
+
+d3.select(element)
+  .attr("fill", function(d) { return myColorCal(parseFloat(d.value));});
+
+    
   }
 
   function mousemove() {
     // recover coordinate we need
     var x0 = x.invert(d3.mouse(this)[0]);
     var i = bisect(data, x0, 1);
-    selectedData = data[i]
+    selectedData = data[i];
     //console.log(selectedData.value);
     focus
       .attr("cx", x(selectedData.date))
@@ -384,11 +412,20 @@ var focusText = svg
       .html(pretty_value(selectedData.value, y_value))
       //.html(pretty_date(selectedData.date))
       .attr("x", x(selectedData.date)+5)
-      .attr("y", y(selectedData.value)+5)  
-    }
+      .attr("y", y(selectedData.value)+5);
+      focusDate
+      //.html(pretty_value(selectedData.value, y_value))
+      .html(format(selectedData.date))
+      .attr("x", x(selectedData.date)+5)
+      .attr("y", y(selectedData.value)+17);
+
+  }
   function mouseout() {
-    focus.style("opacity", 0)
-    focusText.style("opacity", 0)
+    focus.style("opacity", 0);
+    focusText.style("opacity", 0);
+    focusDate.style("opacity", 0);
+    
+    
   }
 
 

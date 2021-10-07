@@ -23,6 +23,10 @@ body {
 
 }
 
+#title {
+  font-size: 18px;
+}
+
 form {
   .material-icons {
     color: $background_color;
@@ -162,6 +166,7 @@ legend {
   position: relative;
   margin-top: 5px;
   font-size: 10px;
+  color: $axis_color;
 }
 
 .my-button {
@@ -425,13 +430,14 @@ form {
   position: relative;
   margin-top: 10px;
   display: inline;
-  margin-left: 50px;
+  margin-left: 40px;
   font-size: 12px;
 
   .input-param {
     width: 25px;
     text-align: center;
-    margin-right: 15px;
+    margin-left: -3px;
+    margin-right: 6px;
     background-color: $selector_background_color;
     color: white;
     border: $selector_background_color;
@@ -485,7 +491,7 @@ input[type=number] {
 
 #row-form {
   position: relative;
-  margin-left: 5px;
+  margin-left: -10px;
   margin-top: 0px;
   
   .my-button {
@@ -562,6 +568,12 @@ input[type=number] {
   position:relative;
   margin-left: -50px;
   margin-bottom: -10px;
+}
+
+#rfm-legend {
+  position:relative;
+  margin-top: -5px;
+  margin-left: -60px;
 }
 
 #rfm-legend-title {

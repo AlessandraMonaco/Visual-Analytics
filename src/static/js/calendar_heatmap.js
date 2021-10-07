@@ -222,7 +222,8 @@ else {
         .style("cursor", "help")
         .attr("id",function(d) {
             //console.log(format(new Date(d.date))+":"+d.value);
-            return format(new Date(d.date))+":"+d.value;
+            //return format(new Date(d.date))+":"+d.value;
+            return format(new Date(d.date));
         })
         .attr("stroke","#ccc")
         .attr("width",cellSize)
@@ -242,7 +243,7 @@ else {
                 return colours[breaks.length];   
             }*/
             return myColorCal(parseFloat(d.value));
-        })
+        });
     
     //append a title element to give basic mouseover info
     dataRects.append("title")

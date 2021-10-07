@@ -1,11 +1,11 @@
 // set the dimensions and margins of the graph
-var heat_margin = {top: 10, right: 25, bottom: 30, left: 30},
+var heat_margin = {top: 15, right: 25, bottom: 30, left: 30},
   heat_width = 150 - heat_margin.left - heat_margin.right,
   heat_height = 150 - heat_margin.top - heat_margin.bottom;
 
 // create continuous color legend
 function continuous(selector_id,colorscale) {
-  var legendheight = heat_height+20,
+  var legendheight = heat_height+30,
       legendwidth = 80,
       margin = {top: 22, right: 60, bottom: 10, left: 3};
 
@@ -84,7 +84,7 @@ function rfm_heatmap_from_csv(svg,data) {
   svg.append("text")             
   .attr("transform",
           "translate(" + (heat_width/2) + " ," + 
-                      (heat_height + heat_margin.top + 10) + ")")
+                      (heat_height + heat_margin.top + 5) + ")")
   .style("text-anchor", "middle")
   .style("font-size", "9px")
   .style("fill", "white")
