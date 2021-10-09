@@ -190,7 +190,7 @@ function rfm_heatmap_from_csv(svg,data) {
       d3.selectAll(".p2line")
         .transition().duration(200)
         .style("stroke",  function(d) { return myColor(d.Avg_M);} )
-        .style("opacity", "1");
+        .style("opacity", 1);
 
       // IF THERE ARE RFM SEGMENTS SELECTIONS, COLOR ACCORDING TO THE SELECTIONS
       // TO FIX

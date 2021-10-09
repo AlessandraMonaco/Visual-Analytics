@@ -71,6 +71,8 @@ def clustering(n_components, n_clusters):
 
     # Running K-MEANS
     kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(principalComponents)
+    #kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(x)
+
     print("kmeans.labels_: ", kmeans.labels_)
     print("cluster centers: ", kmeans.cluster_centers_)
 

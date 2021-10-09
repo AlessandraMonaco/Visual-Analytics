@@ -10,6 +10,8 @@ body {
   color: #C0C0C0; }
 
 #title {
+  position: relative;
+  margin-top: -10px;
   font-size: 18px; }
 
 form .material-icons {

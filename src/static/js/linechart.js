@@ -390,10 +390,10 @@ focusDate = svg.append('text')
     var element = document.getElementById(myid);
     //d3.select(element).style("stroke", "black").style("stroke-width", 2);
 // Turn all white
-d3.selectAll(".dataday").attr("fill", "white");*/
+d3.selectAll(".dataday").attr("fill", "white");
 
 d3.select(element)
-  .attr("fill", function(d) { return myColorCal(parseFloat(d.value));});
+  .attr("fill", function(d) { return myColorCal(parseFloat(d.value));});*/
 
     
   }
