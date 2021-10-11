@@ -25,8 +25,8 @@ $(document).ready(function(){
         row.append("td")
             .style("width", "20px")
             .attr("class", "header")
-            .text("PCA VARIANCE");
-        row.append("td").text(parsedCSV[0].pca_variance)
+            .text("PCA TOT VARIANCE");
+        row.append("td").text(parsedCSV[0].pca_variance+" %")
 
 
 

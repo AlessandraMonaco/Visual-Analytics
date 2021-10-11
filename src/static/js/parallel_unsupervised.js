@@ -71,7 +71,7 @@ $(document).ready(function(){
         // Highlight the specie that is hovered
         var highlight = function(d){
             var clicked = document.getElementById('cluster-selector-select').value;
-            if (clicked == 'all') {
+            if (clicked == 'all' && !(localStorage.getItem("rfm_customers"))) {
                 selected_cluster = d.cluster
 
                 // first every group turns grey
@@ -82,7 +82,7 @@ $(document).ready(function(){
                 // Second the hovered specie takes its color
                 d3.selectAll(".pline" + selected_cluster)
                 .transition().duration(200)
-                .style("stroke", color(selected_cluster))
+                .style("stroke", cluster_color[parseInt(selected_cluster)])
                 .style("opacity", "1")
 
                 // Highlight scatter
@@ -95,7 +95,7 @@ $(document).ready(function(){
                 d3.selectAll(".dot" + selected_cluster)
                     .transition()
                     .duration(200)
-                    .style("fill", color(selected_cluster))
+                    .style("fill", cluster_color[parseInt(selected_cluster)])
                     .attr("r", 1.5)
             
                 // Reset selector on All Data
@@ -113,18 +113,18 @@ $(document).ready(function(){
         // Unhighlight
         var doNotHighlight = function(d){
             var clicked = document.getElementById('cluster-selector-select').value;
-            if (clicked == 'all') {
+            if (clicked == 'all' && !(localStorage.getItem("rfm_customers"))) {
                 // Do not highlight parallel
                 d3.selectAll(".pline")
                 .transition().duration(200).delay(1000)
-                .style("stroke", function(d){ return( color(d.cluster))} )
+                .style("stroke", function(d){ return( cluster_color[parseInt(d.cluster)])} )
                 .style("opacity", "1");
 
                 // Do not highlight scatter
                 d3.selectAll(".dot")
                     .transition()
                     .duration(200)
-                    .style("fill", function (d) { return color(d.cluster) } )
+                    .style("fill", function (d) { return cluster_color[parseInt(d.cluster)] } )
                     .attr("r", 1 );
             
                 // Reset selector on All Data
@@ -184,7 +184,7 @@ $(document).ready(function(){
             .attr("d",  path)
             .style("cursor", "pointer")
             .style("fill", "none" )
-            .style("stroke", function(d){ return( color(d.cluster))} )
+            .style("stroke", function(d){ return( cluster_color[parseInt(d.cluster)])} )
             .style("opacity", 0.5)
             .on("mouseover", highlight)
             .on("mousemove", mousemove)

@@ -1,11 +1,11 @@
 // set the dimensions and margins of the graph
 var scatter_margin = {top: 10, right: 0, bottom: 30, left: 30},
-    scatter_width = 155 - scatter_margin.left - scatter_margin.right,
-    scatter_height = 155 - scatter_margin.top - scatter_margin.bottom;
+    scatter_width = 180 - scatter_margin.left - scatter_margin.right,
+    scatter_height = 180 - scatter_margin.top - scatter_margin.bottom;
 
 
 $(document).ready(function(){
-    var cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
+    cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
     
 
     //Read the data
@@ -27,14 +27,14 @@ $(document).ready(function(){
             d3.selectAll(".dot")
                 .transition()
                 .duration(200)
-                .style("fill", function (d) { return color(d.cluster) })
+                .style("fill", function (d) { return cluster_color[parseInt(d.cluster)] })
                 .attr("r", 1 )
         }
 
         // Color scale: give me a cluster name, I return a color
-        var color = d3.scaleOrdinal()
+        color = d3.scaleOrdinal()
             .domain(d3.extent(data, function(d) { return +parseInt(d.cluster); }))
-            .range(cluster_color)
+            .range(cluster_color);
 
         // append the svg object to the body of the page
         var svg = d3.select("#scatter")
@@ -119,7 +119,7 @@ $(document).ready(function(){
                 d3.selectAll(".dot" + selected_cluster)
                     .transition()
                     .duration(200)
-                    .style("fill", color(selected_cluster))
+                    .style("fill", cluster_color[parseInt(selected_cluster)])
                     .attr("r", 1.5)
             
                 // Highlight in parallel coordinates
@@ -132,7 +132,7 @@ $(document).ready(function(){
                 // Second the hovered specie takes its color
                 d3.selectAll(".pline" + selected_cluster)
                 .transition().duration(200)
-                .style("stroke", color(selected_cluster))
+                .style("stroke", cluster_color[parseInt(selected_cluster)])
                 .style("opacity", "1")
 
                 // Reset selector on All Data
@@ -154,13 +154,13 @@ $(document).ready(function(){
                 d3.selectAll(".dot")
                     .transition()
                     .duration(200)
-                    .style("fill", function (d) { return color(d.cluster) } )
+                    .style("fill", function (d) { return cluster_color[parseInt(d.cluster)] } )
                     .attr("r", 1 )
                     
                 // Do not highlight parallel
                 d3.selectAll(".pline")
                     .transition().duration(200).delay(1000)
-                    .style("stroke", function(d){ return( color(d.cluster))} )
+                    .style("stroke", function(d){ return( cluster_color[parseInt(d.cluster)])} )
                     .style("opacity", "1")
             
                 // Reset selector on All Data
@@ -195,7 +195,7 @@ $(document).ready(function(){
             .attr("cx", function (d) { return x(d.pc_1); } )
             .attr("cy", function (d) { return y(d.pc_2); } )
             .attr("r", 1)
-            .style("fill", function (d) { return color(d.cluster) } )
+            .style("fill", function (d) { return cluster_color[parseInt(d.cluster)] } )
             .style("cursor", "pointer")
         .on("mouseover", highlight)
         .on("mousemove", mousemove)

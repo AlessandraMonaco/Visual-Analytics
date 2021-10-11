@@ -293,7 +293,9 @@ d3.select("#rfm-legend").append("text")
     .text("Avg Monetary Value");  
 
     continuous("#rfm-legend", myColor);
-
+    
+    //Add value legend
+    d3.select("#value-legend").append("text");
           
     }); //end of d3.csv
 

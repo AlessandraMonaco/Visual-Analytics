@@ -504,8 +504,8 @@ input[type=number] {
 // Scatter plot
 #scatter {
   position: relative;
-  margin-left: -68px;
-  margin-top: -10px;
+  margin-left: -81px;
+  margin-top: -40px;
   margin-bottom: -10px;
 
   path {
@@ -548,8 +548,8 @@ input[type=number] {
   line-height: 85%;
   height: 70px;
   width:100px; 
-  overflow-y: scroll;
-  scrollbar-width: thin;
+  //overflow-y: scroll;
+  //scrollbar-width: thin;
 
   td {
     padding-left: 1px;
@@ -563,19 +563,31 @@ input[type=number] {
 }
 
 #fieldset-rfm {
-  width:950px;
+  width:330px;
 }
 
-#rfm-heatmap, #rfm-legend {
+#fieldset-segment {
+  position: relative;
+  margin-left: 30px;
+  width:610px;
+}
+
+#rfm-heatmap {
   position:relative;
-  margin-left: -50px;
+  display:inline-block;
+  //float:left;
+  margin-left: -10px;
   margin-bottom: -10px;
+  vertical-align: top;
 }
 
 #rfm-legend {
   position:relative;
-  margin-top: -5px;
-  margin-left: -60px;
+  margin-left:-10px;
+  //margin-right:70px;
+  display: inline-block;
+  //float:left;
+  vertical-align: top;
 }
 
 #rfm-legend-title {
@@ -584,6 +596,29 @@ input[type=number] {
   margin-left: -10px;
 }
 
+#value-legend {
+  position:relative;
+  display:inline-block;
+  margin-left: 20px;
+  margin-top: 10px;
+  //width:80px;
+  //float:right;
+  font-size:8px;
+  vertical-align: top;
+  color: $axis_color;
+  background: $body_background_color;
+  padding:5px;
+}
+
+.big-bold {
+  font-size: 10px;
+  font-weight: bold;
+  color:white;
+}
+.up {
+  position:relative;
+  margin-top:-10px;
+}
 #legend1 {
   position: relative;
   margin-top: -175px;
@@ -593,4 +628,43 @@ input[type=number] {
   transform: rotate(270deg);
   //z-index:2;
   pointer-events: none;
+}
+
+#table-div {
+  position:relative;
+  margin-top:-5px;
+  height: 110px;
+  overflow-y:scroll;
+  scrollbar-width: thin;
+}
+#customer-table {
+  font-size: 11px;
+  text-align: center;
+  border-spacing: 10px;
+  //border-collapse: separate;
+  
+  th {
+    background-color: $axis_color;
+    color: $background_color;
+    position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  }
+
+  td {
+    padding-left: 3px;
+    padding-top: 1px;
+    border-bottom: 1px solid $axis_color;
+    
+  }
+  th, td {
+    padding-right: 10px;
+  }
+}
+
+#total-cust {
+  position:relative;
+  margin-top:-23px;
+  margin-left: 450px;
 }

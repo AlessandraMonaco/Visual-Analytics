@@ -1,6 +1,6 @@
 import flask
 from flask import Flask, render_template, request 
-import run_pca_kmeans, create_shared_dataset, run_rfm
+import run_pca_kmeans, create_shared_dataset, run_rfm, create_customer_summary
  
 #Flask variables can be displayed in HTML by wrapping them in the double braces ({{ }})
 
@@ -16,6 +16,8 @@ def index():
     run_pca_kmeans.clustering(2,4)
     # Run rfm segmentation
     run_rfm.rfm()
+    # Create customer summary for the segment table
+    create_customer_summary.customer_summary()
     # Return home page
     return render_template('index.html') # the return type is HTML
 
@@ -32,6 +34,8 @@ def run_clustering():
     n_clusters = request.args.get('n_clusters')
     # Trigger the kmeans function in external .py file (this function creates a csv file)
     run_pca_kmeans.clustering(int(n_components),int(n_clusters)) 
+    # Recreate customer summary for the segment table
+    create_customer_summary.customer_summary()
     # Return again the same html template
     return render_template('index.html')
 
@@ -53,6 +57,8 @@ def filter_csv():
     run_pca_kmeans.clustering(2,4) 
     # Run again rfm segmentation on the new data
     run_rfm.rfm()
+    # Recreate customer summary for the segment table
+    create_customer_summary.customer_summary()
     # Return again the same html template
     return render_template('index.html')
 

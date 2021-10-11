@@ -283,13 +283,13 @@ $(document).ready(function(){
                 d3.selectAll(".dot" + selected_cluster)
                     .transition()
                     .duration(200)
-                    .style("fill", color(selected_cluster))
+                    .style("fill", cluster_color[parseInt(selected_cluster)])
                     .attr("r", 1.5);
                 
                     // Highlight in parallel coordinates
                     d3.selectAll(".pline" + selected_cluster)
                     .transition().duration(200)
-                    .style("stroke", color(selected_cluster))
+                    .style("stroke", cluster_color[parseInt(selected_cluster)])
                     .style("opacity", "1");
 
                     
@@ -300,13 +300,13 @@ $(document).ready(function(){
                     d3.selectAll(".dot")
                     .transition()
                     .duration(200)
-                    .style("fill", function(d) { return color(d.cluster);})
+                    .style("fill", function(d) { return cluster_color[parseInt(d.cluster)];})
                     .attr("r", 1);
                 
                     // Highlight in parallel coordinates
                     d3.selectAll(".pline")
                     .transition().duration(200)
-                    .style("stroke", function(d) { return color(d.cluster);})
+                    .style("stroke", function(d) { return cluster_color[parseInt(d.cluster)];})
                     .style("opacity", "1");
 
                     //Hide tooltip
@@ -626,7 +626,7 @@ $(document).ready(function(){
                     .transition()
                     .duration(200)
                     .style("fill", function(d) { 
-                        if (final_customers.includes(d.cust_id)) return color(d.cluster);
+                        if (final_customers.includes(d.cust_id)) return cluster_color[parseInt(d.cluster)];
                         else return unselected_color;
                     })
                     .attr("r",  function(d) { 
@@ -640,7 +640,7 @@ $(document).ready(function(){
                     .transition()  
                     .duration(200)
                     .style("stroke", function(d) { 
-                        if (final_customers.includes(d.cust_id)) return color(d.cluster);
+                        if (final_customers.includes(d.cust_id)) return cluster_color[parseInt(d.cluster)];
                         else return unselected_color;
                     })
                     .style("opacity", function(d) { 
@@ -655,14 +655,14 @@ $(document).ready(function(){
                     scatter.selectAll(".dot")
                     .transition()
                     .duration(200)
-                    .style("fill", function(d) {  return color(d.cluster);})
+                    .style("fill", function(d) {  return cluster_color[parseInt(d.cluster)];})
                     .attr("r", 1);
 
                     var parallel = d3.select("#unsupervised_parallel svg");
                     parallel.selectAll(".pline")
                     .transition()  
                     .duration(200)
-                    .style("stroke", function(d) { return color(d.cluster);})
+                    .style("stroke", function(d) { return cluster_color[parseInt(d.cluster)];})
                     .style("opacity", 1);
                 }
 
@@ -698,7 +698,7 @@ $(document).ready(function(){
             .append("option")
             .text(function (d) { return "CLUSTER "+d; }) // text showed in the menu
             .attr("value", function (d) { return d; }) // corresponding value returned by the button
-            .style("color", function(d) { return color(d); })
+            .style("color", function(d) { return cluster_color[parseInt(d)]; })
             .style("background", "#1b1b1b")
             .style("font-size", "10px")
 

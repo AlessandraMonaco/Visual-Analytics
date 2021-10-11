@@ -100,12 +100,15 @@ def clustering(n_components, n_clusters):
     #total of around 0.8 or 80% to avoid overfitting.
     variance = pca.explained_variance_ratio_
     variance_2decimals = []
+    total_variance = 0
     for value in variance:
+        total_variance = total_variance + value
         variance_2decimals.append(float(round(value, 2))) #round variance values to 2 decimals
+    total_variance = float(round(total_variance*100, 2))
     print("PCA Explained Variance Ratio: ", variance_2decimals)
     # Store metrics in a csv
     metrics_df = pd.DataFrame(columns=['silhouette', 'inertia', 'pca_variance'])
-    metrics_df.loc[0] = [silhouette_avg,inertia,variance_2decimals]
+    metrics_df.loc[0] = [silhouette_avg,inertia,total_variance]
     metrics_df.to_csv(path+'clustering_metrics_data.csv', index=False) #write clustered data to csv
 
     return "done!"

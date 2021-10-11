@@ -32,6 +32,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/metrics_table.js')}}"></script>  
   <script type="text/javascript" src="{{ url_for('static', filename='js/clear_viz.js')}}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/compute_aggregated_values.js')}}"></script>
+  <script type="text/javascript" type="module" src="{{ url_for('static', filename='js/customer_summary.js')}}"></script>
   <script type="text/javascript" type="module" src="{{ url_for('static', filename='js/filters.js')}}"></script>
 
   <!--<title><%= htmlWebpackPlugin.options.title %></title>-->
@@ -171,7 +172,9 @@
       
     <div class="col-8" id="container-row">
       <fieldset id="fieldset-unsupervised">
-        <legend>UNSUPERVISED CUSTOMER SEGMENTATION (Pca + K-Means)</legend>
+        <legend>UNSUPERVISED CUSTOMER SEGMENTATION</legend>
+        <div class="description" style="position:relative;margin-top:-10px;">
+          Select a cluster from any visualization for further analyses.</div>
         <!--Setting parameters for PCA ad K-Means-->
         <div class="row" id="row-form">
           <div class="col-12">
@@ -204,8 +207,7 @@
 
           <div class="col-2">
             <!--Scatterplot of PCA-->
-            <div class="description" style="position:relative;margin-top:-44px;margin-left:-60px;width:170px;margin-bottom:10px;">
-              Select a cluster from any viz for further analyses.</div>
+            
             <div id="scatter"></div>
           </div>
 
@@ -222,27 +224,69 @@
         
         </div>
       </fieldset>
-      <fieldset id="fieldset-rfm">
-        <legend>RFM CUSTOMER SEGMENTATION</legend>
+      
         <div class="row">
-          <div class="col-9">
-            <div id="rfm_parallel"></div>
+          
+
+          
+          <div class="col-4">
+            <fieldset id="fieldset-rfm" >
+              <legend>RFM SEGMENTATION</legend>
+              <div class="description" style="position:relative;margin-top:-10px;width:240px;">
+                Select segments for further analyses. </div>
+                <!--Rfm heatmap-->
+              <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+              <div style="vertical-align:top;">
+                <div id="rfm-heatmap"></div><div id="rfm-legend"></div><div id="value-legend">
+                  <div class="big-bold">Recency </div>
+                  <div class="up">_____________</div>
+                  <div>1 :</div>
+                  <div>2 :</div>
+                  <div>3 :</div>
+                  <div>4 :</div>
+                  <div class="big-bold">Frequency </div>
+                  <div class="up">_____________</div>
+                  <div>1 :</div>
+                  <div>2 :</div>
+                  <div>3 :</div>
+                  <div>4 :</div>
+                </div></div>
+            
+            </fieldset>
           </div>
 
-          <div class="col-2">
-            <div class="description" style="position:relative;margin-top:-15px;margin-left:-20px;width:240px;">
-              Select segments for further analyses. </div>
-              <!--Rfm heatmap-->
-            <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-            <div id="rfm-heatmap"></div>
-          </div>
-
-          <div class="col-1">
-            <div id="rfm-legend"></div>
+          <div class="col-8">
+            <fieldset id="fieldset-segment" >
+              <legend>SEGMENT DETAILS</legend>
+              <div class="box-aggregation" id="total-cust" >
+                Total Customers
+              </div>
+              <div id="table-div">
+                <table id="customer-table">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Birthday</th>
+                    <th>Sex</th>
+                    <th>City</th>
+                    <th>Cluster</th>
+                    <th>Recency</th>
+                    <th>Frequency</th>
+                    <th>Monetary</th>
+                    <th>R</th>
+                    <th>F</th>
+                    <th>M</th>
+                    <th> </th>
+                  </tr>
+                  </thead>
+                  <tbody></tbody>
+                 </table>
+              </div>
+            <!--<div id="rfm_parallel"></div>-->
+            </fieldset>
           </div>
         </div>
-      </fieldset>
-    </div>
-  </div>
-</body>
+       </div>
+       </div>
+  </body>
 </html>
