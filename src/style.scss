@@ -23,9 +23,13 @@ body {
 
 }
 
+mark {
+  background-color: $axis_color;
+}
+
 #title {
   position: relative;
-  margin-top: -10px;
+  margin-top: -15px;
   font-size: 18px;
 }
 
@@ -599,15 +603,18 @@ input[type=number] {
 #value-legend {
   position:relative;
   display:inline-block;
-  margin-left: 20px;
-  margin-top: 10px;
+  margin-left: 19px;
+  margin-top: -10px;
   //width:80px;
   //float:right;
   font-size:8px;
   vertical-align: top;
   color: $axis_color;
-  background: $body_background_color;
+  //background: $body_background_color;
+  border: 2px solid $axis_color;
   padding:5px;
+  padding-top:2px;
+  padding-bottom: 2px;
 }
 
 .big-bold {

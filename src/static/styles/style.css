@@ -9,9 +9,12 @@ body {
   font-size: 22px;
   color: #C0C0C0; }
 
+mark {
+  background-color: gray; }
+
 #title {
   position: relative;
-  margin-top: -10px;
+  margin-top: -15px;
   font-size: 18px; }
 
 form .material-icons {
@@ -453,13 +456,15 @@ input[type=number] {
 #value-legend {
   position: relative;
   display: inline-block;
-  margin-left: 20px;
-  margin-top: 10px;
+  margin-left: 19px;
+  margin-top: -10px;
   font-size: 8px;
   vertical-align: top;
   color: gray;
-  background: #1b1b1b;
-  padding: 5px; }
+  border: 2px solid gray;
+  padding: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px; }
 
 .big-bold {
   font-size: 10px;

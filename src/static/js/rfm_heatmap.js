@@ -88,7 +88,7 @@ function rfm_heatmap_from_csv(svg,data) {
   .style("text-anchor", "middle")
   .style("font-size", "9px")
   .style("fill", "white")
-  .text("Recency");
+  .text("Recency (days)");
 
   //Build Y scales and axis:
   var y = d3.scaleBand()
@@ -109,7 +109,7 @@ function rfm_heatmap_from_csv(svg,data) {
   .style("font-size", "9px")
   .style("text-anchor", "middle")
   .style("fill", "white")
-  .text("Frequency");
+  .text("Frequency (orders)");
 
   // Build color scale
   avg_max = d3.max(data.map(function(d) { return parseFloat(d.Avg_M); }));
@@ -282,20 +282,53 @@ $(document).ready(function(){
 
 
 d3.select("#rfm-legend").append("text")
+.attr("transform", "rotate(-90)")
     .attr("id", "rfm-legend-title")
-    .attr("transform", "rotate(-90)")
     .attr("y", -20 )
   .attr("x",0 - (heat_height / 2))
     .attr("dy", "1em")
     .style("font-size", "9px")
     .style("text-anchor", "middle")
     .style("fill", "white")
-    .text("Avg Monetary Value");  
+    .text("Avg Monetary ($)");  
 
     continuous("#rfm-legend", myColor);
     
     //Add value legend
-    d3.select("#value-legend").append("text");
+    d3.csv("static/dataset/rfm_data.csv", function(rfm_data) {
+      var value_legend = d3.select("#value-legend");
+
+      var r1_data = rfm_data.filter(function(d) { if (d.R=='1') return d;});
+      var r2_data = rfm_data.filter(function(d) { if (d.R=='2') return d;});
+      var r3_data = rfm_data.filter(function(d) { if (d.R=='3') return d;});
+      var r4_data = rfm_data.filter(function(d) { if (d.R=='4') return d;});
+
+      var f1_data = rfm_data.filter(function(d) { if (d.F=='1') return d;});
+      var f2_data = rfm_data.filter(function(d) { if (d.F=='2') return d;});
+      var f3_data = rfm_data.filter(function(d) { if (d.F=='3') return d;});
+      var f4_data = rfm_data.filter(function(d) { if (d.F=='4') return d;});
+  
+      var max1 = d3.max(r1_data.map(function(d) { return parseFloat(d.recency); }));
+      var max2 = d3.max(r2_data.map(function(d) { return parseFloat(d.recency); }));
+      var max3 = d3.max(r3_data.map(function(d) { return parseFloat(d.recency); }));
+      var max4 = d3.max(r4_data.map(function(d) { return parseFloat(d.recency); }));
+      value_legend.select("#r1").append("text").text(" "+(max1.toString())+" - "+ (max2+1).toString() );
+      value_legend.select("#r2").append("text").text(" "+ ((max2).toString()) +" - "+ (max3+1).toString());
+      value_legend.select("#r3").append("text").text(" "+ ((max3).toString()) +" - "+ (max4+1).toString());
+      value_legend.select("#r4").append("text").text(" "+ ((max4).toString()) +" - 0");
+
+      max1 = d3.max(f1_data.map(function(d) { return parseFloat(d.frequency); }));
+      max2 = d3.max(f2_data.map(function(d) { return parseFloat(d.frequency); }));
+      max3 = d3.max(f3_data.map(function(d) { return parseFloat(d.frequency); }));
+      max4 = d3.max(f4_data.map(function(d) { return parseFloat(d.frequency); }));
+      value_legend.select("#f1").append("text").text(" 0 - "+(max1.toString()));
+      value_legend.select("#f2").append("text").text(" "+ (max1+1).toString()+" - "+(max2.toString()));
+      value_legend.select("#f3").append("text").text(" "+ (max2+1).toString()+" - "+(max3.toString()));
+      value_legend.select("#f4").append("text").text(" "+ (max3+1).toString()+" - "+(max4.toString()));
+
+
+
+    });
           
     }); //end of d3.csv
 
