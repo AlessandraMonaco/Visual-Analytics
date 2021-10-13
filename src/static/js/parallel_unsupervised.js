@@ -185,6 +185,9 @@ $(document).ready(function(){
             .style("cursor", "pointer")
             .style("fill", "none" )
             .style("stroke", function(d){ 
+                // For some bug we have to manually fix this
+                if (localStorage.getItem("cluster_customers")=='[]') 
+                    localStorage.removeItem("cluster_customers");
                 if (localStorage.getItem("cluster_customers")) {
                     // Color only the selected clusters
                     customers = JSON.parse(localStorage.getItem("cluster_customers"));
