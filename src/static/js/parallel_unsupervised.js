@@ -184,7 +184,24 @@ $(document).ready(function(){
             .attr("d",  path)
             .style("cursor", "pointer")
             .style("fill", "none" )
-            .style("stroke", function(d){ return( cluster_color[parseInt(d.cluster)])} )
+            .style("stroke", function(d){ 
+                if (localStorage.getItem("cluster_customers")) {
+                    // Color only the selected clusters
+                    customers = JSON.parse(localStorage.getItem("cluster_customers"));
+                    if (customers.includes(d.cust_id)) return cluster_color[parseInt(d.cluster)];
+                    else return unselected_color;
+                }
+                else if (localStorage.getItem("rfm_customers")) {
+                    // Color only the rfm selected customers
+                    customers = JSON.parse(localStorage.getItem("rfm_customers"));
+                    if (customers.includes(d.cust_id)) return cluster_color[parseInt(d.cluster)];
+                    else return unselected_color;
+                }
+                else {
+                    // If no active filter, just the original colors
+                    return( cluster_color[parseInt(d.cluster)])
+                }
+             } )
             .style("opacity", 0.5)
             .on("mouseover", highlight)
             .on("mousemove", mousemove)
@@ -231,8 +248,7 @@ $(document).ready(function(){
 
         Parallel(svg,dimensions);
 
-        localStorage.removeItem("cluster_customers");
-
+        
 
         // ORDER AXES BY CATEGORY (ORIGINAL ORDER)
         d3.select("#btn-original-order").on("click", function() {
@@ -250,6 +266,8 @@ $(document).ready(function(){
 
             // Draw again data and axes
             Parallel(svg,orig_dimensions);
+
+            
         })
 
        // SUFFLE AXES ORDER (AT RANDOM CONTINUOUSLY)
