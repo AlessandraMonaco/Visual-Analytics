@@ -29,7 +29,25 @@ function customer_summary(data) {
           if(i==4) return cluster_color[parseInt(d)];
      });
 
-     
+    // Make headers clickable for sorting
+    var headers = ['cust_id','DOB','Gender','city_code','cluster','recency','frequency',
+                    'monetary','R','F','M','Avg_M'];
+    headers.forEach(function(h) {
+        // Select the th element
+        var id = "#"+h;
+        var th = d3.select(id).style("cursor", "pointer").on("click", function(d) {
+            // Sort data basing on h value
+            sorted_data = data.sort(function(a,b) { 
+                // If DOB, parseDate, if Monetary and Avg_M parseFloat
+                if (h=='DOB') return d3.ascending(Date(a[h]),Date(b[h]));
+                if (h=='monetary' || h=='Avg_M') return d3.ascending(parseFloat(a[h]), parseFloat(b[h]));
+                else return d3.ascending(a[h],b[h]);
+            });
+            d3.select("#total-cust").select("div").remove();
+            d3.select("#customer-table tbody").selectAll("tr").remove();
+            customer_summary(sorted_data);
+        });
+    });
     console.log(data.length);
 }
 
