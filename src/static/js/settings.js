@@ -2,6 +2,15 @@
 var best_n_clusters = 4;
 var best_n_components = 2;
 
+//Setting default cluster colours
+cluster_color = [ "#1f78b4", "#33a02c", "#e31a1c", "#ff7f00", "#6a3d9a", "#b15928" ];
+unselected_color = "#404040";
+cluster_opacity = 0.3;
+
+//Setting default treemap colours
+treemap_color = d3.scale.ordinal()
+        .range(["#66c2a5", "#fc8d62", "#a6d854", "#e78ac3", "#fdb462", "#bebada"]);
+
 //when browser closed clear storage (TO DO: ONLY IF THE BUTTON RUN KMEANS AND FILTER ARE NOT CLICKED)
 /*$(window).on("unload", function(e) {
     window.localStorage.clear();

@@ -1,15 +1,14 @@
 $(document).ready(function(){
-    var cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
-
+    
 
 
     // Get all the cust_id of the selected cluster
     d3.csv("static/dataset/pca_kmeans_data.csv",  function(data) {
 
         // Color scale: give me a cluster name, I return a color
-        var color = d3.scaleOrdinal()
+        /*var color = d3.scaleOrdinal()
         .domain(d3.extent(data, function(d) { return +parseInt(d.cluster); }))
-        .range(cluster_color)
+        .range(cluster_color)*/
 
         //Compute cluster size
         var sizes = {};
@@ -297,13 +296,14 @@ $(document).ready(function(){
             .transition()
             .duration(200)
             .style("fill", unselected_color)
-            .attr("r", 1);
+            .attr("r", 1)
+            .style("opacity", 0.1);
 
             // first every group turns grey
             d3.selectAll(".pline")
             .transition().duration(200)
             .style("stroke", "grey")
-            .style("opacity", "0.1");
+            .style("opacity", 0);
 
             //Highlight selected
             var tool_val = 0;
@@ -320,13 +320,14 @@ $(document).ready(function(){
                     .transition()
                     .duration(200)
                     .style("fill", cluster_color[parseInt(selected_cluster)])
-                    .attr("r", 1.5);
+                    .attr("r", 1.5)
+                    .style("opacity", cluster_opacity);
                 
                     // Highlight in parallel coordinates
                     d3.selectAll(".pline" + selected_cluster)
                     .transition().duration(200)
                     .style("stroke", cluster_color[parseInt(selected_cluster)])
-                    .style("opacity", "1");
+                    .style("opacity", cluster_opacity);
 
                     
 
@@ -337,13 +338,14 @@ $(document).ready(function(){
                     .transition()
                     .duration(200)
                     .style("fill", function(d) { return cluster_color[parseInt(d.cluster)];})
-                    .attr("r", 1);
+                    .attr("r", 1)
+                    .style("opacity", cluster_opacity);
                 
                     // Highlight in parallel coordinates
                     d3.selectAll(".pline")
                     .transition().duration(200)
                     .style("stroke", function(d) { return cluster_color[parseInt(d.cluster)];})
-                    .style("opacity", "1");
+                    .style("opacity", cluster_opacity);
 
                     //Hide tooltip
                     tooltip
@@ -677,7 +679,11 @@ $(document).ready(function(){
                     .attr("r",  function(d) { 
                         if (final_customers.includes(d.cust_id)) return 1.5;
                         else return 1;
-                    });
+                    })
+                    .style("opacity", function(d) {
+                        if (final_customers.includes(d.cust_id)) return cluster_opacity;
+                        else return 0.1;
+                     } );
 
                     //HIGHLIGHT PARALLEL UNSUPERVISED
                     var parallel = d3.select("#unsupervised_parallel svg");
@@ -689,8 +695,8 @@ $(document).ready(function(){
                         else return unselected_color;
                     })
                     .style("opacity", function(d) { 
-                        if (final_customers.includes(d.cust_id)) return 1;
-                        else return 0.2;
+                        if (final_customers.includes(d.cust_id)) return cluster_opacity;
+                        else return 0;
                     });
                 }
 

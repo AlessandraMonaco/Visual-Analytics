@@ -5,7 +5,6 @@ var scatter_margin = {top: 10, right: 0, bottom: 30, left: 30},
 
 
 $(document).ready(function(){
-    cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
     
 
     //Read the data
@@ -29,12 +28,13 @@ $(document).ready(function(){
                 .duration(200)
                 .style("fill", function (d) { return cluster_color[parseInt(d.cluster)] })
                 .attr("r", 1 )
+                .style("opacity", cluster_opacity);
         }
 
         // Color scale: give me a cluster name, I return a color
-        color = d3.scaleOrdinal()
+        /*color = d3.scaleOrdinal()
             .domain(d3.extent(data, function(d) { return +parseInt(d.cluster); }))
-            .range(cluster_color);
+            .range(cluster_color);*/
 
         // append the svg object to the body of the page
         var svg = d3.select("#scatter")
@@ -85,9 +85,9 @@ $(document).ready(function(){
         
     
         // Color scale: give me a specie name, I return a color
-        var color = d3.scaleOrdinal()
+        /*var color = d3.scaleOrdinal()
         .domain(d3.extent(data, function(d) { return +parseInt(d.cluster); }))
-        .range(cluster_color)
+        .range(cluster_color)*/
     
         // Tooltip
         // create a tooltip
@@ -115,12 +115,14 @@ $(document).ready(function(){
                     .duration(200)
                     .style("fill", unselected_color)
                     .attr("r", 1)
+                    .style("opacity", 0.1);
         
                 d3.selectAll(".dot" + selected_cluster)
                     .transition()
                     .duration(200)
                     .style("fill", cluster_color[parseInt(selected_cluster)])
                     .attr("r", 1.5)
+                    .style("opacity", cluster_opacity);
             
                 // Highlight in parallel coordinates
 
@@ -128,12 +130,12 @@ $(document).ready(function(){
                 d3.selectAll(".pline")
                 .transition().duration(200)
                 .style("stroke", "grey")
-                .style("opacity", "0.1")
+                .style("opacity", 0)
                 // Second the hovered specie takes its color
                 d3.selectAll(".pline" + selected_cluster)
                 .transition().duration(200)
                 .style("stroke", cluster_color[parseInt(selected_cluster)])
-                .style("opacity", "1")
+                .style("opacity", cluster_opacity);
 
                 // Reset selector on All Data
                 d3.select('#cluster-selector-select').property('value', 'all');
@@ -156,12 +158,14 @@ $(document).ready(function(){
                     .duration(200)
                     .style("fill", function (d) { return cluster_color[parseInt(d.cluster)] } )
                     .attr("r", 1 )
+                    .style("opacity", cluster_opacity);
                     
                 // Do not highlight parallel
                 d3.selectAll(".pline")
                     .transition().duration(200).delay(1000)
                     .style("stroke", function(d){ return( cluster_color[parseInt(d.cluster)])} )
                     .style("opacity", "1")
+                    .style("opacity", cluster_opacity);
             
                 // Reset selector on All Data
                 d3.select('#cluster-selector-select').property('value', 'all');
@@ -181,7 +185,7 @@ $(document).ready(function(){
                 .html("CLUSTER " + d.cluster +
                 "<br>("+ sizes[d.cluster] +" customers)")
                 .style("left", (d3.mouse(this)[0] + 50 + "px"))
-                .style("top", (d3.mouse(this)[1] + "px"))
+                .style("top", (d3.mouse(this)[1] + "px"));
             }
         }
     
@@ -197,6 +201,7 @@ $(document).ready(function(){
             .attr("r", 1)
             .style("fill", function (d) { return cluster_color[parseInt(d.cluster)] } )
             .style("cursor", "pointer")
+            .style("opacity", cluster_opacity)
         .on("mouseover", highlight)
         .on("mousemove", mousemove)
         .on("mouseleave", doNotHighlight )

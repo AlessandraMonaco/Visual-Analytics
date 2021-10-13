@@ -54,8 +54,7 @@ function treemap_from_csv(csv_data) {
         var width = 320,
         height = 180;
         
-        var color = d3.scale.ordinal()
-        .range(["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02"])
+        
         
         var treemap = d3.layout.treemap()
         .size([width, height])
@@ -82,8 +81,8 @@ function treemap_from_csv(csv_data) {
         .style("top", function (d) { return d.y +25+ "px"; })
         .style("width", function (d) { return Math.max(0, d.dx - 1) + "px"; })
         .style("height", function (d) { return Math.max(0, d.dy - 1) + "px"; })
-        .style("background", function (d) { return d.children==null ? color(d.parent.data.name) : null; })
-        .style("color", function(d) {return d.children ? color(d.data.name) : null; } )
+        .style("background", function (d) { return d.children==null ? treemap_color(d.parent.data.name) : null; })
+        .style("color", function(d) {return d.children ? treemap_color(d.data.name) : null; } )
         .style("font-size", function(d) {return d.children ? "11px" : null; } )
         .text(function (d) { return d.parent==null ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : d.children!=null ? d.data.name : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.data.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.data.value +')' : null })
         //.text(function (d) { return d.children ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.value +')' : null })

@@ -3,13 +3,11 @@ var parallel_margin = {top: 20, right: 0, bottom: 0, left: 0},
   parallel_width = 860 - parallel_margin.left - parallel_margin.right,
   parallel_height = 130 - parallel_margin.top - parallel_margin.bottom;
 
-// set color for clusters
-var cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
-var unselected_color = "#404040";
+
 
 $(document).ready(function(){
 
-    var cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
+    //var cluster_color = [ "#e41a1c", "#377eb8", "#4daf4a", "#ff7f00", "#ffff33", "#a65628" ];
     
     // Parse the Data
     d3.csv("static/dataset/pca_kmeans_data.csv", function(data) {
@@ -78,12 +76,12 @@ $(document).ready(function(){
                 d3.selectAll(".pline")
                 .transition().duration(200)
                 .style("stroke", unselected_color)
-                .style("opacity", "0.1")
+                .style("opacity", 0)
                 // Second the hovered specie takes its color
                 d3.selectAll(".pline" + selected_cluster)
                 .transition().duration(200)
                 .style("stroke", cluster_color[parseInt(selected_cluster)])
-                .style("opacity", "1")
+                .style("opacity", cluster_opacity);
 
                 // Highlight scatter
                 d3.selectAll(".dot")
@@ -91,12 +89,14 @@ $(document).ready(function(){
                     .duration(200)
                     .style("fill", unselected_color)
                     .attr("r", 1)
+                    .style("opacity", 0.1);
         
                 d3.selectAll(".dot" + selected_cluster)
                     .transition()
                     .duration(200)
                     .style("fill", cluster_color[parseInt(selected_cluster)])
                     .attr("r", 1.5)
+                    .style("opacity", cluster_opacity);
             
                 // Reset selector on All Data
                 d3.select('#cluster-selector-select').property('value', 'all');
@@ -118,14 +118,14 @@ $(document).ready(function(){
                 d3.selectAll(".pline")
                 .transition().duration(200).delay(1000)
                 .style("stroke", function(d){ return( cluster_color[parseInt(d.cluster)])} )
-                .style("opacity", "1");
+                .style("opacity", cluster_opacity);
 
                 // Do not highlight scatter
                 d3.selectAll(".dot")
                     .transition()
                     .duration(200)
                     .style("fill", function (d) { return cluster_color[parseInt(d.cluster)] } )
-                    .attr("r", 1 );
+                    .style("opacity", cluster_opacity);
             
                 // Reset selector on All Data
                 d3.select('#cluster-selector-select').property('value', 'all');
@@ -205,7 +205,24 @@ $(document).ready(function(){
                     return( cluster_color[parseInt(d.cluster)])
                 }
              } )
-            .style("opacity", 0.5)
+            .style("opacity", function(d) {
+                if (localStorage.getItem("cluster_customers")) {
+                    // Color only the selected clusters
+                    customers = JSON.parse(localStorage.getItem("cluster_customers"));
+                    if (customers.includes(d.cust_id)) return cluster_opacity;
+                    else return 0;
+                }
+                else if (localStorage.getItem("rfm_customers")) {
+                    // Color only the rfm selected customers
+                    customers = JSON.parse(localStorage.getItem("rfm_customers"));
+                    if (customers.includes(d.cust_id)) return cluster_opacity;
+                    else return 0;
+                }
+                else {
+                    // If no active filter, just the original colors
+                    return cluster_opacity;
+                }
+            })
             .on("mouseover", highlight)
             .on("mousemove", mousemove)
             .on("mouseleave", doNotHighlight )
