@@ -167,16 +167,19 @@ $(document).ready(function(){
                 }
 
                 //remove old data
-                var svg = d3.select('#rfm_parallel svg g');
-                svg.selectAll(".p2line").remove();
+                //var svg = d3.select('#rfm_parallel svg g');
+                //svg.selectAll(".p2line").remove();
 
                 //show new data 
                 // Draw the lines
                 // line to draw for this raw.
                 // Manually set the dimensions
-                dimensions = ['recency', 'frequency', 'monetary'];
+                //dimensions = ['recency', 'frequency', 'monetary'];
 
-                rfm_parallel_from_csv(svg,dimensions,new_data, myColor, x, y);
+                //rfm_parallel_from_csv(svg,dimensions,new_data, myColor, x, y);
+
+                
+
                 // FILTER USING CATEGORY TREEMAP
                 d3.select("#treemap").selectAll(".node")
                 .on('click', filterByCategory);
@@ -238,6 +241,39 @@ $(document).ready(function(){
                     .on('click', filterByCategory);
                 }
                
+            });
+        }
+
+        function filterSegmentByCustomers(customers) {
+            d3.csv("static/dataset/customers_summary.csv", function(data) {
+
+                d3.select("#total-cust").select("div").remove();
+                d3.select("#customer-table tbody").selectAll("tr").remove();
+                d3.select("#fieldset-segment").select(".description text").remove();
+                // FILTER THE SEGMENT TABLE BY CUSTOMERS
+                if (customers=="all") { 
+                    new_data = data;
+                   
+                    d3.select("#fieldset-segment").select(".description")
+                    .append("text")
+                    .html("(All customers)");
+                }
+                else {
+                    new_data = data.filter(function(d) { if (customers.includes(d.cust_id)) return d;});
+                    if (localStorage.getItem("cluster_customers")) {
+                        d3.select("#fieldset-segment").select(".description")
+                        .append("text")
+                        .html("(K-Means Cluster)");
+                    }
+                    if (localStorage.getItem("rfm_customers")) {
+                        d3.select("#fieldset-segment").select(".description")
+                        .append("text")
+                        .html("(RFM Segment)");
+                    }
+                }
+                
+                customer_summary(new_data);
+
             });
         }
 
@@ -368,6 +404,9 @@ $(document).ready(function(){
             filterFullDataByCustomers(customers, 'cluster', null, null);
            // FILTER RFM DATA BASING ON CUSTOMER LIST (true: filter also heatmap to change tooltips)
            filterRfmDataByCustomers(customers, 'cluster', true);
+           // FILTER SEGMENT BASING ON CUSTOMER LIST
+           if (customers.length==0) filterSegmentByCustomers('all');
+           else filterSegmentByCustomers(customers);
 
         }
 
@@ -585,7 +624,8 @@ $(document).ready(function(){
                     filterFullDataByCustomers(all_customers,'rfm', null, null);
                     // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
                     filterRfmDataByCustomers(all_customers,'rfm',false);
-                
+                    // FILTER SEGMENT TABLE
+                    filterSegmentByCustomers(all_customers);
                     //console.log(all_customers);
                 }
 
@@ -603,6 +643,8 @@ $(document).ready(function(){
                         filterFullDataByCustomers(difference,'rfm', null, null);
                         // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
                         filterRfmDataByCustomers(difference, 'rfm', false);
+                        // FILTER SEGMENT TABLE
+                        filterSegmentByCustomers(difference);
                     }
                     else {
                         // reset the selection on rfm segments
@@ -610,6 +652,9 @@ $(document).ready(function(){
                         filterFullDataByCustomers(difference,'all');
                         // FILTER PARALLEL RFM DATA BASING ON CUSTOMER LIST
                         filterRfmDataByCustomers(difference, 'all', false);
+                        // FILTER SEGMENT TABLE
+                        filterSegmentByCustomers('all');
+
                     }
                     
 

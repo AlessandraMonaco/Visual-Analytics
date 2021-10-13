@@ -39,5 +39,9 @@ $(document).ready(function(){
     // Read from csv
     d3.csv("static/dataset/customers_summary.csv", function(data) {
         customer_summary(data);
+
+        d3.select("#fieldset-segment").select(".description")
+            .append("text")
+            .html("(All customers)");
     });
 });
