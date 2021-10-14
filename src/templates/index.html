@@ -185,9 +185,9 @@
 
             <form action="/runcluster" method="GET">
               <label for="n_components">#COMPONENTS:</label>
-              <input type="number" id="n_components" name="n_components" class="input-param btn-select" min="2" max="18" value="2">
+              <input type="number" id="n_components" name="n_components" class="input-param btn-select" min="2" max="12" value="2">
               <label for="n_clusters">#CLUSTERS:</label>
-              <input type="number" id="n_clusters" name="n_clusters" class="input-param btn-select" min="2" max="6" value="4" >
+              <input type="number" id="n_clusters" name="n_clusters" class="input-param btn-select" min="2" max="8" value="4" >
               <button class="my-button" id="btn-run" style="vertical-align:middle;font-size:12px;padding-bottom:4px;" onclick="RunKmeans();document.body.style.cursor='wait'; return true;">
                 Run<span class="material-icons" style="font-size:22px;">restart_alt</span></button>
             </form>

@@ -32,7 +32,7 @@ $(document).ready(function(){
 
         // Manually set the dimensions
         // Original dimension order
-        var dimensions = ['(Bags) Women','(Books) Academic', '(Books) Children', '(Books) Comics', 
+        var dimensions = ['(Bags) Mens','(Bags) Women','(Books) Academic', '(Books) Children', '(Books) Comics', 
             '(Books) DIY', '(Books) Fiction', '(Books) Non-Fiction', '(Clothing) Kids', '(Clothing) Mens', 
             '(Clothing) Women', '(Electronics) Audio and video', '(Electronics) Cameras', 
             '(Electronics) Computers', '(Electronics) Mobiles', '(Electronics) Personal Appliances', 
@@ -95,7 +95,7 @@ $(document).ready(function(){
                     .transition()
                     .duration(200)
                     .style("fill", cluster_color[parseInt(selected_cluster)])
-                    .attr("r", 1.5)
+                    .attr("r", 1)
                     .style("opacity", cluster_opacity);
             
                 // Reset selector on All Data
@@ -256,10 +256,18 @@ $(document).ready(function(){
                 .text(function(d) { return d.substring(0,3)+".."; })
                 .style("fill", "white")
                 .on("mousemove", function (d) {
-                    tool.style("left", d3.event.pageX + 10 + "px")
-                    tool.style("top", d3.event.pageY - 20 + "px")
+                    tool.style("left", d3.event.pageX + 10 + "px");
+                    tool.style("top", d3.event.pageY - 20 + "px");
                     tool.style("display", "inline-block");
                     tool.html(d);
+                    //Set tool background depending on the name of the macrocategory
+                    var regExp = /\(([^)]+)\)/;
+                    var matches = regExp.exec(d);
+                        //matches[1] contains the value between the parentheses
+                        //console.log(matches[1]);
+                    var col = treemap_color(matches[1]);
+                    tool.style("background-color", col);
+                    
                 }).on("mouseout", function (d) {
                     tool.style("display", "none");
                 });
@@ -272,7 +280,7 @@ $(document).ready(function(){
 
         // ORDER AXES BY CATEGORY (ORIGINAL ORDER)
         d3.select("#btn-original-order").on("click", function() {
-            var orig_dimensions = ['(Bags) Women', '(Books) Academic', '(Books) Children', '(Books) Comics', 
+            var orig_dimensions = ['(Bags) Mens', '(Bags) Women', '(Books) Academic', '(Books) Children', '(Books) Comics', 
             '(Books) DIY', '(Books) Fiction', '(Books) Non-Fiction', '(Clothing) Kids', '(Clothing) Mens', 
             '(Clothing) Women', '(Electronics) Audio and video', '(Electronics) Cameras', 
             '(Electronics) Computers', '(Electronics) Mobiles', '(Electronics) Personal Appliances', 

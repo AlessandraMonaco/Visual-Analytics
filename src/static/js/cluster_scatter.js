@@ -121,7 +121,7 @@ $(document).ready(function(){
                     .transition()
                     .duration(200)
                     .style("fill", cluster_color[parseInt(selected_cluster)])
-                    .attr("r", 1.5)
+                    .attr("r", 1)
                     .style("opacity", cluster_opacity);
             
                 // Highlight in parallel coordinates

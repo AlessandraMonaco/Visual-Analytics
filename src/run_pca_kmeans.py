@@ -41,7 +41,7 @@ def clustering(n_components, n_clusters):
     print(gr_data.head())
 
     # Get feature names
-    features = gr_data.columns[1:].tolist()
+    features = gr_data.columns[0:].tolist()
     print("Features: ", features)
     # Get customer ids
     gr_data = gr_data.reset_index()

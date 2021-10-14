@@ -320,7 +320,7 @@ $(document).ready(function(){
                     .transition()
                     .duration(200)
                     .style("fill", cluster_color[parseInt(selected_cluster)])
-                    .attr("r", 1.5)
+                    .attr("r", 1)
                     .style("opacity", cluster_opacity);
                 
                     // Highlight in parallel coordinates
@@ -676,10 +676,7 @@ $(document).ready(function(){
                         if (final_customers.includes(d.cust_id)) return cluster_color[parseInt(d.cluster)];
                         else return unselected_color;
                     })
-                    .attr("r",  function(d) { 
-                        if (final_customers.includes(d.cust_id)) return 1.5;
-                        else return 1;
-                    })
+                    .attr("r",  1)
                     .style("opacity", function(d) {
                         if (final_customers.includes(d.cust_id)) return cluster_opacity;
                         else return 0.1;
