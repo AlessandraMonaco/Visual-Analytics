@@ -704,14 +704,15 @@ $(document).ready(function(){
                     .transition()
                     .duration(200)
                     .style("fill", function(d) {  return cluster_color[parseInt(d.cluster)];})
-                    .attr("r", 1);
+                    .attr("r", 1)
+                    .style("opacity", cluster_opacity);
 
                     var parallel = d3.select("#unsupervised_parallel svg");
                     parallel.selectAll(".pline")
                     .transition()  
                     .duration(200)
                     .style("stroke", function(d) { return cluster_color[parseInt(d.cluster)];})
-                    .style("opacity", 1);
+                    .style("opacity", cluster_opacity);
                 }
 
                 

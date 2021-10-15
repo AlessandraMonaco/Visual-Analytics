@@ -116,7 +116,7 @@ function rfm_heatmap_from_csv(svg,data) {
 
   myColor = d3.scaleSequential()
   .interpolator(d3.interpolatePurples)
-  .domain([0,avg_max]);
+  .domain([0,Math.ceil((avg_max+1) / 1000) * 1000]);
 
   
 

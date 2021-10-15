@@ -5,7 +5,7 @@ var best_n_components = 2;
 //Setting default cluster colours
 cluster_color = [ "#1f78b4", "#33a02c", "#e31a1c", "#ff7f00", "#6a3d9a", "#b15928", "#e7298a", "yellow"];
 unselected_color = "#404040";
-cluster_opacity = 0.3;
+cluster_opacity = 0.8;
 
 //Setting default treemap colours
 treemap_color = d3.scale.ordinal()

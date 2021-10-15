@@ -16,9 +16,9 @@ def join_rfm(x): return str(x['R']) + str(x['F']) + str(x['M'])
 # Define rfm_level function
 def rfm_level(df):
     if df['RFM_Score'] >= 9:
-        return 'Can\'t Loose Them'
+        return 'Gold'
     elif ((df['RFM_Score'] >= 8) and (df['RFM_Score'] < 9)):
-        return 'Champions'
+        return 'Can\'t Loose Them'
     elif ((df['RFM_Score'] >= 7) and (df['RFM_Score'] < 8)):
         return 'Loyal'
     elif ((df['RFM_Score'] >= 6) and (df['RFM_Score'] < 7)):

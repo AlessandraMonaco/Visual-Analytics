@@ -32,11 +32,11 @@ $(document).ready(function(){
 
         // Manually set the dimensions
         // Original dimension order
-        var dimensions = ['(Bags) Mens','(Bags) Women','(Books) Academic', '(Books) Children', '(Books) Comics', 
-            '(Books) DIY', '(Books) Fiction', '(Books) Non-Fiction', '(Clothing) Kids', '(Clothing) Mens', 
+        var dimensions = ['(Bags) Men','(Bags) Women','(Books) Academic', '(Books) Children', '(Books) Comics', 
+            '(Books) DIY', '(Books) Fiction', '(Books) Non-Fiction', '(Clothing) Kids', '(Clothing) Men', 
             '(Clothing) Women', '(Electronics) Audio and video', '(Electronics) Cameras', 
             '(Electronics) Computers', '(Electronics) Mobiles', '(Electronics) Personal Appliances', 
-            '(Footwear) Kids', '(Footwear) Mens', '(Footwear) Women', '(Home and kitchen) Bath', 
+            '(Footwear) Kids', '(Footwear) Men', '(Footwear) Women', '(Home and kitchen) Bath', 
             '(Home and kitchen) Furnishing', '(Home and kitchen) Kitchen', '(Home and kitchen) Tools'];
 
         
@@ -108,6 +108,21 @@ $(document).ready(function(){
                 .style("stroke", "white")
                 .style("opacity", 1);
             }
+
+            //If cluster is selected highlight single lines in white
+            else {
+                // Color only if selected
+                if(localStorage.getItem("cluster_customers")) 
+                    customers = JSON.parse(localStorage.getItem("cluster_customers"));
+                else if (localStorage.getItem("rfm_customers"))
+                    customers = JSON.parse(localStorage.getItem("cluster_customers"));
+                if(customers.includes(d.cust_id)) {
+                    d3.select(this)
+                        .style("stroke", "white")   
+                        .style("z-index", 0)      
+                        .style("opacity", 1);
+                }
+            }
         }
 
         // Unhighlight
@@ -134,7 +149,23 @@ $(document).ready(function(){
                 tooltip
                 .style("opacity", 0)
             }
+
+            //If cluster is selected highlight single lines in white
+            else {
+                // Color only if selected
+                if(localStorage.getItem("cluster_customers")) 
+                    customers = JSON.parse(localStorage.getItem("cluster_customers"));
+                else if (localStorage.getItem("rfm_customers"))
+                    customers = JSON.parse(localStorage.getItem("cluster_customers"));
+                if(customers.includes(d.cust_id)) {
+                    d3.select(this)
+                        .style("stroke", function(d){ 
+                            return cluster_color[parseInt(d.cluster)];})
+                        .style("opacity", cluster_opacity);
+                }
+            }
         }
+            
 
         //Detect mouse change for the tooltip to set the text
         var mousemove = function(d) {
@@ -280,11 +311,11 @@ $(document).ready(function(){
 
         // ORDER AXES BY CATEGORY (ORIGINAL ORDER)
         d3.select("#btn-original-order").on("click", function() {
-            var orig_dimensions = ['(Bags) Mens', '(Bags) Women', '(Books) Academic', '(Books) Children', '(Books) Comics', 
-            '(Books) DIY', '(Books) Fiction', '(Books) Non-Fiction', '(Clothing) Kids', '(Clothing) Mens', 
+            var orig_dimensions = ['(Bags) Men', '(Bags) Women', '(Books) Academic', '(Books) Children', '(Books) Comics', 
+            '(Books) DIY', '(Books) Fiction', '(Books) Non-Fiction', '(Clothing) Kids', '(Clothing) Men', 
             '(Clothing) Women', '(Electronics) Audio and video', '(Electronics) Cameras', 
             '(Electronics) Computers', '(Electronics) Mobiles', '(Electronics) Personal Appliances', 
-            '(Footwear) Kids', '(Footwear) Mens', '(Footwear) Women', '(Home and kitchen) Bath', 
+            '(Footwear) Kids', '(Footwear) Men', '(Footwear) Women', '(Home and kitchen) Bath', 
             '(Home and kitchen) Furnishing', '(Home and kitchen) Kitchen', '(Home and kitchen) Tools'];
             //For each dimension, I build a linear scale. I store all in a y object
 

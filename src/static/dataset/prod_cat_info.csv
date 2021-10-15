@@ -1,8 +1,8 @@
 prod_cat_code,prod_cat,prod_sub_cat_code,prod_subcat
-1,Clothing,4,Mens
+1,Clothing,4,Men
 1,Clothing,1,Women
 1,Clothing,3,Kids
-2,Footwear,1,Mens
+2,Footwear,1,Men
 2,Footwear,3,Women
 2,Footwear,4,Kids
 3,Electronics,4,Mobiles
@@ -10,7 +10,7 @@ prod_cat_code,prod_cat,prod_sub_cat_code,prod_subcat
 3,Electronics,8,Personal Appliances
 3,Electronics,9,Cameras
 3,Electronics,10,Audio and video
-4,Bags,1,Mens
+4,Bags,1,Men
 4,Bags,4,Women
 5,Books,7,Fiction
 5,Books,12,Academic

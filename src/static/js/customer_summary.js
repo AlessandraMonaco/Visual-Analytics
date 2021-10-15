@@ -59,9 +59,9 @@ function customer_summary(data) {
                 // Sort data basing on h value
                 sorted_data = data.sort(function(a,b) { 
                     // If DOB, parseDate, if Monetary and Avg_M parseFloat
-                    if (h=='DOB') return d3.ascending(new Date(a[h]),new Date(b[h]));
-                    if (h=='monetary' || h=='Avg_M') return d3.ascending(parseFloat(a[h]), parseFloat(b[h]));
-                    else return d3.ascending(a[h],b[h]);
+                    if (h=='DOB') return d3.descending(new Date(a[h]),new Date(b[h]));
+                    if (h=='monetary' || h=='Avg_M') return d3.descending(parseFloat(a[h]), parseFloat(b[h]));
+                    else return d3.descending(a[h],b[h]);
                 });
                 d3.select("#total-cust").select("div").remove();
                 d3.select("#customer-table tbody").selectAll("tr").remove();

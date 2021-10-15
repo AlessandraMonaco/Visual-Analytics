@@ -129,7 +129,7 @@ function calendar_from_csv(svg, data, y_value) {
   max = d3.max(nested_data.map(function(d) { return parseFloat(d.value); }));
 
   myColorCal = d3.scaleSequential()
-  .interpolator(d3.interpolatePurples)
+  .interpolator(d3.interpolateBuPu)
   .domain([0,max]);
 
   // Drop previous legend if exists
