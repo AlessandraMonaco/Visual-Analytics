@@ -53,9 +53,27 @@
           <h2>Dashboard Infos</h2>
           <a class="close" href="#">&times;</a>
           <div class="content">
-              The following Dashboard allows to analyze customers' purchases from different perspectives.
+              The following Dashboard provides functionalities for Sales Analysis and Customer Segmentation from 
+              different perspectives.
+              Before analyzing you can filter by shop, customer city or gender using the top selectors.
               <br>
-              Continue here.....
+              - <mark> PURCHASE TRENDS </mark> allows to analyze profit and sales with a time series with
+               different levels of aggregation and the hierarchical categorical organization. The line chart is 
+               zoomable and the subcategories are clickable for filters.
+               <br>
+              - <mark> PURCHASE SEASONALITIES </mark> allows to search for weekday/monthly/seasonal patterns for 
+              total profits or total sales.
+                <br>
+              - <mark> UNSUPERVISED SEGMENTATION </mark> performs K-Means clustering on PCA of customers behaviors 
+              (total purchases made on each subcategory), using the selected hyperparameters. Selecting a cluster from 
+              the selector, the scatterplot or the parallel chart will filter all the other visualizations on the 
+              selected customers;
+              <br>
+              - <mark> RFM SEGMENTATION </mark> performs rfm grouping by equal-frequency binning. Segments can be 
+              selected by clicking on the heatmap rectangles, resulting a filter on all the other visualizations.
+              <br>
+              - <mark> SEGMENT DETAILS </mark> contains tabular data of the selected customers. The table can be 
+              sorted by clicking on each column header.
           </div>
         </div>
       </div>

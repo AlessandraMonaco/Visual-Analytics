@@ -93,7 +93,7 @@ legend {
   padding: 20px;
   background: rgba(173, 173, 173, 0.8);
   border-radius: 5px;
-  width: 30%;
+  width: 50%;
   position: relative;
   transition: all 5s ease-in-out; }
 
@@ -115,14 +115,14 @@ legend {
   color: #06D85F; }
 
 .popup .content {
-  max-height: 30%;
+  max-height: 20%;
   font-size: 12px;
   overflow: auto;
   color: black; }
 
 @media screen and (max-width: 700px) {
   .popup {
-    width: 70%; } }
+    width: 50%; } }
 
 .description {
   position: relative;
@@ -438,6 +438,7 @@ input[type=number] {
 #rfm-heatmap {
   position: relative;
   display: inline-block;
+  margin-top: -5px;
   margin-left: -10px;
   margin-bottom: -10px;
   vertical-align: top; }
@@ -445,6 +446,7 @@ input[type=number] {
 #rfm-legend {
   position: relative;
   margin-left: -10px;
+  margin-top: -5px;
   display: inline-block;
   vertical-align: top; }
 
