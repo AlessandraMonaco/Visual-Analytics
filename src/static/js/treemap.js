@@ -35,8 +35,14 @@ function treemap_from_csv(csv_data) {
         .entries(csv_data);
         
         //console.log("Nested data")
-        //console.debug(nested_data);
-        //alert(JSON.stringify(nested_data));                 
+        //console.debug(csv_data);
+        //alert(JSON.stringify(nested_data));  
+        
+        // compute total
+        var total = 0;
+        csv_data.forEach(function(r) {
+            total += parseInt(r.Qty);
+        });
         
         // Creat the root node for the treemap
         var root = {};
@@ -53,7 +59,6 @@ function treemap_from_csv(csv_data) {
         // Then d3.treemap computes the position of each element of the hierarchy
         var width = 320,
         height = 180;
-        
         
         
         var treemap = d3.layout.treemap()
@@ -87,11 +92,13 @@ function treemap_from_csv(csv_data) {
         .text(function (d) { return d.parent==null ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : d.children!=null ? d.data.name : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.data.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.data.value +')' : null })
         //.text(function (d) { return d.children ? null : (d.dy < 10) ? null : (d.dx < 10) ? null : (d.data.name).length < (d.dx / 4) ? d.data.name + ' (' +  d.value +')' : (d.dy < 25) ? null : ((d.data.name).length < (d.dx / 2.5)) ? d.data.name + ' (' + d.value +')' : null })
         .on("mousemove", function (d) {
+            var par_percentage = ((parseInt(d.parent.value)/total)*100).toFixed(1); //parent percentage over total
+            var ch_percentage = ((parseInt(d.value)/total)*100).toFixed(1); //children percentage over total
             if (d3.select(this).attr("class")=="node unselected") {
             tool.style("left", d3.event.pageX + 1 + "px")
             tool.style("top", d3.event.pageY - 20 + "px")
             tool.style("display", "inline-block");
-            tool.html(d.children ? null : "<span class='category'>"+d.parent.data.name+" : "+d.parent.value+"</span>" + "<br>"+ d.data.name + " : " + d.data.value);
+            tool.html(d.children ? null : "<span class='category'>"+d.parent.data.name+" : "+d.parent.value+"("+par_percentage+"%)</span>" + "<br>"+ d.data.name + " : " + d.data.value + "(" + ch_percentage + "%)");
             }
         }).on("mouseout", function (d) {
             tool.style("display", "none");
