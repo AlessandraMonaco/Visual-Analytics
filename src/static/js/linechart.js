@@ -263,7 +263,7 @@ function linechart_from_csv(svg,data,y_value) {
     data = nested_data;
       
     // Add X axis --> it is a date format
-      var x = d3.scaleTime()
+      x = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.date; }))
         .range([ 0, lin_width ]);
       xAxis = svg.append("g")
@@ -273,8 +273,8 @@ function linechart_from_csv(svg,data,y_value) {
 
       
     // Add Y axis
-    var max = d3.max(data, function(d) { return +d.value; });
-    var y = d3.scaleLinear()
+    max = d3.max(data, function(d) { return +d.value; });
+    y = d3.scaleLinear()
       .domain([0, max ])
       .range([ lin_height, 0 ]);
     yAxis = svg.append("g")
@@ -312,7 +312,7 @@ function linechart_from_csv(svg,data,y_value) {
     
 
     // This allows to find the closest X index of the mouse:
-    var bisect = d3.bisector(function(d) { return d.date; }).left;
+    bisect = d3.bisector(function(d) { return d.date; }).left;
 
     // Create the circle that travels along the curve of chart
      focus = svg

@@ -25,9 +25,6 @@ function monthPath(t0) {
         + "H" + (w0 + 1) * cellSize + "Z";
   }
 
-// create continuous color legend
-// create continuous color legend
-
 
 function continuous_h(selector_id,colorscale) {
     var legendheight = heat_height+280,
@@ -249,6 +246,73 @@ else {
     dataRects.append("title")
         .text(function(d) { return toolDate(new Date(d.date))+":\n"+d.value.toFixed(2)+units; });
     
+    // On mouse over show tooltip in line chart
+    dataRects
+        .on("mouseover", function(d) {
+            console.log(d); //access through d.date d.value
+            // Select linechart tooltip
+            // Append correct text
+            var selectedDate = new Date(d.date);
+            y_lin = d3.select("#select-y").property("value");
+            y_value = d3.select("#select-y-cal").property("value");
+            if(y_value==y_lin) {
+                console.log("yes");
+                selectedValue = d.value;
+                console.log(selectedValue);
+            }
+            else {
+                console.log("no");
+                var renested_data = d3.nest()
+                    .key(function(d){ return d.date; })
+                    .rollup(function(d) { 
+                if(y_lin=="Profit") {
+                    return d3.sum(d, function(d) {return d.profit; })
+                }
+                if(y_lin=="Sales") {
+                    return d3.sum(d, function(d) {return d.sales; })
+                }       
+                }).entries(data)
+                    .map(function(d){
+                    return { date: d.key, value: d.value};
+                });
+
+                renested_data.forEach(function(r) {
+                    if (r.date==selectedDate.toString()){
+                         selectedValue = r.value;
+                    }
+                });
+                //if(y_lin=="Profit") selectedValue = parseFloat(selectedData.value);
+                //if(y_lin=="Sales") selectedValue = parseInt(selectedData.value);
+            }
+            
+            focus
+                .attr("cx", x(selectedDate))
+                .attr("cy", y(selectedValue));
+                
+            focusText
+                .html(pretty_value(selectedValue, y_value))
+                .attr("x", x(selectedDate)+5)
+                .attr("y", y(selectedValue)+5);
+            focusDate
+                .html(format(selectedDate))
+                .attr("x", x(selectedDate)+5)
+                .attr("y", y(selectedValue)+17);
+            // Show tooltip
+            focus.style("opacity", 1);
+            focusText.style("opacity",1);
+            focusDate.style("opacity",1);
+            //Find y (if cal_y e y_value selector are different)
+            //var item = data[bisect(data, selectedDate)];
+            
+            console.log(y(selectedValue));
+            console.log(selectedData);
+        })
+        .on("mouseleave", function() {
+            // Hide tooltip
+            focus.style("opacity", 0);
+            focusText.style("opacity",0);
+            focusDate.style("opacity",0);
+        });
     
                 
     //add montly outlines for calendar
