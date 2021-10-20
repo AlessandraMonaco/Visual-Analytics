@@ -1,6 +1,6 @@
 //Setting default parameters
-var best_n_clusters = 4;
-var best_n_components = 2;
+best_n_clusters = 4;
+best_n_components = 2;
 
 //Setting default cluster colours
 cluster_color = [ "#1f78b4", "#33a02c", "#e31a1c", "#ff7f00", "#6a3d9a", "#b15928", "#e7298a", "yellow"];

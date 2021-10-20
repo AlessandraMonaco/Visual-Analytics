@@ -683,22 +683,51 @@ $(document).ready(function(){
                      } );
 
                     //HIGHLIGHT PARALLEL UNSUPERVISED
+                    if (localStorage.getItem("n_clusters"))
+                        n_clusters = parseInt(localStorage.getItem("n_clusters"));
+                    else n_clusters = best_n_clusters;
+                    size = [];
+                    for(var i=0; i<n_clusters; i++) {
+                        size[i]=0;
+                    }
+                    console.log(size);
                     var parallel = d3.select("#unsupervised_parallel svg");
                     parallel.selectAll(".pline")
                     .transition()  
                     .duration(200)
                     .style("stroke", function(d) { 
-                        if (final_customers.includes(d.cust_id)) return cluster_color[parseInt(d.cluster)];
+                        if (final_customers.includes(d.cust_id)) {
+                            size[parseInt(d.cluster)] += 1;
+                            return cluster_color[parseInt(d.cluster)];
+                        }
                         else return unselected_color;
                     })
                     .style("opacity", function(d) { 
                         if (final_customers.includes(d.cust_id)) return cluster_opacity;
                         else return 0;
                     });
+
+                    //APPEND CLUSTER SIZE INFO NEAR SELECTOR
+                    //Compute cluster size
+                    //console.log(size);
+                    d3.selectAll(".cl-size").remove();
+                    var opts = d3.select("#cluster-selector-select").selectAll("option");
+                        opts.each(function(d,i) {
+                            d3.select(this).append("text")
+                            .style("font-size", "8px")
+                            .attr("class", "cl-size")
+                            .text(function() {
+                                if (i!=0) //not 'all'
+                                //console.log(size[0]);
+                                return " ("+(size[d]).toString()+")";
+                            });
+                        });
+                        //.text(size_0,")");
                 }
 
                 else {
                     //RESET ORIGINAL VISUALIZATION
+                    d3.selectAll(".cl-size").remove();
                     var scatter = d3.select("#scatter svg");
                     scatter.selectAll(".dot")
                     .transition()
