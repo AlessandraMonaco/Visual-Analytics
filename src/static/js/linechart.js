@@ -27,6 +27,17 @@ function FilterByTime(starting_date, ending_date) {
 
   localStorage.setItem("starting_date", starting_date);
   localStorage.setItem("ending_date", ending_date);
+  console.log(starting_date,ending_date);
+
+  // Color calendar rects only for the selected date interval
+  d3.select("#calendar-heatmap").selectAll("#dataDays").selectAll("rect")
+    .attr("fill", function(d) {
+      if (new Date(d.date) >= starting_date && new Date(d.date) <= ending_date) {
+        //console.log(myColorCal(d.value));
+        return myColorCal(d.value);
+      }
+      else return "white";
+    });
 
   // TO DO: CONSIDER ALSO IF YOU SELECT FIRST THE CLUSTER/RFM THEN CATEGORY AND THEN TIME FILTER
   // Check if there are other filters
@@ -108,13 +119,16 @@ function FilterByTime(starting_date, ending_date) {
     compute_aggregated_values(filtered_data); 
   });
 }
-  //
-  //d3.select("#treemap").selectAll(".node")
-  //  .on("click", filterByCategory);
+  
 }
 
 function ResetTime() {
   
+  // Reset calendar colors
+  d3.select("#calendar-heatmap").selectAll("#dataDays").selectAll("rect")
+    .attr("fill", function(d) {
+        return myColorCal(d.value);
+    });
   // Check if clusters or rfm customers are selected
   // Check if there are other filters
   if(localStorage.getItem("cluster_customers")) {
@@ -312,7 +326,9 @@ function linechart_from_csv(svg,data,y_value) {
     
 
     // This allows to find the closest X index of the mouse:
-    bisect = d3.bisector(function(d) { return d.date; }).left;
+    //bisect = d3.bisector(function(d) { return d.date; }).left;
+    bisect = d3.bisector(function(d) { return d.date; }).right;
+
 
     // Create the circle that travels along the curve of chart
      focus = svg
@@ -444,11 +460,14 @@ d3.select(element)
           if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
           x.domain([ 4,8]);
         }else{
+          starting_date = x.invert(extent[0]);
+          ending_date = x.invert(extent[1]);
           x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
           line.select(".brush").call(brush.move, null); // This remove the grey brush area as soon as the selection has been done
           //console.log(d3.event.selection);
-          starting_date = x.invert(d3.event.selection[0]); //starting date
-          ending_date = x.invert(d3.event.selection[1]); //ending date
+          //starting_date = x.invert(d3.event.selection[0]); //starting date
+          //ending_date = x.invert(d3.event.selection[1]); //ending date
+          
 
           // FILTER VIZ
           FilterByTime(starting_date, ending_date);

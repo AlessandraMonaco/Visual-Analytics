@@ -244,7 +244,7 @@ else {
     
     //append a title element to give basic mouseover info
     dataRects.append("title")
-        .text(function(d) { return toolDate(new Date(d.date))+":\n"+d.value.toFixed(2)+units; });
+        .text(function(d) { return toolDate(new Date(d.date))+":\n"+pretty_value(d.value, y_value); });
     
     // On mouse over show tooltip in line chart
     dataRects
@@ -290,7 +290,7 @@ else {
                 .attr("cy", y(selectedValue));
                 
             focusText
-                .html(pretty_value(selectedValue, y_value))
+                .html(pretty_value(selectedValue, y_lin))
                 .attr("x", x(selectedDate)+5)
                 .attr("y", y(selectedValue)+5);
             focusDate
@@ -450,6 +450,21 @@ $(document).ready(function(){
                 // CHECK OTHER SELECTIONS AND FILTERS
                 filtered = ActiveFilters(data);
                 calendar_from_csv(svg,filtered,y_value);
+
+                //Check if a the time filter is active
+                if(localStorage.getItem("starting_date")) {
+                    var starting_date = new Date(localStorage.getItem("starting_date"));
+                    var ending_date = new Date(localStorage.getItem("ending_date"));
+                    // Color calendar rects only for the selected date interval
+                    d3.select("#calendar-heatmap").selectAll("#dataDays").selectAll("rect")
+                    .attr("fill", function(d) {
+                        if (new Date(d.date) >= starting_date && new Date(d.date) <= ending_date) {
+                        //console.log(myColorCal(d.value));
+                        return myColorCal(d.value);
+                        }
+                        else return "white";
+                    });
+                }
                 
             }
       
