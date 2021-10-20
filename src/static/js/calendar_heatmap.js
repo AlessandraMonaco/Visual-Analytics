@@ -286,17 +286,17 @@ else {
             }
             
             focus
-                .attr("cx", x(selectedDate))
-                .attr("cy", y(selectedValue));
+                .attr("cx", xLin(selectedDate))
+                .attr("cy", yLin(selectedValue));
                 
             focusText
                 .html(pretty_value(selectedValue, y_lin))
-                .attr("x", x(selectedDate)+5)
-                .attr("y", y(selectedValue)+5);
+                .attr("x", xLin(selectedDate)+5)
+                .attr("y", yLin(selectedValue)+5);
             focusDate
                 .html(format(selectedDate))
-                .attr("x", x(selectedDate)+5)
-                .attr("y", y(selectedValue)+17);
+                .attr("x", xLin(selectedDate)+5)
+                .attr("y", yLin(selectedValue)+17);
             // Show tooltip
             focus.style("opacity", 1);
             focusText.style("opacity",1);
@@ -304,8 +304,8 @@ else {
             //Find y (if cal_y e y_value selector are different)
             //var item = data[bisect(data, selectedDate)];
             
-            console.log(y(selectedValue));
-            console.log(selectedData);
+            //console.log(y(selectedValue));
+            //console.log(selectedData);
         })
         .on("mouseleave", function() {
             // Hide tooltip

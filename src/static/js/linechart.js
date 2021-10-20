@@ -277,23 +277,23 @@ function linechart_from_csv(svg,data,y_value) {
     data = nested_data;
       
     // Add X axis --> it is a date format
-      x = d3.scaleTime()
+      xLin = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.date; }))
         .range([ 0, lin_width ]);
       xAxis = svg.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(xLin));
 
       
     // Add Y axis
     max = d3.max(data, function(d) { return +d.value; });
-    y = d3.scaleLinear()
+    yLin = d3.scaleLinear()
       .domain([0, max ])
       .range([ lin_height, 0 ]);
     yAxis = svg.append("g")
       .attr("class", "axis")
-      .call(d3.axisLeft(y))
+      .call(d3.axisLeft(yLin))
       .append("text")
         .attr("y", -11)
         .attr("x", 2)
@@ -373,8 +373,8 @@ focusDate = svg.append('text')
       .transition()
       .duration(3000)
       .attr("d", d3.line()
-        .x(function(d) { return x(d.date) })
-        .y(function(d) { return y(+d.value) })
+        .x(function(d) { return xLin(d.date) })
+        .y(function(d) { return yLin(+d.value) })
       )
 
      
@@ -397,51 +397,44 @@ focusDate = svg.append('text')
     focusDate.style("opacity",1);
 
     // Highlight in the calendar heatmap the correspondent rect by date id
-    //d3.select("rect")
     /*var x0 = x.invert(d3.mouse(this)[0]);
     var i = bisect(data, x0, 1);
     selectedData = data[i];
-    myid = format(new Date(selectedData.date));
-    console.log("#"+myid);
-    var element = document.getElementById(myid);
-    //d3.select(element).style("stroke", "black").style("stroke-width", 2);
-// Turn all white
-d3.selectAll(".dataday").attr("fill", "white");
-
-d3.select(element)
-  .attr("fill", function(d) { return myColorCal(parseFloat(d.value));});*/
-
+    d3.select("#calendar-heatmap").selectAll("#dataDays").selectAll("rect")
+    .attr("fill", function(d) {
+        if (d.date == selectedData.date)
+          return myColorCal(d.value);
+        else return "white";
+    });*/
     
   }
 
   function mousemove() {
     // recover coordinate we need
-    var x0 = x.invert(d3.mouse(this)[0]);
+    var x0 = xLin.invert(d3.mouse(this)[0]);
     var i = bisect(data, x0, 1);
     selectedData = data[i];
     //console.log(selectedData.value);
     focus
-      .attr("cx", x(selectedData.date))
-      .attr("cy", y(selectedData.value))
+      .attr("cx", xLin(selectedData.date))
+      .attr("cy", yLin(selectedData.value))
       
     focusText
       .html(pretty_value(selectedData.value, y_value))
       //.html(pretty_date(selectedData.date))
-      .attr("x", x(selectedData.date)+5)
-      .attr("y", y(selectedData.value)+5);
+      .attr("x", xLin(selectedData.date)+5)
+      .attr("y", yLin(selectedData.value)+5);
       focusDate
       //.html(pretty_value(selectedData.value, y_value))
       .html(format(selectedData.date))
-      .attr("x", x(selectedData.date)+5)
-      .attr("y", y(selectedData.value)+17);
+      .attr("x", xLin(selectedData.date)+5)
+      .attr("y", yLin(selectedData.value)+17);
 
   }
   function mouseout() {
     focus.style("opacity", 0);
     focusText.style("opacity", 0);
     focusDate.style("opacity", 0);
-    
-    
   }
 
 
@@ -458,11 +451,11 @@ d3.select(element)
         // If no selection, back to initial coordinate. Otherwise, update X axis domain
         if(!extent){
           if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
-          x.domain([ 4,8]);
+          xLin.domain([ 4,8]);
         }else{
-          starting_date = x.invert(extent[0]);
-          ending_date = x.invert(extent[1]);
-          x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
+          starting_date = xLin.invert(extent[0]);
+          ending_date = xLin.invert(extent[1]);
+          xLin.domain([ xLin.invert(extent[0]), xLin.invert(extent[1]) ])
           line.select(".brush").call(brush.move, null); // This remove the grey brush area as soon as the selection has been done
           //console.log(d3.event.selection);
           //starting_date = x.invert(d3.event.selection[0]); //starting date
@@ -474,27 +467,27 @@ d3.select(element)
         }
         
         // Update axis and line position
-        xAxis.transition().duration(1000).call(d3.axisBottom(x))
+        xAxis.transition().duration(1000).call(d3.axisBottom(xLin))
         line
         .select('.line')
         .transition()
         .duration(1000)
         .attr("d", d3.line()
-        .x(function(d) { return x(d.date) })
-        .y(function(d) { return y(d.value) })
+        .x(function(d) { return xLin(d.date) })
+        .y(function(d) { return yLin(d.value) })
         )
       }
       
       // If user double click, reinitialize the chart
       svg.on("dblclick",function(){
-        x.domain(d3.extent(data, function(d) { return d.date; }))
-        xAxis.transition().call(d3.axisBottom(x))
+        xLin.domain(d3.extent(data, function(d) { return d.date; }))
+        xAxis.transition().call(d3.axisBottom(xLin))
         line
         .select('.line')
         .transition()
         .attr("d", d3.line()
-        .x(function(d) { return x(d.date) })
-        .y(function(d) { return y(d.value) })
+        .x(function(d) { return xLin(d.date) })
+        .y(function(d) { return yLin(d.value) })
         )
 
         // Reset all time filter

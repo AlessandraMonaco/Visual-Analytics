@@ -2,7 +2,6 @@ $(document).ready(function(){
 
     d3.text("static/dataset/clustering_metrics_data.csv", function(data) {
         var parsedCSV = d3.csvParse(data);
-        console.log(parsedCSV[0].silhouette);
 
         var container = d3.select("#metrics-table")
             .append("table")

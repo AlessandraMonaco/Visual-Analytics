@@ -80,7 +80,7 @@ $(document).ready(function(){
 
     // Read from csv
     d3.csv("static/dataset/customers_summary.csv", function(data) {
-        console.log(localStorage.getItem("cluster_customers"));
+        //console.log(localStorage.getItem("cluster_customers"));
         // Standard order: by cust_id
         data = data.sort(function(a,b) { 
             return d3.ascending(a.cust_id,b.cust_id);

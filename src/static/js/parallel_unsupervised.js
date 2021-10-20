@@ -1,9 +1,9 @@
 // set the dimensions and margins of the graph
-var parallel_margin = {top: 20, right: 0, bottom: 0, left: 0},
+
+// set the dimensions and margins of the graph
+var parallel_margin = {top: 20, right: 0, bottom: 0, left: 40},
   parallel_width = 860 - parallel_margin.left - parallel_margin.right,
   parallel_height = 130 - parallel_margin.top - parallel_margin.bottom;
-
-
 
 $(document).ready(function(){
 
