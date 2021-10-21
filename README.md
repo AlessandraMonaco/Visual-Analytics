@@ -15,8 +15,19 @@ The dataset contains 6 product macro-categories (Bags, Books, Clothing, Electron
  ## How to run this project
  To try the interactive dashboard on your local machine, run the server file ```/src/app.py ``` and reach http://127.0.0.1:5000/ through your browser.
 
- ## Snapshot of the system
- ![alt text](https://github.com/AlessandraMonaco/Visual-Analytics/blob/master/dashboard_screenshot.PNG)
+ ## Snapshots of the system
+ ### Dashboard snapshot
+ ![alt text](https://github.com/AlessandraMonaco/Visual-Analytics/blob/master/screenshots/dashboard_screenshot.PNG)
+
+ ### Dashboard snapshot with RFM filtering (and mouse over RFM segment)
+ ![alt text](https://github.com/AlessandraMonaco/Visual-Analytics/blob/master/screenshots/dashboard_filter_rfm.png)
+
+ ### Dashboard snapshot with Cluster filtering (and mouse over calendar heatmap day)
+ ![alt text](https://github.com/AlessandraMonaco/Visual-Analytics/blob/master/screenshots/dashboard_filter_cluster.png)
+
+ ### Dashboard snapshot with Electronics products filtering (and mouse over subcategory)
+ ![alt text](https://github.com/AlessandraMonaco/Visual-Analytics/blob/master/screenshots/dashboard_filter_category.png)
+
 
 
  ## References
