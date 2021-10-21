@@ -16,7 +16,7 @@ The dataset contains 6 product macro-categories (Bags, Books, Clothing, Electron
  To try the interactive dashboard on your local machine, run the server file ```/src/app.py ``` and reach http://127.0.0.1:5000/ through your browser.
 
  ## Snapshot of the system
- ![alt text](C:/Users/user/Desktop/Engineering_Computer_Science/COURSES/VISUAL ANALYTICS/project/dashboard_screenshot.png)
+ ![alt text](https://github.com/AlessandraMonaco/Visual-Analytics/blob/master/dashboard_screenshot.PNG)
 
 
  ## References
