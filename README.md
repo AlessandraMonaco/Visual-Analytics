@@ -18,9 +18,9 @@ The dataset contains 6 product macro-categories (Bags, Books, Clothing, Electron
 
  ## References
  * Dataset : [Kaggle Retail dataset](https://www.kaggle.com/darpan25bajaj/retail-case-study-data)
- * Paper that inspired this project : [Mohammad Hafiz Hersyah Miftahul Jannah Ricky Akbar, Meza Silvana. **Implementation of Business Intelligence for Sales Data Management Using Interactive Dashboard Visualization in XYZ Stores.** *International Conference on Information Technology Systems and Innovation (ICITSI)*, 2020.]()
+ * Paper that inspired this project : [Mohammad Hafiz Hersyah Miftahul Jannah Ricky Akbar, Meza Silvana. **Implementation of Business Intelligence for Sales Data Management Using Interactive Dashboard Visualization in XYZ Stores.** *International Conference on Information Technology Systems and Innovation (ICITSI)*, 2020.](https://ieeexplore.ieee.org/document/9264984)
  * Papers on Customer Segmentation : 
-    * [A. S. M. Shahadat Hossain. **Customer Segmentation using Centroid Based and Density Based Clustering Algorithms**. *3rd International Conference on Electrical Information and Communication Technology (EICT)*, 2017.]()
-    * [Saraswati Jadhav Rahul Shirole, Laxmiputra Salokhe. **Customer Segmentation using RFM Model and K-Means Clustering.** *International Journal of Scientific Research in Science and Technology (IJSRST), 8(3)*, 2021.]()
+    * [A. S. M. Shahadat Hossain. **Customer Segmentation using Centroid Based and Density Based Clustering Algorithms**. *3rd International Conference on Electrical Information and Communication Technology (EICT)*, 2017.](https://ieeexplore.ieee.org/document/8275249)
+    * [Saraswati Jadhav Rahul Shirole, Laxmiputra Salokhe. **Customer Segmentation using RFM Model and K-Means Clustering.** *International Journal of Scientific Research in Science and Technology (IJSRST), 8(3)*, 2021.](https://www.researchgate.net/publication/352393770_Customer_Segmentation_using_RFM_Model_and_K-Means_Clustering)
     * [Rajesh Parekh Ron Kohavi. **Visualizing RFM Segmentation.** *Proceedings of the 2004 SIAM international conference*, 2004.]()
- * Paper to improve parallel coordinates visualization : [Bertjan Broeksema Julian Heinrich. **Big Data Visual Analytics with Parallel Coordinates.** *Big Data Visual Analytics (BDVA)*, 2015]()
+ * Paper to improve parallel coordinates visualization : [Bertjan Broeksema Julian Heinrich. **Big Data Visual Analytics with Parallel Coordinates.** *Big Data Visual Analytics (BDVA)*, 2015](https://ieeexplore.ieee.org/abstract/document/7314286)
