@@ -19,7 +19,7 @@ The dataset contains 6 product macro-categories (Bags, Books, Clothing, Electron
  ### Dashboard snapshot
  ![alt text](https://github.com/AlessandraMonaco/Visual-Analytics/blob/master/screenshots/dashboard_screenshot.PNG)
 
- ### Dashboard snapshot with RFM filtering (and mouse over RFM segment)
+ ### Dashboard snapshot with RFM filtering (and mouse over one RFM segment)
  ![alt text](https://github.com/AlessandraMonaco/Visual-Analytics/blob/master/screenshots/dashboard_filter_rfm.png)
 
  ### Dashboard snapshot with Cluster filtering (and mouse over calendar heatmap day)
