@@ -368,7 +368,7 @@ $(document).ready(function(){
                     "<br>("+ sizes[options[0].value] +" customers)")
                     .style("opacity", 1)
                     .style("left", 50 + "px")
-                    .style("top", 1 + "px");
+                    .style("top", 30 + "px");
                 }
                 else {
                     localStorage.removeItem("cluster_customers");

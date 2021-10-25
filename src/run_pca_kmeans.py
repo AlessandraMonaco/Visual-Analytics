@@ -65,7 +65,11 @@ def clustering(n_components, n_clusters):
     pca = PCA(n_components=n_components)
     principalComponents = pca.fit_transform(x) #vector of principal components for each cust_id
     #We store just the first 2 components for the 2d visualization
-    principalDf = pd.DataFrame(data = principalComponents[:,:2], columns = ['pc_1', 'pc_2'])
+    #principalDf = pd.DataFrame(data = principalComponents[:,:2], columns = ['pc_1', 'pc_2'])
+    pc_cols = []
+    for i in range(0,n_components):
+        pc_cols.append("pc_"+str(i+1))
+    principalDf = pd.DataFrame(data = principalComponents, columns=pc_cols)
     principalDf = pd.concat([gr_data['cust_id'], principalDf], axis = 1)
     print("principalDf.head", principalDf.head())
 
@@ -80,7 +84,7 @@ def clustering(n_components, n_clusters):
     labels = pd.Series(kmeans.labels_)
     clusteredDf = pd.concat([principalDf, labels], axis = 1)
     clusteredDf = pd.concat([clusteredDf, gr_data.loc[:, features]], axis=1)
-    clusteredDf = clusteredDf.rename(columns={"cust_id": "cust_id", "pc_1": "pc_1", "pc_2": "pc_2", 0: "cluster"})
+    clusteredDf = clusteredDf.rename(columns={0: "cluster"})
     print("clusteredDf.head \n", clusteredDf.head())
     clusteredDf.to_csv(path+'pca_kmeans_data.csv', index=False) #write clustered data to csv
     
@@ -112,3 +116,6 @@ def clustering(n_components, n_clusters):
     metrics_df.to_csv(path+'clustering_metrics_data.csv', index=False) #write clustered data to csv
 
     return "done!"
+
+# Try the script
+#clustering(4,4)

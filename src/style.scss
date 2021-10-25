@@ -509,14 +509,26 @@ input[type=number] {
 #scatter {
   position: relative;
   margin-left: -81px;
-  margin-top: -40px;
-  margin-bottom: -10px;
+  margin-top: -60px;
+  margin-bottom: -20px;
 
   path {
     stroke: $axis_color;
     color: white;
   }
   
+}
+
+#x-selector-select, #y-selector-select {
+  position:relative;
+  margin-top: 10px;
+  //margin-left: 20px;
+  margin-bottom: -20px;
+  height: 14px;
+  font-size: 10px;
+}
+#x-selector-select {
+  margin-left:30px;
 }
 
 // Parallel unsupervised

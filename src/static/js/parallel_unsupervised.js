@@ -175,7 +175,7 @@ $(document).ready(function(){
                 .html("CLUSTER " + d.cluster +
                 "<br>"+ sizes[d.cluster] +" customers.")
                 .style("left", "50px")
-                .style("top", "-10px")
+                .style("top", "30px")
             }
         }
 
