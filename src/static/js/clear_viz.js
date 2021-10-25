@@ -3,7 +3,7 @@ function ResetViz() {
 
     // Reset original y_value filter
     window.localStorage.clear();
-    location.reload()
+    location.reload();
     
 
     //Remove all filters

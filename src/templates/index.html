@@ -118,7 +118,11 @@
         </select>
 
         <!-- Button to actually run the filtering -->
-        <button class="my-button" id="btn-filter" onclick="FilterData(); document.body.style.cursor='wait'; return true;">
+        <button class="my-button" id="btn-filter" 
+        onclick="FilterData(); 
+        document.body.style.cursor='wait'; 
+        window.localStorage.clear();
+        return true;">
           Analyze<i class="material-icons">filter_alt</i></button>
       </form>
 
