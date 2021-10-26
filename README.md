@@ -6,11 +6,11 @@
 
  ## Dataset
  The dataset used in this project is from Kaggle and describes sales of a fictional multiple retailer. It includes 3 csv files:
- * ```Customers.csv``` stores demographic information about customers, such as id, day of birth, genderand the code of the city in which he is located;
- * ```prod_cat_info.csv``` stores information regarding inclusionrelationships between product categories;
- * ```Transactions.csv``` stores purchases made by customers for certainproduct categories, including the product quantity, the date, the total amount spent, the store type and otherless relevant information.
+ * ```Customers.csv``` stores demographic information about customers, such as id, day of birth, gender and the code of the city in which he is located;
+ * ```prod_cat_info.csv``` stores information regarding inclusion relationships between product categories;
+ * ```Transactions.csv``` stores purchases made by customers for certain product categories, including the product quantity, the date, the total amount spent, the store type and other less relevant information.
  
-The dataset contains 6 product macro-categories (Bags, Books, Clothing, Electronics,Footwear, Home and Kitchen), 23 053 transactions and 5 647 customers (but only 5 506 of them have at leastone associated transaction).To limit file access and build a quickly responsive system, the original dataset is merged into a single (andmore redundant) csv file (full_data.csv) with shape (23 053, 15), storing the following information: transactionid, customer id, transaction date, code and name of the product subcategory, code and name of the productcategory, product quantity, rate, tax, total amount spent in this transaction, store type, customer day of birth,customer gender, customer city code.
+The dataset contains 6 product macro-categories (Bags, Books, Clothing, Electronics,Footwear, Home and Kitchen), 23 053 transactions and 5 647 customers (but only 5 506 of them have at least one associated transaction). To limit file access and build a quickly responsive system, the original dataset is merged into a single (and more redundant) csv file (```full_data.csv```) with shape (23 053, 15), storing the following information: transaction id, customer id, transaction date, code and name of the product subcategory, code and name of the product category, product quantity, rate, tax, total amount spent in this transaction, store type, customer day of birth,customer gender, customer city code.
  
  ## How to run this project
  To try the interactive dashboard on your local machine, run the server file ```/src/app.py ``` and reach http://127.0.0.1:5000/ through your browser.
@@ -34,7 +34,7 @@ The dataset contains 6 product macro-categories (Bags, Books, Clothing, Electron
  * Dataset : [Kaggle Retail dataset](https://www.kaggle.com/darpan25bajaj/retail-case-study-data)
  * Paper that inspired this project : [Mohammad Hafiz Hersyah Miftahul Jannah Ricky Akbar, Meza Silvana. **Implementation of Business Intelligence for Sales Data Management Using Interactive Dashboard Visualization in XYZ Stores.** *International Conference on Information Technology Systems and Innovation (ICITSI)*, 2020.](https://ieeexplore.ieee.org/document/9264984)
  * Papers on Customer Segmentation : 
+    * [Rajesh Parekh Ron Kohavi. **Visualizing RFM Segmentation.** *Proceedings of the 2004 SIAM international conference*, 2004.](https://www.researchgate.net/publication/220906727_Visualizing_RFM_Segmentation)
     * [A. S. M. Shahadat Hossain. **Customer Segmentation using Centroid Based and Density Based Clustering Algorithms**. *3rd International Conference on Electrical Information and Communication Technology (EICT)*, 2017.](https://ieeexplore.ieee.org/document/8275249)
     * [Saraswati Jadhav Rahul Shirole, Laxmiputra Salokhe. **Customer Segmentation using RFM Model and K-Means Clustering.** *International Journal of Scientific Research in Science and Technology (IJSRST), 8(3)*, 2021.](https://www.researchgate.net/publication/352393770_Customer_Segmentation_using_RFM_Model_and_K-Means_Clustering)
-    * [Rajesh Parekh Ron Kohavi. **Visualizing RFM Segmentation.** *Proceedings of the 2004 SIAM international conference*, 2004.]()
  * Paper to improve parallel coordinates visualization : [Bertjan Broeksema Julian Heinrich. **Big Data Visual Analytics with Parallel Coordinates.** *Big Data Visual Analytics (BDVA)*, 2015](https://ieeexplore.ieee.org/abstract/document/7314286)
