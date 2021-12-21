@@ -1,4 +1,4 @@
-# Implementation of a Visual Analytics dashboard for Sales Analysis and Customer Segmentaton in Retail
+# Implementation of a Visual Analytics dashboard for Sales Analysis and Customer Segmentation in Retail
  
  ## Introduction
  This projects implements a dashboard for Visual Analytics in Retail, using javascript (d3.js) for the front-end and python (Flask, Scikit-learn, Numpy, Pandas) for back-end and analytical computations.
